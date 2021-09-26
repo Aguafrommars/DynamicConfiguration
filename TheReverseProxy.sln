@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE3A2832-BE8F-473A-97A9-CF33152A10A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{768E716E-0266-4619-955A-DC02F7B773D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8AF0E870-0D17-4E4D-BCB0-21575BBF5F2E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aguacongas.TheReverseProxy", "src\Aguacongas.TheReverseProxy\Aguacongas.TheReverseProxy.csproj", "{CA558D3A-5BCA-47C7-A4EA-43124777FFC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aguacongas.Configuration.Redis", "src\Aguacongas.Configuration.Redis\Aguacongas.Configuration.Redis.csproj", "{22EABA23-8B32-4445-A7C4-F730523D0A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aguacongas.TheReverseProxy.AdminApi", "src\Aguacongas.TheReverseProxy.AdminApi\Aguacongas.TheReverseProxy.AdminApi.csproj", "{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA558D3A-5BCA-47C7-A4EA-43124777FFC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA558D3A-5BCA-47C7-A4EA-43124777FFC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA558D3A-5BCA-47C7-A4EA-43124777FFC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA558D3A-5BCA-47C7-A4EA-43124777FFC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22EABA23-8B32-4445-A7C4-F730523D0A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EABA23-8B32-4445-A7C4-F730523D0A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EABA23-8B32-4445-A7C4-F730523D0A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EABA23-8B32-4445-A7C4-F730523D0A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA558D3A-5BCA-47C7-A4EA-43124777FFC1} = {CE3A2832-BE8F-473A-97A9-CF33152A10A9}
+		{22EABA23-8B32-4445-A7C4-F730523D0A13} = {CE3A2832-BE8F-473A-97A9-CF33152A10A9}
+		{6A7F82EF-402D-458E-9BF9-BB9DCF290EB8} = {CE3A2832-BE8F-473A-97A9-CF33152A10A9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C4FFD22-2597-4561-B9BD-1184FCA99D87}
+	EndGlobalSection
+EndGlobal
