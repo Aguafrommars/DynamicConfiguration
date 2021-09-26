@@ -1,0 +1,73 @@
+version: 1.0.{build}
+skip_tags: true
+skip_commits:
+  message: /^chore(release)/
+branches:
+  only:
+  - master
+  - /preview\/*/ 
+  - /release\/*/
+image: 
+- Visual Studio 2019
+environment:
+  GH_TOKEN: 
+    secure: 0NJdORJRFjpB0dwUYv7bVNsbkldkoBhnvWik/CTOwAF/k9kP+/uTWMFnDcpEpt8E
+  donetsdk: 5.0.401
+  JAVA_HOME: C:\Program Files\Java\jdk14
+  PATH: $(JAVA_HOME)\bin;$(PATH)
+init:
+  - cmd: git config --global core.autocrlf true
+install:
+  - ps: Install-Product node ''
+  - ps: dotnet tool install --global GitVersion.Tool
+  - ps: dotnet gitversion /l console /output buildserver
+  - ps: dotnet tool install --global dotnet-sonarscanner
+  - cmd: nuget install ReportGenerator -ExcludeVersion
+  - cmd: nuget install redis-64 -excludeversion
+  - cmd: redis-64\tools\redis-server.exe --service-install
+  - cmd: redis-64\tools\redis-server.exe --service-start
+  - ps: ./appveyorinit.ps1
+build_script:
+  - ps: ./build.ps1
+test_script:
+  - cmd: publish.cmd
+artifacts:
+  - path: artifacts/**/*.nupkg
+    name: nuget
+  - path: artifacts/**/*.zip
+    name: zip    
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: HBPD3UCWOLjcV92x7rGXzAoc4v6pXTY9EOrniVg3ENacY0VVx2m8nEtG4cBi+qm7
+    on:
+      branch: 
+      - /preview\/*/
+      - /release\/*/
+      CI_WINDOWS: true
+  - provider: GitHub
+    auth_token: $(GH_TOKEN)
+    draft: true
+    prerelease: true
+    release: $(Version)
+    artifact: /.*\.zip/
+    on:
+      branch: 
+      - /preview\/*/
+      CI_WINDOWS: true
+  - provider: GitHub
+    auth_token: $(GH_TOKEN)
+    draft: true
+    release: $(Version)
+    artifact: /.*\.zip/
+    on:
+      branch: 
+      - /release\/*/
+      CI_WINDOWS: true
+for:
+-
+  branches:
+    only:
+      - /release\/*/
+  on_success:
+      - cmd: semantic-release -b %APPVEYOR_REPO_BRANCH%
