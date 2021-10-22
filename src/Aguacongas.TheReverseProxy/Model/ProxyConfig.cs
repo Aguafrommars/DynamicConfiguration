@@ -1,6 +1,8 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
-namespace Aguacongas.TheReverseProxy.AdminApi.Model
+using System.Collections.Generic;
+
+namespace Aguacongas.TheReverseProxy.Model
 {
     public class ProxyConfig
     {

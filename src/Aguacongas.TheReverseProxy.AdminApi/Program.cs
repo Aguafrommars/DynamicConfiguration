@@ -1,41 +1,47 @@
 // Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
+using Aguacongas.TheReverseProxy.Model;
 using Serilog;
-using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
-configuration.AddRedis(configuration.GetValue<string>("Redis:Connection"), configuration.GetValue<int?>("Redis:Database"));
+configuration.AddRedis(options => configuration.GetSection("Redis").Bind(options));
 
-builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(builder.Configuration));
+builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(configuration));
 
+var services = builder.Services;
 // Add services to the container.
-builder.Services.AddTransient(p => builder.Configuration as IConfigurationRoot);
-builder.Services.AddControllers();
+services.Configure<ReverseProxyOptions>(configuration.GetSection("ReverseProxyOptions"))
+    .AddControllers()
+    .AddTheReverseProxyAdmin()
+    .AddJsonOptions(options =>
+    {
+        var serializationOptions = options.JsonSerializerOptions;
+        serializationOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        serializationOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
-builder.Services.AddSwaggerGen(c =>
+services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Aguacongas.TheReverseProxy.AdminApi", Version = "v1" });
-}); 
+});
 
-var proxyBuilder = builder.Services.AddReverseProxy();
-
-// Initialize the reverse proxy from the "ReverseProxy" section of configuration
-proxyBuilder.LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+services.AddTransient(p => builder.Configuration as IConfigurationRoot);
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aguacongas.TheReverseProxy.AdminApi v1"));
+    app.UseSwagger()
+        .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aguacongas.TheReverseProxy.AdminApi v1"));
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseHttpsRedirection()
+    .UseAuthorization();
 
 app.MapControllers();
 

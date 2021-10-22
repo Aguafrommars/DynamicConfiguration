@@ -1,60 +1,92 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Aguacongas.Configuration.Redis
 {
-    public class RedisConfigurationProvider : ConfigurationProvider, IDisposable
+    public class RedisConfigurationProvider : IConfigurationProvider
     {
-        private static readonly string CHANNEL = typeof(RedisConfigurationProvider).FullName;
-        private readonly RedisConfigurationSource _source;
-        private ConnectionMultiplexer _redis;
+        private ConfigurationReloadToken _reloadToken = new ConfigurationReloadToken();
+        private readonly IRedisConfigurationSource _source;
+        private IConnectionMultiplexer _redis;
         private IDatabase _database;
         private ISubscriber _subscriber;
         private bool disposedValue;
 
-        public RedisConfigurationProvider(RedisConfigurationSource source)
+        public RedisConfigurationProvider(IRedisConfigurationSource source)
         {
             _source = source ?? throw new ArgumentNullException(nameof(source));
         }
 
-        public override void Set(string key, string value)
+        public void Set(string key, string value)
         {
+            ThrowIfDisposed();
             var data = JsonConfigurationParser.Parse(value);
-            foreach(var kv in data)
-            {
-                _database.StringSet($"{key}{ConfigurationPath.KeyDelimiter}{kv.Key}", kv.Value);
-            }
-            
-            _subscriber.Publish(CHANNEL, DateTime.UtcNow.Ticks);
+            data.Add(key, value);
+            _database.HashSet(_source.HashKey, data.Select(kv => new HashEntry($"{key}{ConfigurationPath.KeyDelimiter}{kv.Key}", kv.Value))
+                .ToArray());
+            _subscriber.Publish(_source.Channel, DateTime.UtcNow.Ticks);
         }
 
-        public override bool TryGet(string key, out string value)
+        public bool TryGet(string key, out string value)
         {
-            if (!_database.KeyExists(key) || (value = _database.StringGet(key)) == null)
+            ThrowIfDisposed();
+            if (!_database.HashExists(_source.HashKey, key))
             {
                 value = null;
                 return false;
             }
 
+            value = _database.HashGet(_source.HashKey, key);
             return true;
         }
 
-        public override void Load()
+        public IEnumerable<string> GetChildKeys(IEnumerable<string> earlierKeys, string parentPath)
         {
+            ThrowIfDisposed();
+            string prefix = (parentPath == null) ? string.Empty : (parentPath + ConfigurationPath.KeyDelimiter);
+            var keyList = _database.HashKeys(_source.HashKey).Select(k => k.ToString());
+            return (from key in keyList
+                    where key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+                    select Segment(key, prefix.Length)).Concat(earlierKeys).OrderBy((string k) => k, ConfigurationKeyComparer.Instance);
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(RedisConfigurationProvider));
+            }
+        }
+
+        public void Load()
+        {
+            ThrowIfDisposed();
             if (_redis == null)
             {
-                _redis = ConnectionMultiplexer.Connect(_source.Options);
-                _database = _redis.GetDatabase(_source.Database ?? _source.Options.DefaultDatabase ?? -1);
+                _redis = _source.Connect();
+                _database = _redis.GetDatabase(_source.Database ?? -1);
                 _subscriber = _redis.GetSubscriber();
-                _subscriber.Subscribe(CHANNEL).OnMessage(message =>
+                _subscriber.Subscribe(_source.Channel).OnMessage(message =>
                 {
                     OnReload();
                 });
             }
-            base.Load();
+        }
+
+        public IChangeToken GetReloadToken() => _reloadToken;
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -71,11 +103,22 @@ namespace Aguacongas.Configuration.Redis
             }
         }
 
-        public void Dispose()
+        private void OnReload()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            var previousToken = Interlocked.Exchange(ref _reloadToken, new ConfigurationReloadToken());
+            previousToken.OnReload();
         }
+
+        private static string Segment(string key, int prefixLength)
+        {
+            int num = key.IndexOf(ConfigurationPath.KeyDelimiter, prefixLength, StringComparison.OrdinalIgnoreCase);
+            if (num >= 0)
+            {
+                return key.Substring(prefixLength, num - prefixLength);
+            }
+
+            return key.Substring(prefixLength);
+        }
+
     }
 }

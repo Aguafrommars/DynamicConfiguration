@@ -1,28 +1,33 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
 using Aguacongas.Configuration.Redis;
-using StackExchange.Redis;
+using System;
 
 namespace Microsoft.Extensions.Configuration
 {
     public static class ConfigurationBuilderExtensions
     {
-        public static IConfigurationBuilder AddRedis(this IConfigurationBuilder builder, string connection, int? database)
+        public static IConfigurationBuilder AddRedis(this IConfigurationBuilder builder, RedisConfigurationOptions options)
         {
-            return builder.Add(new RedisConfigurationSource
+            if (options == null)
             {
-                Connection = connection,
-                Database = database
-            });            
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return builder.Add<RedisConfigurationSource>(source => source.RedisConfigurationOptions = options);            
         }
 
-        public static IConfigurationBuilder AddRedis(this IConfigurationBuilder builder, ConfigurationOptions options, int? database)
+        public static IConfigurationBuilder AddRedis(this IConfigurationBuilder builder, Action<RedisConfigurationOptions> configure)
         {
-            return builder.Add(new RedisConfigurationSource
+            if (configure == null)
             {
-                Options = options,
-                Database = database
-            });
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var options = new RedisConfigurationOptions();
+            configure(options);
+
+            return builder.AddRedis(options);
         }
     }
 }

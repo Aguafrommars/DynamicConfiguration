@@ -1,9 +1,10 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
+using System.Collections.Generic;
 using Yarp.ReverseProxy.Configuration;
 using Yarp.ReverseProxy.Forwarder;
 
-namespace Aguacongas.TheReverseProxy.AdminApi.Model
+namespace Aguacongas.TheReverseProxy.Model
 {
     public class ClusterConfig
     {

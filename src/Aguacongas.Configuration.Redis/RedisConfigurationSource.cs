@@ -6,32 +6,47 @@ using System;
 
 namespace Aguacongas.Configuration.Redis
 {
-    public class RedisConfigurationSource : IConfigurationSource
+    public class RedisConfigurationSource : IConfigurationSource, IRedisConfigurationSource
     {
-        public ConfigurationOptions Options { get; set; }
+        public string ConnectionString => RedisConfigurationOptions.ConnectionString;
 
-        public string Connection  { get; set; }
+        public int? Database => RedisConfigurationOptions.Database;
 
-        public int? Database { get; set; }
+        public string Channel => RedisConfigurationOptions.Channel;
+
+        public string HashKey => RedisConfigurationOptions.HashKey;
+
+        public ConfigurationOptions ConfigurationOptions { get; private set; }
+
+        public RedisConfigurationOptions RedisConfigurationOptions { get; set; }
 
         public IConfigurationProvider Build(IConfigurationBuilder builder)
         {
-            if (Options == null)
-            {
-                if (string.IsNullOrEmpty(Connection))
-                {
-                    throw new InvalidOperationException($"'Configuration' or 'Connection' must be set.");
-                }
-
-                Options = new ConfigurationOptions();
-                var endpoints = Connection.Split(';');
-                foreach(var endpoint in endpoints)
-                {
-                    Options.EndPoints.Add(endpoint);
-                }
-            }
-
+            ValidateOptions();
             return new RedisConfigurationProvider(this);
         }
+
+        private void ValidateOptions()
+        {
+            if (string.IsNullOrEmpty(ConnectionString))
+            {
+                throw new InvalidOperationException($"'ConnectionString' must be set.");
+            }
+
+            if (string.IsNullOrEmpty(ConnectionString))
+            {
+                throw new InvalidOperationException($"'Channel' must be set.");
+            }
+
+            if (string.IsNullOrEmpty(HashKey))
+            {
+                throw new InvalidOperationException($"'HashKey' must be set.");
+            }
+
+            ConfigurationOptions = ConfigurationOptions.Parse(ConnectionString);
+        }
+
+        public virtual IConnectionMultiplexer Connect()
+        => ConnectionMultiplexer.Connect(ConfigurationOptions);
     }
 }
