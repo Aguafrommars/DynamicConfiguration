@@ -1,0 +1,36 @@
+﻿<div class="form-group row">
+    <label for="@PropertyName" class="col-sm-2 col-form-label">@PropertyName</label>
+    <div class="col-sm-10">
+        @if (IsString)
+        {
+            <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
+        }
+        else if (IsEnum)
+        {
+            <InputEnum @bind-Value="@ValueAsEnum" Property="@Property" />
+        }
+        else if (IsNumber)
+        {
+            <InputNumber class="form-control" @bind-Value="@ValueAsDouble" />
+        }
+        else if (IsDate)
+        {
+            <InputDate class="form-control" @bind-Value="@ValueAsDate" />
+        }
+        else if (IsBool)
+        {
+            <div class="form-check form-switch">
+                <InputCheckbox class="form-check-input" role="switch" @bind-Value="@ValueAsBool" />
+            </div>
+        }
+        else if (IsEnumerable)
+        {
+            <InputEnumerable Model="Model" Value="@Value" Path="@($"{Path}:{Property?.Name}")" Property="@Property" />
+        }
+        else
+        {
+            <a class="col-form-label" href="@($"{Path}:{Property?.Name}")">...</a>
+        }
+        <div class="text-danger">@Error</div>
+    </div>
+</div>

@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Community.OData.Linq" Version="1.4.3" />
     <PackageReference Include="Yarp.ReverseProxy" Version="1.0.0-rc.1.21520.4" />
   </ItemGroup>

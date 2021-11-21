@@ -1,124 +1,81 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Text.Json;
 
 namespace Aguacongas.Configuration.Redis
 {
-    public class RedisConfigurationProvider : IConfigurationProvider
+    /// <summary>
+    /// Provides configuration key/values for an application stored in a Redis HashKey.
+    /// </summary>
+    /// <seealso cref="ConfigurationProvider"/>
+    public class RedisConfigurationProvider : ConfigurationProvider
     {
-        private ConfigurationReloadToken _reloadToken = new ConfigurationReloadToken();
         private readonly IRedisConfigurationSource _source;
-        private IConnectionMultiplexer _redis;
-        private IDatabase _database;
-        private ISubscriber _subscriber;
-        private bool disposedValue;
+        private readonly IDatabase _database;
+        private readonly ISubscriber _subscriber;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="RedisConfigurationProvider"/>
+        /// </summary>
+        /// <param name="source">A redis configuration source</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public RedisConfigurationProvider(IRedisConfigurationSource source)
         {
             _source = source ?? throw new ArgumentNullException(nameof(source));
-        }
-
-        public void Set(string key, string value)
-        {
-            ThrowIfDisposed();
-            var data = JsonConfigurationParser.Parse(value);
-            data.Add(key, value);
-            _database.HashSet(_source.HashKey, data.Select(kv => new HashEntry($"{key}{ConfigurationPath.KeyDelimiter}{kv.Key}", kv.Value))
-                .ToArray());
-            _subscriber.Publish(_source.Channel, DateTime.UtcNow.Ticks);
-        }
-
-        public bool TryGet(string key, out string value)
-        {
-            ThrowIfDisposed();
-            if (!_database.HashExists(_source.HashKey, key))
+            var connection = source.Connection;
+            _database = connection.GetDatabase(_source.Database ?? -1);
+            _subscriber = connection.GetSubscriber();
+            _subscriber.Subscribe(_source.Channel).OnMessage(message =>
             {
-                value = null;
-                return false;
-            }
-
-            value = _database.HashGet(_source.HashKey, key);
-            return true;
+                var value = _database.HashGet(_source.HashKey, message.Message);
+                Load(new HashEntry(message.Message, value));
+                OnReload();
+            });
         }
 
-        public IEnumerable<string> GetChildKeys(IEnumerable<string> earlierKeys, string parentPath)
+        /// <summary>
+        /// Sets a configuration value for the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public override void Set(string key, string value)
         {
-            ThrowIfDisposed();
-            string prefix = (parentPath == null) ? string.Empty : (parentPath + ConfigurationPath.KeyDelimiter);
-            var keyList = _database.HashKeys(_source.HashKey).Select(k => k.ToString());
-            return (from key in keyList
-                    where key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
-                    select Segment(key, prefix.Length)).Concat(earlierKeys).OrderBy((string k) => k, ConfigurationKeyComparer.Instance);
+            _database.HashSet(_source.HashKey, new[] { new HashEntry(key, value) });
+            _subscriber.Publish(_source.Channel, key);
         }
 
-        private void ThrowIfDisposed()
+        /// <summary>
+        /// Loads configuration values from the source represented by this <see cref="RedisConfigurationProvider"/>.
+        /// </summary>
+        public override void Load()
         {
-            if (disposedValue)
+            var entryList = _database.HashGetAll(_source.HashKey).OrderBy(k => k.Name);
+            
+            foreach(var entry in entryList)
             {
-                throw new ObjectDisposedException(nameof(RedisConfigurationProvider));
+                Load(entry);
             }
         }
 
-        public void Load()
+        private void Load(HashEntry entry)
         {
-            ThrowIfDisposed();
-            if (_redis == null)
+            Data[entry.Name] = entry.Value;
+            try
             {
-                _redis = _source.Connect();
-                _database = _redis.GetDatabase(_source.Database ?? -1);
-                _subscriber = _redis.GetSubscriber();
-                _subscriber.Subscribe(_source.Channel).OnMessage(message =>
+                var data = JsonConfigurationParser.Parse(entry.Value);
+                foreach (var kv in data)
                 {
-                    OnReload();
-                });
-            }
-        }
-
-        public IChangeToken GetReloadToken() => _reloadToken;
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _redis?.Dispose();
-                    _redis = null;
+                    Data[$"{entry.Name}{ConfigurationPath.KeyDelimiter}{kv.Key}"] = kv.Value;
                 }
-
-                disposedValue = true;
             }
-        }
-
-        private void OnReload()
-        {
-            var previousToken = Interlocked.Exchange(ref _reloadToken, new ConfigurationReloadToken());
-            previousToken.OnReload();
-        }
-
-        private static string Segment(string key, int prefixLength)
-        {
-            int num = key.IndexOf(ConfigurationPath.KeyDelimiter, prefixLength, StringComparison.OrdinalIgnoreCase);
-            if (num >= 0)
+            catch(JsonException)
             {
-                return key.Substring(prefixLength, num - prefixLength);
+                // value is not a JSON object
             }
-
-            return key.Substring(prefixLength);
         }
-
     }
 }

@@ -1,35 +1,27 @@
 // Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
+using Aguacongas.Configuration.Redis;
 using Aguacongas.TheReverseProxy.Model;
 using Serilog;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
-configuration.AddRedis(options => configuration.GetSection("Redis").Bind(options));
+configuration.AddRedis(options => configuration.GetSection(nameof(RedisConfigurationOptions)).Bind(options));
 
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(configuration));
 
 var services = builder.Services;
 // Add services to the container.
-services.Configure<ReverseProxyOptions>(configuration.GetSection("ReverseProxyOptions"))
-    .AddControllers()
-    .AddTheReverseProxyAdmin()
-    .AddJsonOptions(options =>
-    {
-        var serializationOptions = options.JsonSerializerOptions;
-        serializationOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-        serializationOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    });
+services.Configure<ReverseProxyOptions>(configuration.GetSection(nameof(ReverseProxyOptions)))
+    .AddTheReverserProxyApiAuthorization(configuration);
 
-services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new() { Title = "Aguacongas.TheReverseProxy.AdminApi", Version = "v1" });
-});
+services.AddControllers()
+    .AddConfigurationWebAPI();
 
-services.AddTransient(p => builder.Configuration as IConfigurationRoot);
+services.AddSwaggerGenFromConfiguration(configuration)
+    .AddTransient(p => builder.Configuration as IConfigurationRoot);
 
 var app = builder.Build();
 
@@ -37,12 +29,19 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger()
-        .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aguacongas.TheReverseProxy.AdminApi v1"));
+        .UseSwaggerUI(c =>
+        {
+            configuration.GetSection(nameof(SwaggerUIOptions)).Bind(c);
+        });
 }
 
 app.UseHttpsRedirection()
+    .UseBlazorFrameworkFiles()
+    .UseStaticFiles()
+    .UseAuthentication()
     .UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();

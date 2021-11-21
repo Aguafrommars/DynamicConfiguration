@@ -6,20 +6,46 @@ using System;
 
 namespace Aguacongas.Configuration.Redis
 {
-    public class RedisConfigurationSource : IConfigurationSource, IRedisConfigurationSource
+    /// <summary>
+    /// Represents a Redis source of configuration key/values for an application.
+    /// </summary>
+    public class RedisConfigurationSource : IConfigurationSource, IRedisConfigurationSource, IDisposable
     {
-        public string ConnectionString => RedisConfigurationOptions.ConnectionString;
+        private bool disposedValue;
+        private ConfigurationOptions _configurationOptions;
+        private string ConnectionString => RedisConfigurationOptions.ConnectionString;
 
+        /// <summary>
+        /// Gets the database.
+        /// </summary>
         public int? Database => RedisConfigurationOptions.Database;
 
+        /// <summary>
+        /// Gets the publication channel.
+        /// </summary>
         public string Channel => RedisConfigurationOptions.Channel;
+
+        /// <summary>
+        /// Gets the hash key.
+        /// </summary>
 
         public string HashKey => RedisConfigurationOptions.HashKey;
 
-        public ConfigurationOptions ConfigurationOptions { get; private set; }
+        /// <summary>
+        /// Get the connection.
+        /// </summary>
+        public IConnectionMultiplexer Connection { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the Redis configuration options
+        /// </summary>
         public RedisConfigurationOptions RedisConfigurationOptions { get; set; }
 
+        /// <summary>
+        /// Builds the <see cref="RedisConfigurationProvider"/> for this source.
+        /// </summary>
+        /// <param name="builder">The <see cref="IConfigurationBuilder"/>.</param>
+        /// <returns></returns>
         public IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             ValidateOptions();
@@ -43,10 +69,27 @@ namespace Aguacongas.Configuration.Redis
                 throw new InvalidOperationException($"'HashKey' must be set.");
             }
 
-            ConfigurationOptions = ConfigurationOptions.Parse(ConnectionString);
+            _configurationOptions = ConfigurationOptions.Parse(ConnectionString);
+            Connection = ConnectionMultiplexer.Connect(_configurationOptions);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Connection?.Dispose();
+                }
+
+                disposedValue = true;
+            }
         }
 
-        public virtual IConnectionMultiplexer Connect()
-        => ConnectionMultiplexer.Connect(ConfigurationOptions);
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

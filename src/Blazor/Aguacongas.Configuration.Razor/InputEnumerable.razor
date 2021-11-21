@@ -1,0 +1,32 @@
+﻿@if (IsDictionary)
+{
+    if (ValueAsDictionary is not null)
+    {
+        foreach (object key in ValueAsDictionary.Keys)
+        {
+            <div>
+                <a href="@($"{Path}:{key}")">@key.ToString()</a> <button type="button" class="btn btn-sm btn-secondary" @onclick="() => RemoveItem(key)">-</button>
+            </div>
+        }
+    }
+    <div>
+        <input type="text" @bind="@Key" /><button type="button" class="btn btn-sm btn-secondary" @onclick="() => AddItem(Key)">+</button>
+    </div>
+}
+else
+{
+    if (ValueAsEnumerable is not null)
+    {
+        var i = 0;
+        foreach (var value in ValueAsEnumerable)
+        {
+            var index = i++;
+            <div>
+                <a href="@($"{Path}:{index}")">@index.ToString()</a> <button type="button" class="btn btn-sm btn-secondary" @onclick="() => RemoveItemAt(index)">-</button>
+            </div>
+        }
+    }
+    <div>
+        <button type="button" class="btn btn-sm btn-secondary" @onclick="AddItem">+</button>
+    </div>
+}
