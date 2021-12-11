@@ -1,7 +1,38 @@
-﻿@page "/settings/{path}"
+﻿@page "/settings"
+@page "/settings/{path}"
 
-<h3>Settings</h3>
+<PageTitle>Settings</PageTitle>
 
-@code {
-
+@if (Properties is null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <div class="mb-3">
+        <span>/</span><a href="/settings">Configuration</a>
+        @if (Segments is not null)
+        {
+            var index = 0;
+            @foreach (var segment in Segments)
+            {
+                var path = GetParentPath(index++);
+                <span>/</span>
+                @if (path is not null)
+                {
+                    <a href="/settings/@path">@segment</a>
+                }
+                else
+                {
+                    <span>@segment</span>
+                }
+            }
+        }
+    </div>
+    <EditForm Model="@_model">
+        @foreach (var property in Properties)
+        {
+            <InputSetting Model="@_model" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(_model)" />
+        }
+    </EditForm>
 }

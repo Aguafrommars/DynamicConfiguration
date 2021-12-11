@@ -24,7 +24,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Aguacongas.Configuration.WebApi\Aguacongas.Configuration.WebApi.csproj" />
-		<ProjectReference Include="..\Aguacongas.TheReverseProxy\Aguacongas.TheReverseProxy.csproj" />
 		<ProjectReference Include="..\Blazor\Aguacongas.TheReverseProxy.BlazorApp\Aguacongas.TheReverseProxy.BlazorApp.csproj" />
 	</ItemGroup>
 

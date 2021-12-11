@@ -18,28 +18,37 @@ namespace Aguacongas.Configuration.Razor.Services
         private readonly HttpClient _httpClient;
         private readonly IOptions<SettingsOptions> _options;
 
-        private object? _configuration;
+        public object? Configuration { get; private set; }
 
-        public ConfigurationService(HttpClient httpClient, IOptions<SettingsOptions> options)
+        public ConfigurationService(IHttpClientFactory httpClientFactory, IOptions<SettingsOptions> options)
         {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _httpClient = httpClientFactory?.CreateClient(nameof(ConfigurationService)) ?? throw new ArgumentNullException($"HttpClient for {nameof(ConfigurationService)}");
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
+
 
         public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken)
         {
             var type = GetConfigurationType();
-            _configuration ??= await GetConfigurationAsync(type, cancellationToken).ConfigureAwait(false);
+            Configuration ??= await GetConfigurationAsync(type, cancellationToken).ConfigureAwait(false);
 
             if (key is null)
             {
-                return _configuration;
+                return Configuration;
             }
 
-            object? value = _configuration;
+            object? value = Configuration;
+
             var segmentList = key.Split(':');
             foreach(var segment in segmentList)
             {
+                if (value is null)
+                {
+                    return null;
+                }
+
+                type = value.GetType();
+
                 if (value is IDictionary dictionary)
                 {
                     value = dictionary[segment];
@@ -69,7 +78,11 @@ namespace Aguacongas.Configuration.Razor.Services
                 }
 
                 var property = type.GetProperty(segment);
-                value = property?.GetValue(value, null);
+                if (property is null)
+                {
+                    throw new InvalidOperationException($"Property {segment} doesn't exist in type {type}");
+                }
+                value = property.GetValue(value, null);
             }
             return value;
         }
@@ -82,7 +95,7 @@ namespace Aguacongas.Configuration.Razor.Services
 
         private async Task<object?> GetConfigurationAsync(Type type, CancellationToken cancellationToken)
         {
-            using var response = await _httpClient.GetAsync(string.Empty, cancellationToken);
+            using var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{type.AssemblyQualifiedName}", cancellationToken);
             var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
             return JsonSerializer.Deserialize(content, type, _jsonSerializerOptions);
@@ -98,7 +111,7 @@ namespace Aguacongas.Configuration.Razor.Services
             var type = Type.GetType(setting.TypeName);
             if (type is null)
             {
-                throw new InvalidOperationException($"Cannot gat type '{setting.TypeName}'");
+                throw new InvalidOperationException($"Cannot get type '{setting.TypeName}'");
             }
 
             return type;

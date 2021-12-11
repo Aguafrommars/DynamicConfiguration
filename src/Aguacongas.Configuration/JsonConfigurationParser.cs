@@ -6,6 +6,9 @@ using System.Text.Json;
 
 namespace Aguacongas.Configuration
 {
+    /// <summary>
+    /// Parses JSON configuration
+    /// </summary>
     public sealed class JsonConfigurationParser
     {
         private JsonConfigurationParser() { }
@@ -13,6 +16,11 @@ namespace Aguacongas.Configuration
         private readonly Dictionary<string, string> _data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly Stack<string> _paths = new Stack<string>();
 
+        /// <summary>
+        /// Parses the JSON input string
+        /// </summary>
+        /// <param name="input">the JSON input string</param>
+        /// <returns>A key value pair or string/string</returns>
         public static IDictionary<string, string> Parse(string input)
             => new JsonConfigurationParser().ParseStream(input);
 

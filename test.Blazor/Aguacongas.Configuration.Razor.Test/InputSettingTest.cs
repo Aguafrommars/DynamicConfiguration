@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using Xunit;
 
 namespace Aguacongas.Configuration.Razor.Test
@@ -571,6 +572,9 @@ namespace Aguacongas.Configuration.Razor.Test
         {
             var model = new Model();
 
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             var cut = RenderComponent<InputSetting>(parameters => parameters
                 .Add(p => p.Value, model.NullableDateTime)
                 .Add(p => p.Model, model)
@@ -584,13 +588,16 @@ namespace Aguacongas.Configuration.Razor.Test
             var expected = DateTime.Now;
             input.Change($"{expected}");
 
-            Assert.Equal(DateTime.Parse(expected.ToString()), model.NullableDateTime);
+            Assert.Equal(expected.ToString(), model.NullableDateTime.ToString());
         }
 
         [Fact]
         public void WhenValueIsDateTime_should_display_input_date()
         {
             var model = new Model();
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             var cut = RenderComponent<InputSetting>(parameters => parameters
                 .Add(p => p.Value, model.DateTime)
@@ -605,7 +612,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var expected = DateTime.Now;
             input.Change($"{expected}");
 
-            Assert.Equal(DateTime.Parse(expected.ToString()), model.DateTime);
+            Assert.Equal(expected.ToString(), model.DateTime.ToString());
         }
 
         [Fact]
@@ -613,6 +620,9 @@ namespace Aguacongas.Configuration.Razor.Test
         {
             var model = new Model();
 
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
             var cut = RenderComponent<InputSetting>(parameters => parameters
                 .Add(p => p.Value, model.NullableDateTimeOffset)
                 .Add(p => p.Model, model)
@@ -626,13 +636,16 @@ namespace Aguacongas.Configuration.Razor.Test
             var expected = DateTimeOffset.Now;
             input.Change($"{expected}");
 
-            Assert.Equal(DateTime.Parse(expected.ToString()), model.NullableDateTimeOffset);
+            Assert.Equal(expected.ToString(), model.NullableDateTimeOffset.ToString());
         }
 
         [Fact]
         public void WhenValueIsDateTimeOffset_should_display_input_date()
         {
             var model = new Model();
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             var cut = RenderComponent<InputSetting>(parameters => parameters
                 .Add(p => p.Value, model.DateTimeOffset)
@@ -647,7 +660,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var expected = DateTimeOffset.Now;
             input.Change($"{expected}");
 
-            Assert.Equal(DateTime.Parse(expected.ToString()), model.DateTimeOffset);
+            Assert.Equal(expected.ToString(), model.DateTimeOffset.ToString());
         }
 
         [Fact]

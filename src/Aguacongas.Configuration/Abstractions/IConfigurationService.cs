@@ -18,9 +18,9 @@ namespace Aguacongas.Configuration.Abstractions
         /// <summary>
         /// Gets a configuration
         /// </summary>
-        /// <param name="key">The configuration key</param>
         /// <param name="typeName">The assembly-qualified type name</param>
+        /// <param name="key">The configuration key</param>
         /// <returns>The configuration</returns>
-        Task<object> GetAsync(string key, string typeName);
+        Task<object> GetAsync(string typeName, string key);
     }
 }

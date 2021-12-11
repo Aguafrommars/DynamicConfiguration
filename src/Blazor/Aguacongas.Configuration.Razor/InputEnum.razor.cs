@@ -12,13 +12,17 @@ namespace Aguacongas.Configuration.Razor
         public EventCallback<Enum?> ValueChanged { get; set; } = new EventCallback<Enum?>();
 
         [Parameter]
-        public PropertyInfo? Property { get; set; }
+        public Type? PropertyType { get; set; }
        
-        private Type UnderlyingType => (IsNullable ? Nullable.GetUnderlyingType(Property?.PropertyType ?? typeof(object)) : Property?.PropertyType) ?? typeof(object);
+        private Type UnderlyingType => PropertyType is not null
+            ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
+            : throw new InvalidOperationException("PropertyType cannot be null");
 
         private bool IsFlag => UnderlyingType.GetCustomAttribute(typeof(FlagsAttribute), true) != null;
 
-        private bool IsNullable => Property?.PropertyType?.IsEnum == false;
+        private bool IsNullable => PropertyType is not null
+            ? Nullable.GetUnderlyingType(PropertyType) is not null
+            : throw new InvalidOperationException("PropertyType cannot be null");
 
         private IEnumerable<string> Names => Enum.GetNames(UnderlyingType);
 

@@ -28,10 +28,10 @@ namespace Aguacongas.Configuration.Services
         /// <summary>
         /// Gets a configuration
         /// </summary>
-        /// <param name="key">The configuration key</param>
         /// <param name="typeName">The assembly-qualified type name</param>
+        /// <param name="key">The configuration key</param>
         /// <returns>The configuration</returns>
-        public Task<object> GetAsync(string key, string typeName)
+        public Task<object> GetAsync(string typeName, string key)
         {
             if (string.IsNullOrWhiteSpace(typeName))
             {

@@ -4,13 +4,22 @@
     {
         foreach (object key in ValueAsDictionary.Keys)
         {
-            <div>
-                <a href="@($"{Path}:{key}")">@key.ToString()</a> <button type="button" class="btn btn-sm btn-secondary" @onclick="() => RemoveItem(key)">-</button>
+            <div class="form-group row mb-3">
+                <label for="@key" class="col-sm-2 col-form-label">@key</label>
+                <div class="col-sm-10 hstack">
+                    <div class="col">
+                        <DictionaryValue Model="@ValueAsDictionary" Path="@($"{Path}:{key}")" Value="@ValueAsDictionary[key]" Key="@key" PropertyType="UnderlyingType.GetGenericArguments()[1]" />
+                    </div>
+                    <div class="ms-auto">
+                        <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItem(key)">-</button>
+                    </div>
+                </div>
             </div>
         }
     }
-    <div>
-        <input type="text" @bind="@Key" /><button type="button" class="btn btn-sm btn-secondary" @onclick="() => AddItem(Key)">+</button>
+    <div class="hstack">
+        <input type="text" placeholder="key" @bind="@Key" @bind:event="oninput" />
+        <button type="button" class="btn btn-sm btn-secondary" @onclick="() => AddDictionaryItem()" disabled="@string.IsNullOrWhiteSpace(Key)">+</button>
     </div>
 }
 else
@@ -21,12 +30,19 @@ else
         foreach (var value in ValueAsEnumerable)
         {
             var index = i++;
-            <div>
-                <a href="@($"{Path}:{index}")">@index.ToString()</a> <button type="button" class="btn btn-sm btn-secondary" @onclick="() => RemoveItemAt(index)">-</button>
+            <div class="form-group row mb-3">
+                <div class="hstack">
+                    <div class="col">
+                        <ListValue Model="@ValueAsEnumerable" Path="@($"{Path}:{index}")" Value="@value" Index="@index" PropertyType="UnderlyingType.GetGenericArguments()[0]" />
+                    </div>
+                    <div class="ms-auto">
+                        <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItemAt(index)">-</button>
+                    </div>
+                </div>
             </div>
         }
     }
     <div>
-        <button type="button" class="btn btn-sm btn-secondary" @onclick="AddItem">+</button>
+        <button type="button" class="btn btn-sm btn-secondary" @onclick="AddListItem">+</button>
     </div>
 }

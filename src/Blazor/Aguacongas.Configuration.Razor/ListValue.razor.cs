@@ -1,32 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Collections;
-using System.ComponentModel;
-using System.Reflection;
 
 namespace Aguacongas.Configuration.Razor
 {
-    public partial class InputSetting
+    public partial class ListValue
     {
         [Parameter]
-        public object? Model { get; set; }
+        public IList? Model { get; set; }
 
         [Parameter]
         public object? Value { get; set; }
 
         [Parameter]
-        public PropertyInfo? Property { get; set; }
+        public Type? PropertyType { get; set; }
 
         [Parameter]
         public string? Path { get; set; }
 
+        [Parameter]
+        public int Index { get; set; }
+
         private string? Error { get; set; }
 
-        private string? PropertyName
-            => (Property?.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute)?.Description ?? Property?.Name;
-
-        private Type PropertyType => Property?.PropertyType ?? typeof(object);
-
-        private Type UnderlyingType => Nullable.GetUnderlyingType(PropertyType) ?? PropertyType;
+        private Type UnderlyingType => PropertyType is not null 
+            ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
+            : throw new InvalidOperationException("PropertyType cannot be null");
 
         private string? Placeholder => IsTimeSpan ? "00:00:00" : null;
 
@@ -80,6 +78,7 @@ namespace Aguacongas.Configuration.Razor
                 Error = null;
             }
         }
+
 
         private double? ValueAsDouble
         {
@@ -187,24 +186,11 @@ namespace Aguacongas.Configuration.Razor
 
         private void SetValue(object? value)
         {
-            Property?.SetValue(Model, value);
-            Value = value;
-        }
-
-        private void CreateValue()
-        {
-            var constructor = UnderlyingType.GetConstructor(Array.Empty<Type>());
-            if (constructor is null)
+            if (Model is null)
             {
-                throw new InvalidOperationException("Cannot create value empty constructor not found.");
+                throw new InvalidOperationException("Model cannot be null");
             }
-
-            SetValue(constructor.Invoke(null));
-        }
-
-        private void DeleteValue()
-        {
-            SetValue(null);
+            Model[Index] = value;
         }
     }
 }

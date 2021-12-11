@@ -13,7 +13,7 @@ namespace Aguacongas.Configuration.Razor.Test
         {
             var model = new Model
             {
-                Dictionary = new Dictionary<string, object>()
+                IDictionary = new Dictionary<string, object>()
             };
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
@@ -51,21 +51,21 @@ namespace Aguacongas.Configuration.Razor.Test
             var key = Guid.NewGuid().ToString();
             var model = new Model
             {
-                Dictionary = new Dictionary<string, object>()
+                IDictionary = new Dictionary<string, object>()
                 {
                     [key] = key
                 }
             };
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
-                .Add(p => p.Value, model.Dictionary)
+                .Add(p => p.Value, model.IDictionary)
                 .Add(p => p.Path, "Model")
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Dictionary))));
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.IDictionary))));
 
             var button = cut.Find("button");
             button.Click();
 
-            Assert.Empty(model.Dictionary);
+            Assert.Empty(model.IDictionary);
         }
 
         [Fact]
@@ -139,7 +139,9 @@ namespace Aguacongas.Configuration.Razor.Test
 
         class Model
         {
-            public IDictionary<string, object>? Dictionary { get; set; }
+            public IDictionary<string, object>? IDictionary { get; set; }
+
+            public Dictionary<string, object>? Dictionary { get; set; }
 
             public IEnumerable<object>? Enumerable { get; set; }
         }

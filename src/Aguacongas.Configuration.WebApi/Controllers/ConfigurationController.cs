@@ -34,12 +34,13 @@ namespace Aguacongas.Configuration.WebApi.Controllers
         /// <summary>
         /// Gets a configuration
         /// </summary>
-        /// <param name="key">The configuration's key</param>
         /// <param name="typeName">The configuration's assembly-qualified type name</param>
+        /// <param name="key">The configuration's key</param>
         /// <returns>The configuration</returns>
-        [HttpGet("{key}/{typeName}")]
-        public Task<object> Get(string key, string typeName)
-        => _service.GetAsync(key, typeName);
+        [HttpGet("{typeName}")]
+        [HttpGet("{typeName}/{key}")]
+        public Task<object> Get(string typeName, string? key)
+        => _service.GetAsync(typeName, key);
 
         // PUT api/<Configuration>
         /// <summary>

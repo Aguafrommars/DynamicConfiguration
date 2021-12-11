@@ -17,13 +17,26 @@ var services = builder.Services;
 services.Configure<ReverseProxyOptions>(configuration.GetSection(nameof(ReverseProxyOptions)))
     .AddTheReverserProxyApiAuthorization(configuration);
 
-services.AddControllers()
+services.AddControllersWithViews()
     .AddConfigurationWebAPI();
+services.AddRazorPages();
 
 services.AddSwaggerGenFromConfiguration(configuration)
     .AddTransient(p => builder.Configuration as IConfigurationRoot);
 
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseWebAssemblyDebugging();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -41,6 +54,7 @@ app.UseHttpsRedirection()
     .UseAuthentication()
     .UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 

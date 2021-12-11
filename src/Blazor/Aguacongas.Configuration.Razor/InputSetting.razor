@@ -1,4 +1,4 @@
-﻿<div class="form-group row">
+﻿<div class="form-group row mb-3">
     <label for="@PropertyName" class="col-sm-2 col-form-label">@PropertyName</label>
     <div class="col-sm-10">
         @if (IsString)
@@ -7,7 +7,7 @@
         }
         else if (IsEnum)
         {
-            <InputEnum @bind-Value="@ValueAsEnum" Property="@Property" />
+            <InputEnum @bind-Value="@ValueAsEnum" PropertyType="@UnderlyingType" />
         }
         else if (IsNumber)
         {
@@ -25,11 +25,27 @@
         }
         else if (IsEnumerable)
         {
-            <InputEnumerable Model="Model" Value="@Value" Path="@($"{Path}:{Property?.Name}")" Property="@Property" />
+            <InputEnumerable Model="Model" Value="@Value" Path="@Path" Property="@Property" />
         }
         else
         {
-            <a class="col-form-label" href="@($"{Path}:{Property?.Name}")">...</a>
+            @if (Value is null)
+            {
+                <button type="button" class="btn btn-sm btn-secondary" @onclick="CreateValue">+</button>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="hstack">
+                        <div>
+                            <a class="col-form-label" href="@($"{Path}")">...</a>
+                        </div>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="DeleteValue">-</button>
+                        </div>
+                    </div>
+                </div>
+            }
         }
         <div class="text-danger">@Error</div>
     </div>

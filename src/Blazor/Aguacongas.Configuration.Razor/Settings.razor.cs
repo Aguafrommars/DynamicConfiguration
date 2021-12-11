@@ -1,12 +1,7 @@
-﻿using Aguacongas.Configuration.Razor.Options;
-using Aguacongas.Configuration.Razor.Services;
+﻿using Aguacongas.Configuration.Razor.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
+using System.Reflection;
 
 namespace Aguacongas.Configuration.Razor
 {
@@ -16,12 +11,90 @@ namespace Aguacongas.Configuration.Razor
         public string? Path { get; set; }
 
         [Inject]
-        private IConfigurationService Service { get; set; }
+        private IConfigurationService? Service { get; set; }
 
-        protected override Task OnInitializedAsync()
+        private object? _model;
+
+        private IEnumerable<PropertyInfo>? Properties => _model?.GetType()?.GetProperties();
+
+        private IEnumerable<string>? Segments => Path?.Split(':');
+
+        protected async override Task OnParametersSetAsync()
         {
-            return base.OnInitializedAsync();
+            await base.OnParametersSetAsync().ConfigureAwait(false);
 
+            if (Service is null)
+            {
+                throw new InvalidOperationException($"{nameof(Service)} cannot be null");
+            }
+
+            _model = await Service.GetAsync(Path, default).ConfigureAwait(false);
+        }
+
+        private string GetPath(PropertyInfo property) => string.IsNullOrEmpty(Path) ? $"/settings/{property.Name}" : $"/settings/{Path}:{property.Name}";
+
+        private string? GetParentPath(int index)
+        => Segments is not null && DisplayPathHasLink(index)
+            ? string.Join(":", Segments.Take(index + 1))
+            : null;
+
+        private bool DisplayPathHasLink(int index)
+        {
+            if (Service?.Configuration is null)
+            {
+                return false;
+            }
+
+            var segments = Segments;
+            if (segments is null)
+            {
+                throw new InvalidOperationException($"{nameof(Segments)} cannot be null");
+            }
+            if (index == segments.Count() - 1)
+            {
+                return false;
+            }
+
+            var type = Service?.Configuration.GetType();
+
+            var currentIndex = 0;
+            foreach(var segment in segments)
+            {
+                if (type is null)
+                {
+                    throw new InvalidOperationException($"{nameof(type)} cannot be null");
+                }
+
+                if (IsDictionary(type))
+                {
+                    type = type.GetGenericArguments()[1];
+                }
+                else
+                {
+                    var property = type.GetProperty(segment);
+                    if (property is null)
+                    {
+                        throw new InvalidOperationException($"{nameof(property)} cannot be null");
+                    }
+                    type = property.PropertyType;
+                }
+
+                if (currentIndex++ < index)
+                {
+                    continue;
+                }
+                type = Nullable.GetUnderlyingType(type) ?? type;
+                return !type.IsAssignableTo(typeof(IEnumerable));
+            }
+            return false;
+        }
+
+        private static bool IsDictionary(Type type)
+        {
+            return type.IsAssignableTo(typeof(IDictionary)) ||
+                (type.IsGenericType &&
+                (type.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
+                 type.GetGenericTypeDefinition().GetInterfaces().Any(i => i == typeof(IDictionary<,>))));
         }
     }
 }

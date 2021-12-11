@@ -1,7 +1,6 @@
 ﻿// Project: Aguafrommars/TheIdServer
 // Copyright (c) 2021 @Olivier Lefebvre
 using System.Collections.Generic;
-using Yarp.ReverseProxy.Configuration;
 
 namespace Aguacongas.TheReverseProxy.Model
 {
@@ -44,7 +43,7 @@ namespace Aguacongas.TheReverseProxy.Model
         /// <summary>
         /// Parameters used to transform the request and response. See <see cref="Transforms.Builder.ITransformBuilder"/>.
         /// </summary>
-        public IEnumerable<IReadOnlyDictionary<string, string>>? Transforms { get; set; }
+        public IEnumerable<Dictionary<string, string>>? Transforms { get; set; }
 
     }
 }

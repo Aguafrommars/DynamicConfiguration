@@ -3,6 +3,10 @@
     public interface IConfigurationService
     {
         /// <summary>
+        /// Gets the root configuration
+        /// </summary>
+            object? Configuration { get; }
+        /// <summary>
         /// Sets a configurations.
         /// </summary>
         /// <typeparam name="T">The type.</typeparam>

@@ -10,7 +10,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddConfigurationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient<ConfigurationService>()
+            services.Configure<SettingsOptions>(options => configuration.Bind(options));
+            services.AddHttpClient(nameof(ConfigurationService))
                 .ConfigureHttpClient((provider, httpClient) =>
                 {
                     var options = provider.GetRequiredService<IOptions<SettingsOptions>>().Value;
@@ -22,8 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 })
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-            return services.Configure<SettingsOptions>(options => configuration.Bind(options))
-                .AddSingleton<IConfigurationService, ConfigurationService>();
+            return services.AddScoped<IConfigurationService, ConfigurationService>();
         }
     }
 }
