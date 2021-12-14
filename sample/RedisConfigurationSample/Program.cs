@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Aguacongas.Configuration.Redis;
+using Aguacongas.DynamicConfiguration.Redis;
 using Microsoft.Extensions.Configuration;
 
 var key = args.Length > 0 ? args[0] : "Exemple";
