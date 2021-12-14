@@ -9,27 +9,32 @@
 }
 else
 {
-    <div class="mb-3">
-        <span>/</span><a href="/settings">Configuration</a>
-        @if (Segments is not null)
-        {
-            var index = 0;
-            @foreach (var segment in Segments)
-            {
-                var path = GetParentPath(index++);
-                <span>/</span>
-                @if (path is not null)
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+        <div class="hstack mb-3">
+            <div>
+                <span>/</span><a href="/settings">Configuration</a>
+                @if (Segments is not null)
                 {
-                    <a href="/settings/@path">@segment</a>
+                    var index = 0;
+                    @foreach (var segment in Segments)
+                    {
+                        var path = GetParentPath(index++);
+                        <span>/</span>
+                        @if (path is not null)
+                        {
+                            <a href="/settings/@path">@segment</a>
+                        }
+                        else
+                        {
+                            <span>@segment</span>
+                        }
+                    }
                 }
-                else
-                {
-                    <span>@segment</span>
-                }
-            }
-        }
-    </div>
-    <EditForm Model="@_model">
+            </div>
+            <div class="ms-auto">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
         @foreach (var property in Properties)
         {
             <InputSetting Model="@_model" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(_model)" />

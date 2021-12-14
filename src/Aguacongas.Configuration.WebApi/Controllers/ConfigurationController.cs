@@ -51,7 +51,7 @@ namespace Aguacongas.Configuration.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{key}")]
         [Consumes(RawRequestBodyFormatter.CONTENTTYPE)]
-        public Task PutCluster(string key, [FromBody] string json)
+        public Task Put(string key, [FromBody] string json)
         => _service.SetAsync(key, json);
     }
 }

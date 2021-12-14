@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{D63849
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aguacongas.Configuration.Razor.Test", "test.Blazor\Aguacongas.Configuration.Razor.Test\Aguacongas.Configuration.Razor.Test.csproj", "{1E3B3B49-6702-4A95-B301-5312977C0A0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aguacongas.TheReverseProxy.Test", "test\Aguacongas.TheReverseProxy.Test\Aguacongas.TheReverseProxy.Test.csproj", "{E431581C-4D6E-42C1-8E94-8ABAF81265DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{1E3B3B49-6702-4A95-B301-5312977C0A0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E3B3B49-6702-4A95-B301-5312977C0A0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E3B3B49-6702-4A95-B301-5312977C0A0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E431581C-4D6E-42C1-8E94-8ABAF81265DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E431581C-4D6E-42C1-8E94-8ABAF81265DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E431581C-4D6E-42C1-8E94-8ABAF81265DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E431581C-4D6E-42C1-8E94-8ABAF81265DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{B2E6251B-8218-46BC-A13A-0555B4804755} = {5CCADAC7-B2CB-47DF-8EFA-4DB84EE33A9A}
 		{D63849FC-5C1C-40D5-9239-B8988396DF39} = {768E716E-0266-4619-955A-DC02F7B773D0}
 		{1E3B3B49-6702-4A95-B301-5312977C0A0E} = {D63849FC-5C1C-40D5-9239-B8988396DF39}
+		{E431581C-4D6E-42C1-8E94-8ABAF81265DD} = {768E716E-0266-4619-955A-DC02F7B773D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4FFD22-2597-4561-B9BD-1184FCA99D87}

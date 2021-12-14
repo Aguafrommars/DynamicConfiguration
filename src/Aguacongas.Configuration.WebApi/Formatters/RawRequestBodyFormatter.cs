@@ -13,7 +13,10 @@ namespace Aguacongas.TheReverseProxy.Formatters
     /// </summary>
     public class RawRequestBodyFormatter : InputFormatter
     {
-        internal const string CONTENTTYPE = "text/plain";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string CONTENTTYPE = "text/plain";
 
         /// <summary>
         /// Initialize a new instance of <see cref="RawRequestBodyFormatter"/>
@@ -31,7 +34,7 @@ namespace Aguacongas.TheReverseProxy.Formatters
         /// <param name="context"></param>
         /// <returns></returns>
         public override bool CanRead(InputFormatterContext context)
-        => context?.HttpContext?.Request?.ContentType == CONTENTTYPE;
+        => context?.HttpContext?.Request?.ContentType?.Contains(CONTENTTYPE) == true;
 
         /// <summary>
         /// Handle text/plain or no content type for string results

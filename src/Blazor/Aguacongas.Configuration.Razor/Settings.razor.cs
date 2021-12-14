@@ -89,6 +89,12 @@ namespace Aguacongas.Configuration.Razor
             return false;
         }
 
+        private Task OnValidSubmit()
+        => Service is not null 
+            ? Service.SetAsync(Path, _model, default)
+            : throw new InvalidOperationException($"{nameof(Service)} cannot be null");
+        
+
         private static bool IsDictionary(Type type)
         {
             return type.IsAssignableTo(typeof(IDictionary)) ||

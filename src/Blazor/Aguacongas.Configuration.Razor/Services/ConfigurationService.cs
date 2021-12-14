@@ -90,7 +90,7 @@ namespace Aguacongas.Configuration.Razor.Services
         public async Task SetAsync<T>(string? key, T setting, CancellationToken cancellationToken)
         {
             var content = JsonSerializer.Serialize(setting, _jsonSerializerOptions);
-            await _httpClient.PutAsync(key, new StringContent(content, Encoding.UTF8, "text/plain"), cancellationToken).ConfigureAwait(false);
+            await _httpClient.PutAsync($"{_httpClient.BaseAddress}/{key}", new StringContent(content, Encoding.UTF8, "text/plain"), cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<object?> GetConfigurationAsync(Type type, CancellationToken cancellationToken)

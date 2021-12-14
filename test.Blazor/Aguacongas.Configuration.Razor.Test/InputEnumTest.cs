@@ -16,7 +16,7 @@ namespace Aguacongas.Configuration.Razor.Test
             };
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Flag)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Flag))));
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Flag))?.PropertyType));
 
             Assert.Contains("checked", cut.Markup);
             Assert.Contains($"<label class=\"form-check-label\" for=\"{nameof(FlagEnum.Value1)}\">", cut.Markup);
@@ -29,7 +29,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var model = new Model();
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.FlagNullable)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.FlagNullable))));
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.FlagNullable))?.PropertyType));
 
             Assert.DoesNotContain("checked", cut.Markup);
             Assert.Contains($"<label class=\"form-check-label\" for=\"{nameof(FlagEnum.Value1)}\">", cut.Markup);
@@ -42,7 +42,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var model = new Model();
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Basic)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Basic)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Basic))?.PropertyType)
                 .AddCascadingValue(new EditContext(model)));
 
             Assert.DoesNotContain("<option></option>", cut.Markup);
@@ -56,7 +56,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var model = new Model();
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.BasicNullable)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.BasicNullable)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.BasicNullable))?.PropertyType)
                 .AddCascadingValue(new EditContext(model)));
 
             Assert.Contains("<option></option>", cut.Markup);
@@ -74,7 +74,7 @@ namespace Aguacongas.Configuration.Razor.Test
             
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Flag)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Flag)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Flag))?.PropertyType)
                 .Add(p => p.ValueChanged, value =>
                 {
                     if (value is FlagEnum flag)
@@ -109,7 +109,7 @@ namespace Aguacongas.Configuration.Razor.Test
 
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.FlagNullable)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.FlagNullable)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.FlagNullable))?.PropertyType)
                 .Add(p => p.ValueChanged, value =>
                 {
                     if (value is FlagEnum flag)
@@ -153,7 +153,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var model = new Model();
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Basic)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Basic)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Basic))?.PropertyType)
                 .AddCascadingValue(new EditContext(model))
                 .Add(p => p.ValueChanged, value =>
                 {
@@ -175,7 +175,7 @@ namespace Aguacongas.Configuration.Razor.Test
             var model = new Model();
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.BasicNullable)
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.BasicNullable)))
+                .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.BasicNullable))?.PropertyType)
                 .AddCascadingValue(new EditContext(model))
                 .Add(p => p.ValueChanged, value =>
                 {
