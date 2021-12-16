@@ -5,6 +5,6 @@ namespace Yarp.AdminBlazorApp
 {
     public partial class App
     {
-        private IEnumerable<Assembly> AdditionalAssemblies => new Assembly[] { typeof(Settings).Assembly };
+        private static IEnumerable<Assembly> AdditionalAssemblies => new Assembly[] { typeof(Settings).Assembly };
     }
 }

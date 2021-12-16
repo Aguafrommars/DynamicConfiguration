@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Aguacongas.DynamicConfiguration.AdminApi": {
+    "Yarp.AdminApi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -77,14 +77,15 @@ namespace Aguacongas.DynamicConfiguration.Razor
 
             var types = UnderlyingType.GetGenericArguments();
 
-            var constructor = types[1].GetConstructor(Array.Empty<Type>());
+            var valueType = types[1];
+            var constructor = valueType.GetConstructor(Array.Empty<Type>());
             if (constructor is not null)
             {
                 ValueAsDictionary?.Add(Key, constructor?.Invoke(null));
                 return;
             }
 
-            ValueAsDictionary?.Add(Key, default);
+            ValueAsDictionary?.Add(Key, GetDefaultValue(valueType));
             Key = null;
             StateHasChanged();
         }
@@ -98,14 +99,15 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 list = CreateList();
             }
 
-            var constructor = types[0].GetConstructor(Array.Empty<Type>());
+            var valueType = types[0];
+            var constructor = valueType.GetConstructor(Array.Empty<Type>());
             if (constructor is not null)
             {
                 list.Add(constructor.Invoke(null));
                 return;
             }
 
-            list.Add(default);
+            list.Add(GetDefaultValue(valueType));
         }
 
         private IList CreateList()
@@ -148,6 +150,14 @@ namespace Aguacongas.DynamicConfiguration.Razor
             Property?.SetValue(Model, dictionary);
             Value = dictionary;
             return dictionary;
+        }
+
+        private static object? GetDefaultValue(Type t)
+        {
+            if (t.IsValueType)
+                return Activator.CreateInstance(t);
+
+            return null;
         }
     }
 }

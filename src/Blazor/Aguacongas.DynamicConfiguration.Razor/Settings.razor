@@ -32,7 +32,12 @@ else
                 }
             </div>
             <div class="ms-auto">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <AuthorizeView Policy="@DYNAMIC_CONFIGURATION_WRITTER_POLICY">
+                    <Authorized Context="authorizedContext">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </Authorized>
+                </AuthorizeView>
+                
             </div>
         </div>
         @foreach (var property in Properties)

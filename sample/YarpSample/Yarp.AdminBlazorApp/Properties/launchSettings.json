@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Yarp.AdminBlazorApp.BlazorApp": {
+    "Yarp.AdminBlazorApp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

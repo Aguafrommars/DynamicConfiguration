@@ -14,10 +14,18 @@ namespace Aguacongas.DynamicConfiguration.WebApi.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     [Produces("application/json")]
     public class ConfigurationController : ControllerBase
     {
+        /// <summary>
+        /// Defines the dynamic configuration reader authorization policy
+        /// </summary>
+        public const string DYNAMIC_CONFIGURATION_READER_POLICY = "DynamicConfigurationReaderPolicy";
+        /// <summary>
+        /// Defines the dynamic configuration writter authorization policy
+        /// </summary>
+        public const string DYNAMIC_CONFIGURATION_WRITTER_POLICY = "DynamicConfigurationWritterPolicy";
+
         private readonly IConfigurationService _service;
 
         /// <summary>
@@ -39,6 +47,7 @@ namespace Aguacongas.DynamicConfiguration.WebApi.Controllers
         /// <returns>The configuration</returns>
         [HttpGet("{typeName}")]
         [HttpGet("{typeName}/{key}")]
+        [Authorize(Policy = DYNAMIC_CONFIGURATION_READER_POLICY)]
         public Task<object> Get(string typeName, string? key)
         => _service.GetAsync(typeName, key);
 
@@ -51,6 +60,7 @@ namespace Aguacongas.DynamicConfiguration.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{key}")]
         [Consumes(RawRequestBodyFormatter.CONTENTTYPE)]
+        [Authorize(Policy = DYNAMIC_CONFIGURATION_WRITTER_POLICY)]
         public Task Put(string key, [FromBody] string json)
         => _service.SetAsync(key, json);
     }

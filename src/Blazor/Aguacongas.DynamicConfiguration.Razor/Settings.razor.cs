@@ -1,12 +1,23 @@
 ﻿using Aguacongas.DynamicConfiguration.Razor.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Collections;
 using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
+    [Authorize(Policy = DYNAMIC_CONFIGURATION_READER_POLICY)]
     public partial class Settings
     {
+        /// <summary>
+        /// Defines the dynamic configuration reader authorization policy
+        /// </summary>
+        public const string DYNAMIC_CONFIGURATION_READER_POLICY = "DynamicConfigurationReaderPolicy";
+        /// <summary>
+        /// Defines the dynamic configuration writter authorization policy
+        /// </summary>
+        public const string DYNAMIC_CONFIGURATION_WRITTER_POLICY = "DynamicConfigurationWritterPolicy";
+
         [Parameter]
         public string? Path { get; set; }
 

@@ -51,8 +51,10 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
                     ["TypeName"] = "unknow"
                 })
                 .Build();
-            var services = new ServiceCollection().AddConfigurationService(configuration).BuildServiceProvider();
-            var sut = services.GetRequiredService<IConfigurationService>();
+            var services = new ServiceCollection();
+            services.AddConfigurationService(configuration);
+            var provider = services.BuildServiceProvider();
+            var sut = provider.GetRequiredService<IConfigurationService>();
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => sut.GetAsync(null, default));
         }

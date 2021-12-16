@@ -40,13 +40,13 @@ namespace Yarp.Configuration.Converters
         {    
             writer.WriteStartObject();
             writer.WritePropertyName(nameof(value.LogLevel));
-            JsonSerializer.Serialize(writer, value.LogLevel);
+            JsonSerializer.Serialize(writer, value.LogLevel, options);
             if (value.Providers != null)
             {
                 foreach(var kv in value.Providers)
                 {
                     writer.WritePropertyName(kv.Key);
-                    JsonSerializer.Serialize(writer, kv.Value);
+                    JsonSerializer.Serialize(writer, kv.Value, options);
                 }
             }
             writer.WriteEndObject();            

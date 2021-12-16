@@ -1,7 +1,4 @@
 ﻿using Aguacongas.DynamicConfiguration.Abstractions;
-using IdentityModel.AspNetCore.OAuth2Introspection;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
@@ -29,27 +26,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 c.IncludeXmlComments(xmlPath);
             });
-        }
-
-        public static AuthenticationBuilder AddTheReverserProxyApiAuthorization(this IServiceCollection services, IConfiguration configuration)
-        {
-            return services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    configuration.GetSection(nameof(JwtBearerOptions)).Bind(options);
-                    options.ForwardDefaultSelector = context =>
-                    {
-                        var request = context.Request;
-                        var token = TokenRetrieval.FromAuthorizationHeader()(request);
-                        if (token?.Contains('.') == false)
-                        {
-                            return "introspection";
-                        }
-
-                        return null;
-                    };
-                })
-                .AddOAuth2Introspection("introspection", options => configuration.GetSection(nameof(OAuth2IntrospectionOptions)).Bind(options));
         }
     }
 }

@@ -15,10 +15,7 @@ namespace Yarp.AdminBlazorApp.Pages
                 throw new InvalidOperationException($"{nameof(NavigationManager)} cannot be null");
             }
 
-            if (NavigationManager.ToBaseRelativePath(NavigationManager.Uri) != "/settings")
-            {
-                NavigationManager.NavigateTo("/settings");
-            }
+            NavigationManager.NavigateTo("/settings", true);
         }
 
     }

@@ -1,7 +1,8 @@
 ﻿using Aguacongas.DynamicConfiguration.Abstractions;
+using Aguacongas.DynamicConfiguration.Options;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Aguacongas.DynamicConfiguration.Services
@@ -18,11 +19,12 @@ namespace Aguacongas.DynamicConfiguration.Services
         /// Initialize a new instance of <see cref="ConfigurationService"/>
         /// </summary>
         /// <param name="rootConfiguration">A <see cref="IConfigurationRoot"/> instance</param>
+        /// <param name="options">A <see cref="IOptions{DynamicConfigurationOptions}"/> instance</param>
         /// <exception cref="ArgumentNullException">If rootConfiguration is null</exception>
-        public ConfigurationService(IConfigurationRoot rootConfiguration)
+        public ConfigurationService(IConfigurationRoot rootConfiguration, IOptions<DynamicConfigurationOptions> options)
         {
             _rootConfiguration = rootConfiguration ?? throw new ArgumentNullException(nameof(rootConfiguration));
-            _provider = rootConfiguration.Providers.First();
+            _provider = options?.Value?.Provider ?? throw new ArgumentNullException(nameof(options));
         }
 
         /// <summary>
