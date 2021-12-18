@@ -4,11 +4,11 @@ using Aguacongas.DynamicConfiguration.Redis;
 using Yarp.Configuration.Model;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Aguacongas.DynamicConfiguration.WebApi.Controllers;
-using Aguacongas.DynamicConfiguration.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
+// Add Redis configuration provider.
 configuration.AddRedis(options => configuration.GetSection(nameof(RedisConfigurationOptions)).Bind(options));
 
 var services = builder.Services;
@@ -36,6 +36,9 @@ services.AddRazorPages();
 services.AddSwaggerGenFromConfiguration(configuration);
 
 var app = builder.Build();
+
+// Auto reload the configuration when changes occur.
+app.SubscribeToConfigurationChanges();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -69,7 +72,5 @@ app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 
-var autoReloadService = app.Services.GetRequiredService<IAutoReloadConfigurationService>();
-autoReloadService.SubscribeToChanges();
 
 app.Run();

@@ -1,3 +1,4 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure the reverse proxy with redis.
@@ -9,6 +10,9 @@ builder.Services.AddReverseProxy()
     .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
+
+// Auto reload the configuration when changes occur.
+app.SubscribeToConfigurationChanges();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

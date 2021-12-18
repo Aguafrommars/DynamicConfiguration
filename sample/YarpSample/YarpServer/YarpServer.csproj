@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\Aguacongas.DynamicConfiguration.Redis\Aguacongas.DynamicConfiguration.Redis.csproj" />
+	  <ProjectReference Include="..\..\..\src\Aguacongas.DynamicConfiguration.WebApi\Aguacongas.DynamicConfiguration.WebApi.csproj" />
 	</ItemGroup>
 
 </Project>
