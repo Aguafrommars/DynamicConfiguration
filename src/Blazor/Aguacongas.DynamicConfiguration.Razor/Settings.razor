@@ -1,9 +1,4 @@
-﻿@page "/settings"
-@page "/settings/{path}"
-
-<PageTitle>Settings</PageTitle>
-
-@if (Properties is null)
+﻿@if (Properties is null)
 {
     <div>Loading...</div>
 }
@@ -12,7 +7,7 @@ else
     <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
         <div class="hstack mb-3">
             <div>
-                <span>/</span><a href="/settings">Configuration</a>
+                <span>/</span><a href="@RootPath">Configuration</a>
                 @if (Segments is not null)
                 {
                     var index = 0;
@@ -22,7 +17,7 @@ else
                         <span>/</span>
                         @if (path is not null)
                         {
-                            <a href="/settings/@path">@segment</a>
+                            <a href="@($"{RootPath}{path}")">@segment</a>
                         }
                         else
                         {
@@ -34,15 +29,18 @@ else
             <div class="ms-auto">
                 <AuthorizeView Policy="@DYNAMIC_CONFIGURATION_WRITTER_POLICY">
                     <Authorized Context="authorizedContext">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="oi oi-data-transfer-download" title="edit" aria-hidden="true"></span>
+                            Save
+                        </button>
                     </Authorized>
                 </AuthorizeView>
-                
+
             </div>
         </div>
         @foreach (var property in Properties)
         {
-            <InputSetting Model="@_model" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(_model)" />
+            <InputProperty Model="@_model" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(_model)" />
         }
     </EditForm>
 }

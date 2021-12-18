@@ -9,11 +9,6 @@ namespace Yarp.Configuration.Model
     public class ServerConfig
     {
         /// <summary>
-        /// Gets or sets the server urls
-        /// </summary>
-        public string? Urls { get; set; }
-
-        /// <summary>
         /// Gets or sets the reverse proxy configuration
         /// </summary>
         public ProxyConfig? ReverseProxy { get; set; }

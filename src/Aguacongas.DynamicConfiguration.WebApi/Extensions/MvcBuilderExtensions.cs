@@ -24,12 +24,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddMvcOptions(options =>
                 {
                     options.InputFormatters.Insert(0, new RawRequestBodyFormatter());
-                })
-                .AddJsonOptions(options =>
-                {
-                    var serializationOptions = options.JsonSerializerOptions;
-                    serializationOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
-                    serializationOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
         }
     }

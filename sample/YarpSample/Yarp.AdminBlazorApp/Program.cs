@@ -11,7 +11,7 @@ rootComponents.Add<HeadOutlet>("head::after");
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-// The settings page requires authentication.
+// The Settings components requires authentication.
 // Update this code with the remote authorization service of your choice
 services.AddOidcAuthentication(options => 
 {
@@ -23,11 +23,9 @@ var httpClientBuilder = services.AddConfigurationService(configuration.GetSectio
 
 services.AddAuthorizationCore(options =>
 {
-    // The settings page requires 2 policies, DYNAMIC_CONFIGURATION_READER_POLICY and DYNAMIC_CONFIGURATION_WRITTER_POLICY
-    // In this sample those policies requires nothing, all users have access to the settings page and can save data.
+    // The Settings component requires the policiy, DYNAMIC_CONFIGURATION_WRITTER_POLICY
+    // In this sample this policy requires nothing, all users can save data.
     // You should update this code to meet your requirement.
-    options.AddPolicy(Settings.DYNAMIC_CONFIGURATION_READER_POLICY,
-        builder => builder.RequireAssertion(context => true));
     options.AddPolicy(Settings.DYNAMIC_CONFIGURATION_WRITTER_POLICY,
         builder => builder.RequireAssertion(context => true));
 });

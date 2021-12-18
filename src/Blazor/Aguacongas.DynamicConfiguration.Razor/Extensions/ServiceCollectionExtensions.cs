@@ -5,8 +5,18 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// <see cref="IServiceCollection"/> extensions.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Add configuration services to the service collection.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static IHttpClientBuilder AddConfigurationService(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<SettingsOptions>(options => configuration.Bind(options))

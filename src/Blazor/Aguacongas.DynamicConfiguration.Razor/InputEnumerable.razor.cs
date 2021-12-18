@@ -4,28 +4,54 @@ using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
+    /// <summary>
+    /// Display an enumerable property value.
+    /// </summary>
     public partial class InputEnumerable
     {
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
         [Parameter]
         public object? Model { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
         [Parameter]
         public object? Value { get; set; }
 
+        /// <summary>
+        /// Gets or sets the property info.
+        /// </summary>
+        /// <remarks>Either ValueType or Property must be set.</remarks>
         [Parameter]
         public PropertyInfo? Property { get; set; }
 
+        /// <summary>
+        /// Gets or sets the configuration path.
+        /// </summary>
         [Parameter]
         public string? Path { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value type.
+        /// </summary>
+        /// <remarks>Either ValueType or Property must be set.</remarks>
         [Parameter]
         public Type? ValueType { get; set; }
-
+        
         private string? Key { get; set; }
 
-        private Type PropertyType => ValueType ?? Property?.PropertyType ?? throw new InvalidOperationException("PropertyType or ValueType must be set");
+        private Type PropertyType => ValueType ?? Property?.PropertyType ?? throw new InvalidOperationException("Either PropertyType or ValueType must be set.");
 
         private Type UnderlyingType => Nullable.GetUnderlyingType(PropertyType) ?? PropertyType;
+
+        private IEnumerable<PropertyInfo>? Properties => UnderlyingType.GetProperties()?.Where(p => p.CanWrite && p.Name != "Item");
+
+        private string GetPath(PropertyInfo property) => !string.IsNullOrEmpty(Path) 
+            ? $"{Path}{property.Name}" 
+            : throw new InvalidOperationException($"{nameof(Path)} cannot be null");
 
         private bool IsDictionary => UnderlyingType.IsAssignableTo(typeof(IDictionary)) ||
             UnderlyingType.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||

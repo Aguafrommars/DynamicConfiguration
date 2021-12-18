@@ -19,7 +19,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddConfigurationServices(this IServiceCollection services, Action<DynamicConfigurationOptions> configure)
         {
             services.Configure(configure);
-            return services.AddTransient<IConfigurationService, ConfigurationService>();
+            return services.AddSingleton<IAutoReloadConfigurationService, AutoReloadConfigurationService>()
+                .AddTransient<IConfigurationService, ConfigurationService>();
         }
     }
 }

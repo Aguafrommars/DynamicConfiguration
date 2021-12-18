@@ -26,6 +26,8 @@ else if (IsEnumerable)
 }
 else
 {
-    <a href="@($"{Path}")">...</a>
+    <a class="btn btn-primary" href="@($"{Path}")">
+        <span class="oi oi-pencil" title="edit" aria-hidden="true"></span>
+    </a>
 }
 <div class="text-danger">@Error</div>

@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 
@@ -18,6 +19,11 @@ namespace Aguacongas.DynamicConfiguration.Redis
         private readonly IDatabase _database;
         private readonly ISubscriber _subscriber;
 
+        public override bool TryGet(string key, out string value)
+        {
+            var result = base.TryGet(key, out value);
+            return result;
+        }
         /// <summary>
         /// Initialize a new instance of <see cref="RedisConfigurationProvider"/>
         /// </summary>
@@ -31,8 +37,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
             _subscriber = connection.GetSubscriber();
             _subscriber.Subscribe(_source.Channel).OnMessage(message =>
             {
-                var value = _database.HashGet(_source.HashKey, message.Message);
-                Load(new HashEntry(message.Message, value));
+                Load();
                 OnReload();
             });
         }
@@ -44,6 +49,16 @@ namespace Aguacongas.DynamicConfiguration.Redis
         /// <param name="value">The value.</param>
         public override void Set(string key, string value)
         {
+            base.Set(key, value);
+            var oldJson = _database.HashGet(_source.HashKey, key);
+            if (oldJson != default)
+            {
+                var data = JsonConfigurationParser.Parse(oldJson);
+                foreach (var kv in data)
+                {
+                    _database.HashDelete(_source.HashKey, $"{key}{ConfigurationPath.KeyDelimiter}{kv.Key}");
+                }
+            }
             _database.HashSet(_source.HashKey, new[] { new HashEntry(key, value) });
             _subscriber.Publish(_source.Channel, key);
         }
@@ -53,6 +68,8 @@ namespace Aguacongas.DynamicConfiguration.Redis
         /// </summary>
         public override void Load()
         {
+            Data = new Dictionary<string, string>();
+            base.Load();
             var entryList = _database.HashGetAll(_source.HashKey).OrderBy(k => k.Name);
             
             foreach(var entry in entryList)

@@ -5,17 +5,32 @@ using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
-    public partial class InputSetting
+    /// <summary>
+    /// Displays a configuration property
+    /// </summary>
+    public partial class InputProperty
     {
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
         [Parameter]
         public object? Model { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
         [Parameter]
         public object? Value { get; set; }
 
+        /// <summary>
+        /// Gets or sets the property info.
+        /// </summary>
         [Parameter]
         public PropertyInfo? Property { get; set; }
 
+        /// <summary>
+        /// Gets or sets the configuration path.
+        /// </summary>
         [Parameter]
         public string? Path { get; set; }
 

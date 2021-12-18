@@ -3,14 +3,26 @@ using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
+    /// <summary>
+    /// Displays an enum property value.
+    /// </summary>
     public partial class InputEnum
     {
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
         [Parameter]
         public Enum? Value { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value changed event callback.
+        /// </summary>
         [Parameter]
         public EventCallback<Enum?> ValueChanged { get; set; } = new EventCallback<Enum?>();
 
+        /// <summary>
+        /// Gets or sets the property type.
+        /// </summary>
         [Parameter]
         public Type? PropertyType { get; set; }
        

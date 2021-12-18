@@ -38,7 +38,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
 
             var sut = new ConfigurationService(factoryMock.Object, options);
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => sut.GetAsync(null, default));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => sut.GetAsync(null));
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
             var provider = services.BuildServiceProvider();
             var sut = provider.GetRequiredService<IConfigurationService>();
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => sut.GetAsync(null, default));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => sut.GetAsync(null));
         }
 
         [Fact]

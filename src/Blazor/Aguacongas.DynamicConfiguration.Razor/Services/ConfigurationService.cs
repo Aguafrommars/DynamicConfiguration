@@ -12,11 +12,14 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            IgnoreReadOnlyProperties = true,
+            IgnoreReadOnlyFields = true,
+            PropertyNameCaseInsensitive = true
         };
 
         private readonly HttpClient _httpClient;
         private readonly IOptions<SettingsOptions> _options;
+        private readonly string _baseAddress;
 
         public object? Configuration { get; private set; }
 
@@ -24,10 +27,12 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         {
             _httpClient = httpClientFactory?.CreateClient(nameof(ConfigurationService)) ?? throw new ArgumentNullException($"HttpClient for {nameof(ConfigurationService)}");
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            var baseAddress = $"{_httpClient.BaseAddress}";
+            _baseAddress = baseAddress.EndsWith("/") ? baseAddress : baseAddress + "/";
         }
 
 
-        public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken)
+        public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
         {
             var type = GetConfigurationType();
             Configuration ??= await GetConfigurationAsync(type, cancellationToken).ConfigureAwait(false);
@@ -87,20 +92,37 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             return value;
         }
 
-        public async Task SetAsync<T>(string? key, T setting, CancellationToken cancellationToken)
+        public async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
         {
+            if (key is null)
+            {
+                var propertyList = GetConfigurationType().GetProperties().Where(p => p.CanWrite);
+                foreach (var property in propertyList)
+                {
+                    await SaveAsync(property.Name, cancellationToken).ConfigureAwait(false);
+                }
+                return;
+            }
+
+            var segmentList = key.Split(':');
+            var rootProperty = segmentList[0];
+            var setting = await GetAsync(rootProperty).ConfigureAwait(false);
             var content = JsonSerializer.Serialize(setting, _jsonSerializerOptions);
-            await _httpClient.PutAsync($"{_httpClient.BaseAddress}/{key}", new StringContent(content, Encoding.UTF8, "text/plain"), cancellationToken).ConfigureAwait(false);
+            var response = await _httpClient.PutAsync($"{_baseAddress}{rootProperty}", new StringContent(content, Encoding.UTF8, "text/plain"), cancellationToken).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
         }
 
         private async Task<object?> GetConfigurationAsync(Type type, CancellationToken cancellationToken)
         {
-            using var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{type.AssemblyQualifiedName}", cancellationToken);
+            using var response = await _httpClient.GetAsync($"{_baseAddress}{type.AssemblyQualifiedName}", cancellationToken);
+            response.EnsureSuccessStatusCode();
+
             var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
             return JsonSerializer.Deserialize(content, type, _jsonSerializerOptions);
         }
 
+        
         private Type GetConfigurationType()
         {
             var setting = _options.Value;

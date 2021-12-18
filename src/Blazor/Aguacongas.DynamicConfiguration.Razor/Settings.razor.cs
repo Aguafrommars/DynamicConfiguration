@@ -1,35 +1,64 @@
 ﻿using Aguacongas.DynamicConfiguration.Razor.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Collections;
 using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
-    [Authorize(Policy = DYNAMIC_CONFIGURATION_READER_POLICY)]
+    /// <summary>
+    /// Displays the configuration
+    /// </summary>
     public partial class Settings
     {
         /// <summary>
-        /// Defines the dynamic configuration reader authorization policy
-        /// </summary>
-        public const string DYNAMIC_CONFIGURATION_READER_POLICY = "DynamicConfigurationReaderPolicy";
-        /// <summary>
-        /// Defines the dynamic configuration writter authorization policy
+        /// Defines the dynamic configuration writter authorization policy.
         /// </summary>
         public const string DYNAMIC_CONFIGURATION_WRITTER_POLICY = "DynamicConfigurationWritterPolicy";
 
+        /// <summary>
+        /// Gets or sets the configuration path.
+        /// </summary>
         [Parameter]
         public string? Path { get; set; }
+
+        /// <summary>
+        /// Gets or sets the root page path.
+        /// </summary>
+        [Parameter]
+        public string? RootPath 
+        { 
+            get { return _rootPath; }
+            set 
+            { 
+                if (value?.StartsWith('/') == false)
+                {
+                    throw new InvalidOperationException($"{nameof(RootPath)} must start with '/");
+                }
+                if (value?.EndsWith('/') == false)
+                {
+                    throw new InvalidOperationException($"{nameof(RootPath)} must end with '/");
+                }
+                _rootPath = value;
+            }
+        }
 
         [Inject]
         private IConfigurationService? Service { get; set; }
 
         private object? _model;
 
-        private IEnumerable<PropertyInfo>? Properties => _model?.GetType()?.GetProperties();
+        private string? _rootPath;
+
+        private IEnumerable<PropertyInfo>? Properties => _model?.GetType()?.GetProperties()?.Where(p => p.CanWrite);
 
         private IEnumerable<string>? Segments => Path?.Split(':');
 
+        /// <summary>
+        /// Method invoked when the component has received parameters from its parent in
+        /// the render tree, and the incoming values have been assigned to properties.
+        /// </summary>
+        /// <returns>A <see cref="Task" /> representing any asynchronous operation.</returns>
+        /// <exception cref="InvalidOperationException">If <see cref="IConfigurationService" /> is not injected in Service property.</exception>
         protected async override Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync().ConfigureAwait(false);
@@ -39,10 +68,11 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException($"{nameof(Service)} cannot be null");
             }
 
-            _model = await Service.GetAsync(Path, default).ConfigureAwait(false);
+            _model = await Service.GetAsync(Path).ConfigureAwait(false);
         }
 
-        private string GetPath(PropertyInfo property) => string.IsNullOrEmpty(Path) ? $"/settings/{property.Name}" : $"/settings/{Path}:{property.Name}";
+        private string GetPath(PropertyInfo property) => string.IsNullOrEmpty(Path) ? $"{RootPath}{property.Name}" : $"{RootPath}{Path}:{property.Name}";
+
 
         private string? GetParentPath(int index)
         => Segments is not null && DisplayPathHasLink(index)
@@ -102,7 +132,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
 
         private Task OnValidSubmit()
         => Service is not null 
-            ? Service.SetAsync(Path, _model, default)
+            ? Service.SaveAsync(Path, default)
             : throw new InvalidOperationException($"{nameof(Service)} cannot be null");
         
 

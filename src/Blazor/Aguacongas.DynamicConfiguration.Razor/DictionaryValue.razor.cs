@@ -3,20 +3,38 @@ using System.Collections;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
+    /// <summary>
+    /// Displays a dictionary item property value
+    /// </summary>
     public partial class DictionaryValue
     {
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
         [Parameter]
         public IDictionary? Model { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
         [Parameter]
         public object? Value { get; set; }
 
+        /// <summary>
+        /// Gets or sets the property type.
+        /// </summary>
         [Parameter]
         public Type? PropertyType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the configuration path.
+        /// </summary>
         [Parameter]
         public string? Path { get; set; }
 
+        /// <summary>
+        /// Gets or sets the item key.
+        /// </summary>
         [Parameter]
         public object? Key { get; set; }
 

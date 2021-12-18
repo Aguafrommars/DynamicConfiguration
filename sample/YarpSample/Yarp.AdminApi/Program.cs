@@ -2,16 +2,14 @@
 // Copyright (c) 2021 @Olivier Lefebvre
 using Aguacongas.DynamicConfiguration.Redis;
 using Yarp.Configuration.Model;
-using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Aguacongas.DynamicConfiguration.WebApi.Controllers;
+using Aguacongas.DynamicConfiguration.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 configuration.AddRedis(options => configuration.GetSection(nameof(RedisConfigurationOptions)).Bind(options));
-
-builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(configuration));
 
 var services = builder.Services;
 // Add services to the container.
@@ -29,12 +27,13 @@ services.Configure<ReverseProxyOptions>(configuration.GetSection(nameof(ReverseP
 
 services.AddAuthentication(); // this sample doesn't have authentication system but shoudl add yours.
 
-services.AddControllersWithViews()
+services.AddTransient(p => builder.Configuration as IConfigurationRoot)
+    .AddControllersWithViews()
     .AddConfigurationWebAPI(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
+    
 services.AddRazorPages();
 
-services.AddSwaggerGenFromConfiguration(configuration)
-    .AddTransient(p => builder.Configuration as IConfigurationRoot);
+services.AddSwaggerGenFromConfiguration(configuration);
 
 var app = builder.Build();
 
@@ -69,5 +68,8 @@ app.UseHttpsRedirection()
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+var autoReloadService = app.Services.GetRequiredService<IAutoReloadConfigurationService>();
+autoReloadService.SubscribeToChanges();
 
 app.Run();

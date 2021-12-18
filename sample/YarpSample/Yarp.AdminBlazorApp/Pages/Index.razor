@@ -1,9 +1,19 @@
 ﻿@page "/"
+@page "/{path}"
+
+@using Aguacongas.DynamicConfiguration.Razor
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container">
+    @*The Settings component needs the current configuration path and the root path to the containing page*@
+    <Settings Path="@Path" RootPath="/" />
+</div>
 
-Welcome to your new app.
-
-<a href="/settings" class="btn btn-link btn-primary">Configure your app.</a>
+@code {
+    /// <summary>
+    /// Gets or sets current the configuration path
+    /// </summary>
+    [Parameter]
+    public string? Path { get; set; }
+}

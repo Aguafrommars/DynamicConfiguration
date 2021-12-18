@@ -22,7 +22,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Dictionary))));
 
             var input = cut.Find("input");
-            input.Change(new ChangeEventArgs
+            input.Input(new ChangeEventArgs
             {
                 Value = null
             });
@@ -33,14 +33,14 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             var expected = Guid.NewGuid().ToString();
             input = cut.Find("input");
-            input.Change(new ChangeEventArgs
+            input.Input(new ChangeEventArgs
             {
                 Value = expected
             });
             button = cut.Find("button");
             button.Click();
 
-            Assert.Contains(expected, model.Dictionary.Keys);
+            Assert.Contains(expected, model.Dictionary?.Keys);
             var a = cut.Find("a");
             Assert.Contains($"Model:{expected}", a.OuterHtml);
         }
@@ -145,5 +145,6 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             public IEnumerable<object>? Enumerable { get; set; }
         }
+
     }
 }

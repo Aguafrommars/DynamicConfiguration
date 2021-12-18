@@ -1,4 +1,7 @@
-﻿<CascadingAuthenticationState>
+﻿@using Aguacongas.DynamicConfiguration.Razor
+@using System.Reflection
+
+<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="@AdditionalAssemblies">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
@@ -12,3 +15,7 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code {
+    private static IEnumerable<Assembly> AdditionalAssemblies => new Assembly[] { typeof(Settings).Assembly };
+}

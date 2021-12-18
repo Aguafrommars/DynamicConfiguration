@@ -1,5 +1,4 @@
 ﻿using Bunit;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Razor.Test
 {
-    public class InputSettingTest : TestContext
+    public class InputPropertyTest : TestContext
     {
         [Fact]
         public void WhenValueIsString_should_display_input_text()
@@ -20,7 +19,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 String = Guid.NewGuid().ToString()
             };
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.String)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -41,7 +40,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDecimal)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -62,7 +61,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Decimal)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -83,7 +82,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableFloat)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -104,7 +103,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Float)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -125,7 +124,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDouble)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -146,7 +145,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Double)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -167,7 +166,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableLong)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -188,7 +187,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Long)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -209,7 +208,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableInt)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -230,7 +229,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Int)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -251,7 +250,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableShort)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -272,7 +271,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Short)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -293,7 +292,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableByte)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -314,7 +313,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Byte)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -335,7 +334,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableULong)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -356,7 +355,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.ULong)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -377,7 +376,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableUInt)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -398,7 +397,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.UInt)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -419,7 +418,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableUShort)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -440,7 +439,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.UShort)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -461,7 +460,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableSByte)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -482,7 +481,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.SByte)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -503,7 +502,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NulllableTimeSpan)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -524,7 +523,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.TimeSpan)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -545,7 +544,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.TimeSpan)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -575,7 +574,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDateTime)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -599,7 +598,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.DateTime)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -623,7 +622,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDateTimeOffset)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -647,7 +646,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.DateTimeOffset)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -668,7 +667,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableBool)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -689,7 +688,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Bool)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -710,7 +709,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableEnum)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -732,7 +731,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Enum)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -754,7 +753,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Enumerable)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -775,7 +774,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Dictionary)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
@@ -800,7 +799,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputSetting>(parameters => parameters
+            var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Child)
                 .Add(p => p.Model, model)
                 .Add(p => p.Path, "$")
