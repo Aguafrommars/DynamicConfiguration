@@ -1,0 +1,46 @@
+﻿@if (Properties is null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
+        <div class="hstack mb-3">
+            <div>
+                <span>/</span><a href="@RootPath">Configuration</a>
+                @if (Segments is not null)
+                {
+                    var index = 0;
+                    @foreach (var segment in Segments)
+                    {
+                        var path = GetParentPath(index++);
+                        <span>/</span>
+                        @if (path is not null)
+                        {
+                            <a href="@($"{RootPath}{path}")">@segment</a>
+                        }
+                        else
+                        {
+                            <span>@segment</span>
+                        }
+                    }
+                }
+            </div>
+            <div class="ms-auto">
+                <AuthorizeView Policy="@DYNAMIC_CONFIGURATION_WRITTER_POLICY">
+                    <Authorized Context="authorizedContext">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="oi oi-data-transfer-download" title="edit" aria-hidden="true"></span>
+                            Save
+                        </button>
+                    </Authorized>
+                </AuthorizeView>
+
+            </div>
+        </div>
+        @foreach (var property in Properties)
+        {
+            <InputProperty Model="@_model" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(_model)" />
+        }
+    </EditForm>
+}

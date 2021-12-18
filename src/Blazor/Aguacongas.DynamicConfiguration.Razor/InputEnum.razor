@@ -1,0 +1,25 @@
+﻿@if (IsFlag)
+{
+    foreach(var name in Names)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" checked="@IsChecked(name)" id="@name" @onchange="@(value => OnValueChanged((bool)(value.Value ?? false), name))"  />
+            <label class="form-check-label" for="@name">
+                @name
+            </label>
+        </div>
+    }
+}
+else
+{
+    <InputSelect class="form-control form-select" Value="@Name" ValueExpression="() => Name" ValueChanged="@((string value) => OnSelectChanged(value))">
+        @if(IsNullable)
+        {
+            <option></option>
+        }
+        @foreach(var name in Names)
+        {
+            <option value="@name">@name</option>
+        }
+    </InputSelect>
+}

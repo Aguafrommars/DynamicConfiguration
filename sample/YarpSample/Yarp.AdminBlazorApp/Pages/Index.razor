@@ -1,0 +1,19 @@
+﻿@page "/"
+@page "/{path}"
+
+@using Aguacongas.DynamicConfiguration.Razor
+
+<PageTitle>Index</PageTitle>
+
+<div class="container">
+    @*The Settings component needs the current configuration path and the root path to the containing page*@
+    <Settings Path="@Path" RootPath="/" />
+</div>
+
+@code {
+    /// <summary>
+    /// Gets or sets current the configuration path
+    /// </summary>
+    [Parameter]
+    public string? Path { get; set; }
+}

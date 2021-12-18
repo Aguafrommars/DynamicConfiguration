@@ -1,0 +1,58 @@
+﻿<div class="mb-3">
+    <label for="@PropertyName" class="col-form-label">@PropertyName</label>
+    <div>
+        @if (IsString)
+        {
+            <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
+        }
+        else if (IsEnum)
+        {
+            <InputEnum @bind-Value="@ValueAsEnum" PropertyType="@UnderlyingType" />
+        }
+        else if (IsNumber)
+        {
+            <InputNumber class="form-control" @bind-Value="@ValueAsDouble" />
+        }
+        else if (IsDate)
+        {
+            <InputDate class="form-control" @bind-Value="@ValueAsDate" />
+        }
+        else if (IsBool)
+        {
+            <div class="form-check form-switch">
+                <InputCheckbox class="form-check-input" role="checkbox" @bind-Value="@ValueAsBool" />
+            </div>
+        }
+        else if (IsEnumerable)
+        {
+            <InputEnumerable Model="Model" Value="@Value" Path="@Path" Property="@Property" />
+        }
+        else
+        {
+            @if (Value is null)
+            {
+                <button type="button" class="btn btn-sm btn-secondary" @onclick="CreateValue">
+                    <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+                </button>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="hstack">
+                        <div>
+                            <a class="btn btn-primary" href="@Path">
+                                <span class="oi oi-pencil" title="edit" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="DeleteValue">
+                                <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <div class="text-danger">@Error</div>
+    </div>
+</div>

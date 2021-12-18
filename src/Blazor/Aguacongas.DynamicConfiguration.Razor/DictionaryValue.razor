@@ -1,0 +1,33 @@
+﻿@if (IsString)
+{
+    <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
+}
+else if (IsEnum)
+{
+    <InputEnum @bind-Value="@ValueAsEnum" PropertyType="@PropertyType" />
+}
+else if (IsNumber)
+{
+    <InputNumber class="form-control" @bind-Value="@ValueAsDouble" />
+}
+else if (IsDate)
+{
+    <InputDate class="form-control" @bind-Value="@ValueAsDate" />
+}
+else if (IsBool)
+{
+    <div class="form-check form-switch">
+        <InputCheckbox class="form-check-input" role="switch" @bind-Value="@ValueAsBool" />
+    </div>
+}
+else if (IsEnumerable)
+{
+    <InputEnumerable Model="@Model" Path="@Path" Value="@Value" ValueType="@Value?.GetType()" />
+}
+else
+{
+    <a class="btn btn-primary" href="@($"{Path}")">
+        <span class="oi oi-pencil" title="edit" aria-hidden="true"></span>
+    </a>
+}
+<div class="text-danger">@Error</div>

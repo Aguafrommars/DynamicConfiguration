@@ -1,0 +1,69 @@
+﻿<div class="list-group">
+    @if (Properties is not null)
+    {
+        foreach (var property in Properties)
+        {
+            <InputProperty Model="@Value" Path="@GetPath(property)" Property="@property" Value="@property.GetValue(Value)" />
+        }
+    }
+    @if (IsDictionary)
+    {
+        if (ValueAsDictionary is not null)
+        {
+            foreach (var key in ValueAsDictionary.Keys)
+            {
+                <div class="list-group-item">
+                    <div class="mb-3">
+                        <label for="@key" class="col-form-label">@key</label>
+                        <div class="hstack">
+                            <div class="col">
+                                <DictionaryValue Model="@ValueAsDictionary" Path="@($"{Path}:{key}")" Value="@ValueAsDictionary[key]" Key="@key" PropertyType="UnderlyingType.GetGenericArguments()[1]" />
+                            </div>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItem(key)">
+                                    <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <div class="hstack">
+            <input type="text" placeholder="key" @bind="@Key" @bind:event="oninput" />
+            <button type="button" class="btn btn-sm btn-secondary" @onclick="() => AddDictionaryItem()" disabled="@string.IsNullOrWhiteSpace(Key)">
+                <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+            </button>
+        </div>
+    }
+    else
+    {
+        if (ValueAsEnumerable is not null)
+        {
+            var i = 0;
+            foreach (var value in ValueAsEnumerable)
+            {
+                var index = i++;
+                <div class="list-group-item">
+                    <div class="mb-3">
+                        <div class="hstack">
+                            <div class="col">
+                                <ListValue Model="@ValueAsEnumerable" Path="@($"{Path}:{index}")" Value="@value" Index="@index" PropertyType="UnderlyingType.GetGenericArguments()[0]" />
+                            </div>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItemAt(index)">
+                                    <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <div>
+            <button type="button" class="btn btn-sm btn-secondary" @onclick="AddListItem">
+                <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+            </button>
+        </div>
+    }
+</div>
