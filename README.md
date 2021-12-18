@@ -1,2 +1,3 @@
 # DynamicConfiguration
-Reverse proxy based on YARP
+
+Manage your .NET application configuration dynamically
