@@ -4,7 +4,7 @@ skip_commits:
   message: /^chore(release)/
 branches:
   only:
-  - master
+  - main
   - /preview\/*/ 
   - /release\/*/
 image: 
