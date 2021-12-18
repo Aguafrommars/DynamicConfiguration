@@ -18,7 +18,7 @@ if ($prNumber) {
 elseif ($env:APPVEYOR_REPO_BRANCH) {
 	$prArgs = "-d:sonar.branch.name=$env:APPVEYOR_REPO_BRANCH"
 }
-Write-Host "dotnet sonarscanner begin /k:aguacongas_TheIdServer -o:aguacongas -d:sonar.host.url=https://sonarcloud.io -d:sonar.login=****** -d:sonar.coverageReportPaths=coverage\SonarQube.xml $prArgs -v:$env:Version"
+Write-Host "dotnet sonarscanner begin /k:Aguafrommars_DynamicConfiguration -o:aguacongas -d:sonar.host.url=https://sonarcloud.io -d:sonar.login=****** -d:sonar.coverageReportPaths=coverage\SonarQube.xml $prArgs -v:$env:Version"
 dotnet sonarscanner begin /k:aguacongas_TheIdServer -o:aguacongas -d:sonar.host.url=https://sonarcloud.io -d:sonar.login=$env:sonarqube -d:sonar.coverageReportPaths=coverage\SonarQube.xml $prArgs -v:$env:Version
 
 Write-Host "dotnet test -c Release --settings coverletArgs.runsettings --filter FullyQualifiedName!~MongoDb"
@@ -37,7 +37,7 @@ Get-ChildItem -rec `
 	$merge = "$path;$merge"
 }
 Write-Host $merge
-ReportGenerator\tools\netcoreapp3.0\ReportGenerator.exe "-reports:$merge" "-targetdir:coverage" "-reporttypes:SonarQube"
+ReportGenerator\tools\net5.0\ReportGenerator.exe "-reports:$merge" "-targetdir:coverage" "-reporttypes:SonarQube"
 	
 dotnet sonarscanner end -d:sonar.login=$env:sonarqube
 
