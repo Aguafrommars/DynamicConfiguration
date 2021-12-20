@@ -12,7 +12,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
     /// </summary>
     public class ConfigurationService : IConfigurationService
     {
-        private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
             IgnoreReadOnlyProperties = true,
@@ -37,7 +37,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         /// <exception cref="ArgumentNullException"></exception>
         public ConfigurationService(IHttpClientFactory httpClientFactory, IOptions<SettingsOptions> options)
         {
-            _httpClient = httpClientFactory?.CreateClient(nameof(ConfigurationService)) ?? throw new ArgumentNullException($"HttpClient for {nameof(ConfigurationService)}");
+            _httpClient = httpClientFactory?.CreateClient(nameof(ConfigurationService)) ?? throw new ArgumentException($"Cannot create HttpClient for {nameof(ConfigurationService)}");
             _options = options ?? throw new ArgumentNullException(nameof(options));
             var baseAddress = $"{_httpClient.BaseAddress}";
             _baseAddress = baseAddress.EndsWith("/") ? baseAddress : baseAddress + "/";
@@ -98,6 +98,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
                         }
                         i++;
                     }
+                    continue;
                 }
 
                 var property = type.GetProperty(segment);
@@ -130,7 +131,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
 
             var segmentList = key.Split(':');
             var rootProperty = segmentList[0];
-            var setting = await GetAsync(rootProperty).ConfigureAwait(false);
+            var setting = await GetAsync(rootProperty, cancellationToken).ConfigureAwait(false);
             var content = JsonSerializer.Serialize(setting, _jsonSerializerOptions);
             var response = await _httpClient.PutAsync($"{_baseAddress}{rootProperty}", new StringContent(content, Encoding.UTF8, "application/dynamic-configuration-json"), cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();

@@ -21,8 +21,11 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
         public void constructor_should_validate_parameters()
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(null, null));
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(new Mock<IHttpClientFactory>().Object, null));
+            Assert.Throws<ArgumentException>(() => new ConfigurationService(null, null));
+            var mock = new Mock<IHttpClientFactory>(); 
+            Assert.Throws<ArgumentException>(() => new ConfigurationService(mock.Object, null));            
+            mock.Setup(m => m.CreateClient(It.IsAny<string>())).Returns(new HttpClient());
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService( mock.Object, null));
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
