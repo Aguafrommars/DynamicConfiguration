@@ -8,7 +8,29 @@ Razor components to configure your .NET application dymamically.
 
 Using a Blazor application.
 
-The *appsettings.json* should contains a **SettingsOptions**:
+You need to define a class to bind to your whole configuration:
+
+```cs
+/// <summary>
+/// Defines the configuration we can override
+/// </summary>
+public class ServerConfig
+{
+    /// <summary>
+    /// Gets or sets the reverse proxy configuration
+    /// </summary>
+    public ProxyConfig? ReverseProxy { get; set; }
+
+    /// <summary>
+    /// Gets or sets the logging configuration
+    /// </summary>
+    public LoggingConfig? Logging { get; set; }
+}
+```
+
+This class must be shared by the blazor application and the web API.
+
+The Blazor app *appsettings.json* should contains a **SettingsOptions**:
 
 ```json
 {

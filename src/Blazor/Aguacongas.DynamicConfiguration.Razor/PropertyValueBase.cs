@@ -3,6 +3,10 @@ using System.Collections;
 
 namespace Aguacongas.DynamicConfiguration.Razor
 {
+    /// <summary>
+    /// Property value base component.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class PropertyValueBase<T> : ComponentBase
     {
         /// <summary>
@@ -17,22 +21,47 @@ namespace Aguacongas.DynamicConfiguration.Razor
         [Parameter]
         public object? Value { get; set; }
 
+        /// <summary>
+        /// Gets or sets the property type.
+        /// </summary>
         public virtual Type? PropertyType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the error messaegs.
+        /// </summary>
         protected virtual string? Error { get; set; }
 
+        /// <summary>
+        /// Sets the property value.
+        /// </summary>
+        /// <param name="value">The value</param>
         protected abstract void SetValue(object? value);
 
+        /// <summary>
+        /// Gets the underlying property type.
+        /// </summary>
         protected virtual Type UnderlyingType => PropertyType is not null
             ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
             : throw new InvalidOperationException("PropertyType cannot be null");
 
+        /// <summary>
+        /// Gets the place holder.
+        /// </summary>
         protected virtual string? Placeholder => IsTimeSpan ? "00:00:00" : null;
 
+        /// <summary>
+        /// Return true if the property type is a <see cref="TimeSpan"/>.
+        /// </summary>
         protected virtual bool IsTimeSpan => UnderlyingType.IsAssignableTo(typeof(TimeSpan));
 
+        /// <summary>
+        /// Return true if the property type is a <see cref="string"/>.
+        /// </summary>
         protected virtual bool IsString => UnderlyingType.IsAssignableTo(typeof(string)) || IsTimeSpan;
 
+        /// <summary>
+        /// Return true if the property type is a number.
+        /// </summary>
         protected virtual bool IsNumber => Type.GetTypeCode(UnderlyingType) switch
         {
             TypeCode.Int16 or
@@ -49,14 +78,29 @@ namespace Aguacongas.DynamicConfiguration.Razor
             _ => false,
         };
 
+        /// <summary>
+        /// Return true if the property type is a date.
+        /// </summary>
         protected virtual bool IsDate => UnderlyingType.IsAssignableTo(typeof(DateTime)) || UnderlyingType.IsAssignableTo(typeof(DateTimeOffset));
 
+        /// <summary>
+        /// Return true if the property type is a <see cref="bool"/>.
+        /// </summary>
         protected virtual bool IsBool => UnderlyingType.IsAssignableTo(typeof(bool));
 
+        /// <summary>
+        /// Return true if the property type is an <see cref="Enum"/>.
+        /// </summary>
         protected virtual bool IsEnum => UnderlyingType.IsEnum;
 
+        /// <summary>
+        /// Return true if the property type is an <see cref="IEnumerable"/>.
+        /// </summary>
         protected virtual bool IsEnumerable => UnderlyingType.IsAssignableTo(typeof(IEnumerable));
 
+        /// <summary>
+        /// Gets or sets the value as <see cref="string"/>.
+        /// </summary>
         protected virtual string? ValueAsString
         {
             get { return Value?.ToString(); }
@@ -80,7 +124,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the value as <see cref="double"/>.
+        /// </summary>
         protected virtual double? ValueAsDouble
         {
             get
@@ -119,6 +165,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value as <see cref="bool"/>.
+        /// </summary>
         protected virtual bool ValueAsBool
         {
             get
@@ -135,6 +184,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value as <see cref="DateTimeOffset"/>.
+        /// </summary>
         protected virtual DateTimeOffset? ValueAsDate
         {
             get
@@ -169,6 +221,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value as <see cref="Enum"/>.
+        /// </summary>
         protected virtual Enum? ValueAsEnum
         {
             get
