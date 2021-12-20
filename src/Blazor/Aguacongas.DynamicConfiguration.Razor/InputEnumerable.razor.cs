@@ -67,27 +67,15 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 {
                     return list;
                 }
-                list = CreateList();
-                return list;
+                return CreateList();
             }
         }
 
         private void RemoveItem(object key)
-        {
-            ValueAsDictionary?.Remove(key);
-        }
+        =>  ValueAsDictionary?.Remove(key);
 
         private void RemoveItemAt(int index)
-        {
-            if (ValueAsEnumerable is IList list && !list.IsFixedSize)
-            {
-                list.RemoveAt(index);
-                return;
-            }
-
-            list = CreateList();            
-            list.RemoveAt(index);
-        }
+        => ValueAsEnumerable?.RemoveAt(index);
 
         private void AddDictionaryItem()
         {
@@ -96,7 +84,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException("Key cannot be null");
             }
 
-            if (Value is null)
+            if (ValueAsDictionary is null)
             {
                 CreateDictionary();
             }
@@ -157,7 +145,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
             return list;
         }
 
-        private IDictionary CreateDictionary()
+        private void CreateDictionary()
         {
             var types = UnderlyingType.GetGenericArguments();
             if (typeof(Dictionary<,>).MakeGenericType(types)?.GetConstructor(Array.Empty<Type>())?.Invoke(null) is not IDictionary dictionary)
@@ -165,23 +153,16 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException("Cannot create list.");
             }
 
-            if (Value is IDictionary enumerable)
-            {
-                foreach (var key in enumerable.Keys)
-                {
-                    dictionary.Add(key, enumerable[key]);
-                }
-            }
-
             Property?.SetValue(Model, dictionary);
             Value = dictionary;
-            return dictionary;
         }
 
         private static object? GetDefaultValue(Type t)
         {
             if (t.IsValueType)
+            {
                 return Activator.CreateInstance(t);
+            }
 
             return null;
         }
