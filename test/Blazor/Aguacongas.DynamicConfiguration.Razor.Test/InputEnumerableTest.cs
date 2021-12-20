@@ -1,5 +1,6 @@
 ﻿using Bunit;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -92,6 +93,56 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         }
 
         [Fact]
+        public void WhenNotModelItemEmptyConstructor_should_create_list_item()
+        {
+            var model = new Model
+            {
+                EnumerableString = Array.Empty<string>(),
+            };
+
+            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+                .Add(p => p.Model, model)
+                .Add(p => p.Value, model.EnumerableString)
+                .Add(p => p.Path, "Model")
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.EnumerableString)))
+                .AddCascadingValue(new EditContext(model)));
+
+            var button = cut.Find("button");
+            button.Click();
+
+            Assert.NotEmpty(model.EnumerableString);
+        }
+
+        [Fact]
+        public void WhenNotModelItemEmptyConstructor_should_create_dictionary_item()
+        {
+            var model = new Model
+            {
+                DictionaryString = new Dictionary<string, string>(),
+            };
+
+            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+                .Add(p => p.Model, model)
+                .Add(p => p.Value, model.DictionaryString)
+                .Add(p => p.Path, "Model")
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.DictionaryString)))
+                .AddCascadingValue(new EditContext(model)));
+
+            var input = cut.Find("input");
+            var expected = Guid.NewGuid().ToString();
+            input = cut.Find("input");
+            input.Input(new ChangeEventArgs
+            {
+                Value = expected
+            });
+            var button = cut.Find("button");
+            button.Click();
+
+
+            Assert.NotEmpty(model.DictionaryString);
+        }
+
+        [Fact]
         public void WhenModelIsNotListRemoveItem_should_use_index()
         {
             var model = new Model
@@ -166,7 +217,11 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             public Dictionary<string, object>? Dictionary { get; set; }
 
+            public Dictionary<string, string>? DictionaryString { get; set; }
+
             public IEnumerable<object>? Enumerable { get; set; }
+
+            public IEnumerable<string>? EnumerableString { get; set; }
         }
 
         class FixedSizeList

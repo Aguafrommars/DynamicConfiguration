@@ -168,7 +168,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
         private static object? GetDefaultValue(Type t)
         {
             if (t.IsValueType)
+            {
                 return Activator.CreateInstance(t);
+            }
 
             return null;
         }
