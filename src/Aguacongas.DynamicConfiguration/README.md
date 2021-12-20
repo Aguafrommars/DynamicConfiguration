@@ -1,14 +1,17 @@
 ﻿# Aguacongas.DynamicConfiguration
 
-Interface and services to configure .NET programs.
+Interface and services to dynamically configure .NET programs.
 
 ## Usage
 
 ### Setup
 
 ```cs
-services.AddConfigurationServices()
+services.AddConfigurationServices(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
 ```
+
+> You need a configuration provider able to persist the configuration like [Aguacongas.DynamicConfiguration.Redis](../Aguacongas.DynamicConfiguration.Redis/README.md) in your configuration pipeline to persist configuration changes.   
+
 
 ### Read/Write configuration
 
@@ -38,12 +41,14 @@ public class ConfigurationController : ControllerBase
     /// <summary>
     /// Gets a configuration
     /// </summary>
-    /// <param name="key">The configuration's key</param>
     /// <param name="typeName">The configuration's assembly-qualified type name</param>
+    /// <param name="key">The configuration's key</param>
     /// <returns>The configuration</returns>
-    [HttpGet("{key}/{typeName}")]
-    public Task<object> Get(string key, string typeName)
-    => _service.GetAsync(key, typeName);
+    [HttpGet("{typeName}")]
+    [HttpGet("{typeName}/{key}")]
+    [Authorize(Policy = DYNAMIC_CONFIGURATION_READER_POLICY)]
+    public Task<object> Get(string typeName, string? key)
+    => _service.GetAsync(typeName, key);
 
     // PUT api/<Configuration>
     /// <summary>
@@ -54,9 +59,17 @@ public class ConfigurationController : ControllerBase
     /// <returns></returns>
     [HttpPut("{key}")]
     [Consumes(RawRequestBodyFormatter.CONTENTTYPE)]
+    [Authorize(Policy = DYNAMIC_CONFIGURATION_WRITTER_POLICY)]
     public Task PutCluster(string key, [FromBody] string json)
     => _service.SetAsync(key, json);
 }
 ```
 
-> You need a configuration provider able to persist the configuration like [Aguacongas.DynamicConfiguration.Redis](../Aguacongas.DynamicConfiguration.Redis/README.md) in your configuration pipeline to persist configuration changes.   
+> You can use [Aguacongas.DynamicConfiguration.WebApi](../Aguacongas.DynamicConfiguration.WebApi/README.md). It provides the same controller.
+
+### Subscribe to configuration changes
+
+```cs
+var autoReloadService = app.ApplicationServices.GetRequiredService<IAutoReloadConfigurationService>();
+autoReloadService.SubscribeToChanges();
+```

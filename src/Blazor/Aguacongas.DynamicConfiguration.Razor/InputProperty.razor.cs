@@ -25,12 +25,14 @@ namespace Aguacongas.DynamicConfiguration.Razor
         private string? PropertyName
             => (Property?.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute)?.Description ?? Property?.Name;
 
+        /// <inheritdoc/>
         public override Type? PropertyType 
         { 
             get => Property?.PropertyType ?? throw new InvalidOperationException($"{nameof(Property)} cannot be null"); 
             set => base.PropertyType = value; 
         }
 
+        /// <inheritdoc/>
         protected override void SetValue(object? value)
         {
             Property?.SetValue(Model, value);

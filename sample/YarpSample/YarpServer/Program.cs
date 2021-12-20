@@ -1,4 +1,6 @@
 
+using Aguacongas.DynamicConfiguration.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure the reverse proxy with redis.
@@ -6,7 +8,8 @@ var configuration = builder.Configuration;
 configuration.AddRedis(options => configuration.GetSection("Redis").Bind(options));
 
 // Add services to the container.
-builder.Services.AddReverseProxy()
+builder.Services.AddConfigurationServices(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider))
+    .AddReverseProxy()
     .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();

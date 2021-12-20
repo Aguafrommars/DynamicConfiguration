@@ -1,9 +1,12 @@
 ﻿namespace Aguacongas.DynamicConfiguration.Razor.Services
 {
+    /// <summary>
+    /// Classes implementing this interface manage configuration.
+    /// </summary>
     public interface IConfigurationService
     {
         /// <summary>
-        /// Gets the root configuration
+        /// Gets the root configuration.
         /// </summary>
         object? Configuration { get; }
 

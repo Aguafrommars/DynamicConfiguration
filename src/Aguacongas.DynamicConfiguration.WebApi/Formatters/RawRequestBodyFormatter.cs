@@ -16,7 +16,7 @@ namespace Aguacongas.DynamicConfiguration.Formatters
         /// <summary>
         /// 
         /// </summary>
-        public const string CONTENTTYPE = "text/plain";
+        public const string CONTENTTYPE = "application/dynamic-configuration-json";
 
         /// <summary>
         /// Initialize a new instance of <see cref="RawRequestBodyFormatter"/>

@@ -7,10 +7,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
     /// </summary>
     public partial class ListValue
     {
-
-        /// <summary>
-        /// Gets or sets the property type.
-        /// </summary>
+        /// <inheritdoc/>
         [Parameter]
         public override Type? PropertyType { get; set; }
 
@@ -26,7 +23,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
         [Parameter]
         public int Index { get; set; }
 
-
+        /// <inheritdoc/>
         protected override void SetValue(object? value)
         {
             if (Model is null)

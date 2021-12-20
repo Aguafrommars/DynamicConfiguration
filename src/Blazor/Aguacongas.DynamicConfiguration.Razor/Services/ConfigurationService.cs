@@ -7,6 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace Aguacongas.DynamicConfiguration.Razor.Services
 {
+    /// <summary>
+    /// Configuration service
+    /// </summary>
     public class ConfigurationService : IConfigurationService
     {
         private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
@@ -21,8 +24,17 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         private readonly IOptions<SettingsOptions> _options;
         private readonly string _baseAddress;
 
+        /// <summary>
+        /// Gets the root configuration
+        /// </summary>
         public object? Configuration { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ConfigurationService"/>
+        /// </summary>
+        /// <param name="httpClientFactory">The http client factory.</param>
+        /// <param name="options">The settings options.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public ConfigurationService(IHttpClientFactory httpClientFactory, IOptions<SettingsOptions> options)
         {
             _httpClient = httpClientFactory?.CreateClient(nameof(ConfigurationService)) ?? throw new ArgumentNullException($"HttpClient for {nameof(ConfigurationService)}");
@@ -31,7 +43,13 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             _baseAddress = baseAddress.EndsWith("/") ? baseAddress : baseAddress + "/";
         }
 
-
+        /// <summary>
+        /// Gets the configuration at key.
+        /// </summary>
+        /// <param name="key">The configuration key.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
         {
             var type = GetConfigurationType();
@@ -92,6 +110,12 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             return value;
         }
 
+        /// <summary>
+        /// Saves the configuration at key.
+        /// </summary>
+        /// <param name="key">The configuration key</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns></returns>
         public async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
         {
             if (key is null)
@@ -108,7 +132,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             var rootProperty = segmentList[0];
             var setting = await GetAsync(rootProperty).ConfigureAwait(false);
             var content = JsonSerializer.Serialize(setting, _jsonSerializerOptions);
-            var response = await _httpClient.PutAsync($"{_baseAddress}{rootProperty}", new StringContent(content, Encoding.UTF8, "text/plain"), cancellationToken).ConfigureAwait(false);
+            var response = await _httpClient.PutAsync($"{_baseAddress}{rootProperty}", new StringContent(content, Encoding.UTF8, "application/dynamic-configuration-json"), cancellationToken).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
         }
 

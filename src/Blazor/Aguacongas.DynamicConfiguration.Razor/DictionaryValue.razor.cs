@@ -7,6 +7,10 @@ namespace Aguacongas.DynamicConfiguration.Razor
     /// </summary>
     public partial class DictionaryValue
     {
+        /// <inheritdoc/>
+        [Parameter]
+        public override Type? PropertyType { get; set; }
+
         /// <summary>
         /// Gets or sets the configuration path.
         /// </summary>
@@ -19,7 +23,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
         [Parameter]
         public object? Key { get; set; }
 
-
+        /// <inheritdoc/>
         protected override void SetValue(object? value)
         {
             if (Model is null)
