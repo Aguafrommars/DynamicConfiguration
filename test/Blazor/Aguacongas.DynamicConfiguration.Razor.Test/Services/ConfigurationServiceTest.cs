@@ -141,10 +141,13 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
         {
             var options = Microsoft.Extensions.Options.Options.Create(new SettingsOptions
             {
-                TypeName = typeof(IEnumerable).FullName
+                TypeName = typeof(List<string>).FullName
             });
 
-            var expected = new Enumerable();
+            var expected = new List<string>
+            {
+                "test"
+            };
 
             var mockHttpHandler = new MockHttpMessageHandler();
             var httpClient = mockHttpHandler.ToHttpClient();
@@ -166,20 +169,6 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
             var congiguration = await sut.GetAsync("0", default);
             Assert.Equal("test", congiguration);
 
-        }
-
-        public class Enumerable : IEnumerable
-        {
-            readonly List<string> _items = new List<string>
-            {
-                "test"
-            };
-
-            public IEnumerator<string> GetEnumerator()
-            => _items.GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator()
-            => _items.GetEnumerator();
-        }
+        }        
     }
 }
