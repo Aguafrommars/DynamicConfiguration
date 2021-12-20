@@ -84,7 +84,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException("Key cannot be null");
             }
 
-            if (Value is null)
+            if (ValueAsDictionary is null)
             {
                 CreateDictionary();
             }

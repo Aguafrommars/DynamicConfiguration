@@ -59,7 +59,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.DictionaryInt)
                 .Add(p => p.Path, "Model")
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.DictionaryInt))));
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.DictionaryInt)))
+                .AddCascadingValue(new EditContext(model)));
 
             var input = cut.Find("input");
 
