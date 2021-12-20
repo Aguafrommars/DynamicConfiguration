@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using RichardSzalay.MockHttp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -133,5 +135,51 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
             Assert.Equal("test", congiguration);
         }
 
+
+        [Fact]
+        public async Task GetAsync_should_return_configuration_when_for_ienumerable_index()
+        {
+            var options = Microsoft.Extensions.Options.Options.Create(new SettingsOptions
+            {
+                TypeName = typeof(IEnumerable).FullName
+            });
+
+            var expected = new Enumerable();
+
+            var mockHttpHandler = new MockHttpMessageHandler();
+            var httpClient = mockHttpHandler.ToHttpClient();
+            httpClient.BaseAddress = new Uri("https://localhost/settings");
+            mockHttpHandler.Fallback.Respond(req =>
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonSerializer.Serialize(expected))
+                };
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return response;
+            });
+            var factoryMock = new Mock<IHttpClientFactory>();
+            factoryMock.Setup(m => m.CreateClient(nameof(ConfigurationService))).Returns(httpClient);
+
+            var sut = new ConfigurationService(factoryMock.Object, options);
+
+            var congiguration = await sut.GetAsync("0", default);
+            Assert.Equal("test", congiguration);
+
+        }
+
+        public class Enumerable : IEnumerable
+        {
+            readonly List<string> _items = new List<string>
+            {
+                "test"
+            };
+
+            public IEnumerator<string> GetEnumerator()
+            => _items.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator()
+            => _items.GetEnumerator();
+        }
     }
 }

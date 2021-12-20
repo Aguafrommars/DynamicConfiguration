@@ -85,12 +85,6 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
                     continue;
                 }
 
-                if (value is IEnumerable enumerable)
-                {
-                    value = GetValueFromEnumerator(value, segment, enumerable);
-                    continue;
-                }
-
                 var property = type.GetProperty(segment);
                 if (property is null)
                 {
