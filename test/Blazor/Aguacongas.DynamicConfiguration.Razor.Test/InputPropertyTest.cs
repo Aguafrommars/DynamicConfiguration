@@ -786,7 +786,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             var inputKey = input.Find("input");
             var expected = Guid.NewGuid().ToString();
-            inputKey.Change(expected);
+            inputKey.Input(expected);
 
             var button = input.Find("button");
             button.Click();
@@ -795,7 +795,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         }
 
         [Fact]
-        public void WhenValueIsOtherObject_should_display_link()
+        public void WhenValueIsOtherObject_should_display_create_button()
         {
             var model = new Model();
 
@@ -806,9 +806,30 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Child)))
                 .AddCascadingValue(new EditContext(model)));
 
-            var link = cut.Find("a");
+            Assert.Null(model.Child);
 
-            Assert.Equal("$:Child", link.Attributes["href"]?.Value);
+            var button = cut.Find("button");
+            button.Click();
+            
+            Assert.NotNull(model.Child);
+        }
+
+        [Fact]
+        public void WhenValueIsObjectWihtoutEmptyConstructor_should_throw_exception()
+        {
+            var model = new Model();
+
+            var cut = RenderComponent<InputProperty>(parameters => parameters
+                .Add(p => p.Value, model.CannotCreateChild)
+                .Add(p => p.Model, model)
+                .Add(p => p.Path, "$")
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.CannotCreateChild)))
+                .AddCascadingValue(new EditContext(model)));
+
+            Assert.Null(model.CannotCreateChild);
+
+            var button = cut.Find("button");
+            Assert.Throws<InvalidOperationException>(() => button.Click());
         }
 
         class Model
@@ -872,6 +893,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             public HttpStatusCode Enum { get; set; }
 
             public Model? Child { get; set; }
+
+            public Tuple<string, Model>? CannotCreateChild { get; set; }
         }
     }
 }
