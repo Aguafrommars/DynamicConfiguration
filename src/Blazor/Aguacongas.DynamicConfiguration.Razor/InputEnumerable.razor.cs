@@ -153,14 +153,6 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException("Cannot create list.");
             }
 
-            if (Value is IDictionary enumerable)
-            {
-                foreach (var key in enumerable.Keys)
-                {
-                    dictionary.Add(key, enumerable[key]);
-                }
-            }
-
             Property?.SetValue(Model, dictionary);
             Value = dictionary;
         }
