@@ -17,7 +17,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
     public class SettingsTest : TestContext
     {
         [Fact]
-        public void OnParametersSetAsync_should_throw_when_Service_is_null()
+        public async Task OnParametersSetAsync_should_throw_when_Service_is_null()
         {
             var mockHttpHandler = new MockHttpMessageHandler();
             var httpClient = mockHttpHandler.ToHttpClient();
@@ -44,7 +44,10 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             instance.GetType().GetProperty("Service", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(cut.Instance, null);
 
-            Assert.Throws<InvalidOperationException>(() => cut.SetParametersAndRender(ComponentParameter.CreateParameter("Path", null)));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => instance.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
+            {
+                ["Path"] = null
+            })));
         }
 
         [Fact]
