@@ -1,0 +1,189 @@
+﻿using Microsoft.AspNetCore.Components;
+using System.Collections;
+
+namespace Aguacongas.DynamicConfiguration.Razor
+{
+    public abstract class PropertyValueBase<T> : ComponentBase
+    {
+        /// <summary>
+        /// Gets or sets the model.
+        /// </summary>
+        [Parameter]
+        public T? Model { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        [Parameter]
+        public object? Value { get; set; }
+
+        public virtual Type? PropertyType { get; set; }
+
+        protected virtual string? Error { get; set; }
+
+        protected abstract void SetValue(object? value);
+
+        protected virtual Type UnderlyingType => PropertyType is not null
+            ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
+            : throw new InvalidOperationException("PropertyType cannot be null");
+
+        protected virtual string? Placeholder => IsTimeSpan ? "00:00:00" : null;
+
+        protected virtual bool IsTimeSpan => UnderlyingType.IsAssignableTo(typeof(TimeSpan));
+
+        protected virtual bool IsString => UnderlyingType.IsAssignableTo(typeof(string)) || IsTimeSpan;
+
+        protected virtual bool IsNumber => Type.GetTypeCode(UnderlyingType) switch
+        {
+            TypeCode.Int16 or
+            TypeCode.Int32 or
+            TypeCode.Int64 or
+            TypeCode.Decimal or
+            TypeCode.Double or
+            TypeCode.Single or
+            TypeCode.Byte or
+            TypeCode.SByte or
+            TypeCode.UInt16 or
+            TypeCode.UInt32 or
+            TypeCode.UInt64 => true,
+            _ => false,
+        };
+
+        protected virtual bool IsDate => UnderlyingType.IsAssignableTo(typeof(DateTime)) || UnderlyingType.IsAssignableTo(typeof(DateTimeOffset));
+
+        protected virtual bool IsBool => UnderlyingType.IsAssignableTo(typeof(bool));
+
+        protected virtual bool IsEnum => UnderlyingType.IsEnum;
+
+        protected virtual bool IsEnumerable => UnderlyingType.IsAssignableTo(typeof(IEnumerable));
+
+        protected virtual string? ValueAsString
+        {
+            get { return Value?.ToString(); }
+            set
+            {
+                if (UnderlyingType.IsAssignableTo(typeof(string)))
+                {
+                    SetValue(value);
+                    return;
+                }
+                if (IsTimeSpan)
+                {
+                    if (!TimeSpan.TryParse(value, out TimeSpan timeSpan))
+                    {
+                        Error = $"Cannot parse '{value}'";
+                        return;
+                    }
+                    SetValue(timeSpan);
+                }
+                Error = null;
+            }
+        }
+
+
+        protected virtual double? ValueAsDouble
+        {
+            get
+            {
+                if (Value is null)
+                {
+                    return null;
+                }
+                return Convert.ToDouble(Value);
+            }
+            set
+            {
+                if (value is null)
+                {
+                    SetValue(null);
+                    return;
+                }
+
+                Value = Type.GetTypeCode(UnderlyingType) switch
+                {
+                    TypeCode.Int16 => Convert.ToInt16(value),
+                    TypeCode.Int32 => Convert.ToInt32(value),
+                    TypeCode.Int64 => Convert.ToInt64(value),
+                    TypeCode.Decimal => Convert.ToDecimal(value),
+                    TypeCode.Double => Convert.ToDouble(value),
+                    TypeCode.Single => Convert.ToSingle(value),
+                    TypeCode.Byte => Convert.ToByte(value),
+                    TypeCode.SByte => Convert.ToSByte(value),
+                    TypeCode.UInt16 => Convert.ToUInt16(value),
+                    TypeCode.UInt32 => Convert.ToUInt32(value),
+                    TypeCode.UInt64 => Convert.ToUInt64(value),
+                    _ => null
+                };
+
+                SetValue(Value);
+            }
+        }
+
+        protected virtual bool ValueAsBool
+        {
+            get
+            {
+                if (Value is null)
+                {
+                    return false;
+                }
+                return (bool)Value;
+            }
+            set
+            {
+                SetValue(value);
+            }
+        }
+
+        protected virtual DateTimeOffset? ValueAsDate
+        {
+            get
+            {
+                if (Value is null)
+                {
+                    return null;
+                }
+                if (UnderlyingType.IsAssignableTo(typeof(DateTimeOffset)))
+                {
+                    return (DateTimeOffset)Value;
+                }
+                var dateTime = (DateTime)Value;
+                if (dateTime.ToUniversalTime() <= DateTimeOffset.MinValue.UtcDateTime)
+                {
+                    return DateTimeOffset.MinValue;
+                }
+                if (dateTime.ToUniversalTime() >= DateTimeOffset.MaxValue.UtcDateTime)
+                {
+                    return DateTimeOffset.MaxValue;
+                }
+                return new DateTimeOffset(dateTime);
+            }
+            set
+            {
+                if (UnderlyingType.IsAssignableTo(typeof(DateTimeOffset)))
+                {
+                    SetValue(value);
+                    return;
+                }
+                SetValue(value?.DateTime);
+            }
+        }
+
+        protected virtual Enum? ValueAsEnum
+        {
+            get
+            {
+                if (Value is null)
+                {
+                    return null;
+                }
+                return (Enum)Value;
+            }
+            set
+            {
+                SetValue(value);
+            }
+        }
+
+    }
+}
