@@ -147,22 +147,5 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
 
             return type;
         }
-
-        private static object? GetValueFromEnumerator(object? value, string segment, IEnumerable enumerable)
-        {
-            var index = int.Parse(segment);
-            var i = 0;
-            foreach (var item in enumerable)
-            {
-                if (i == index)
-                {
-                    value = item;
-                    break;
-                }
-                i++;
-            }
-
-            return value;
-        }
     }
 }
