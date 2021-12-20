@@ -4,6 +4,8 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 
@@ -18,4 +20,10 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Update="README.md">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿@if (IsString)
+﻿@inherits PropertyValueBase<System.Collections.IList>
+
+@if (IsString)
 {
     <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
 }
