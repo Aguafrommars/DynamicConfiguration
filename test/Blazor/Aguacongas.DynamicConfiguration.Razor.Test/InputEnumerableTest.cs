@@ -27,9 +27,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 Value = null
             });
             var button = cut.Find("button");
-            button.Click();
+            Assert.Throws<InvalidOperationException>(() => button.Click());
 
-            Assert.Empty(model.Dictionary);
+            Assert.Null(model.Dictionary);
 
             var expected = Guid.NewGuid().ToString();
             input = cut.Find("input");
