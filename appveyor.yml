@@ -13,6 +13,8 @@ environment:
   GH_TOKEN: 
     secure: 0NJdORJRFjpB0dwUYv7bVNsbkldkoBhnvWik/CTOwAF/k9kP+/uTWMFnDcpEpt8E
   donetsdk: 6.0.100-rc.1.21463.6
+  sonarqube:
+    secure: CeABw2w+qR/5Uk1B+FwM0UGK3zl6S59BTQ2wf5I52EHXfMMC52lCf9gTwBkh9uDv
   JAVA_HOME: C:\Program Files\Java\jdk14
   PATH: $(JAVA_HOME)\bin;$(PATH)
 init:
