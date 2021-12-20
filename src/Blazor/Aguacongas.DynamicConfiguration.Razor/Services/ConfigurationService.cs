@@ -85,22 +85,6 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
                     continue;
                 }
 
-                if (value is IEnumerable enumerable)
-                {
-                    var index = int.Parse(segment);
-                    var i = 0;
-                    foreach(var item in enumerable)
-                    {
-                        if (i == index)
-                        {
-                            value = item;
-                            break;
-                        }
-                        i++;
-                    }
-                    continue;
-                }
-
                 var property = type.GetProperty(segment);
                 if (property is null)
                 {
@@ -110,7 +94,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             }
             return value;
         }
-
+        
         /// <summary>
         /// Saves the configuration at key.
         /// </summary>

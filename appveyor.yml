@@ -35,8 +35,6 @@ test_script:
 artifacts:
   - path: artifacts/**/*.nupkg
     name: nuget
-  - path: artifacts/**/*.zip
-    name: zip    
 deploy:
   - provider: NuGet
     api_key:
@@ -51,7 +49,7 @@ deploy:
     draft: true
     prerelease: true
     release: $(Version)
-    artifact: /.*\.zip/
+    artifact: /.*\.nupkg/
     on:
       branch: 
       - /preview\/*/
@@ -60,7 +58,7 @@ deploy:
     auth_token: $(GH_TOKEN)
     draft: true
     release: $(Version)
-    artifact: /.*\.zip/
+    artifact: /.*\.nupkg/
     on:
       branch: 
       - /release\/*/
