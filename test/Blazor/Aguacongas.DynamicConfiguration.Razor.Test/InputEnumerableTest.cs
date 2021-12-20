@@ -137,6 +137,29 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Assert.Empty(model.Enumerable);
         }
 
+        [Fact]
+        public void WhenModelIsFixedSizeListRemoveItem_should_use_index()
+        {
+            var model = new Model
+            {
+                Enumerable = new object[]
+                {
+                    new object()
+                },
+            };
+
+            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+                .Add(p => p.Model, model)
+                .Add(p => p.Value, model.Enumerable)
+                .Add(p => p.Path, "Model")
+                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Enumerable))));
+
+            var button = cut.Find("button");
+            button.Click();
+
+            Assert.Empty(model.Enumerable);
+        }
+
         class Model
         {
             public IDictionary<string, object>? IDictionary { get; set; }
@@ -146,5 +169,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             public IEnumerable<object>? Enumerable { get; set; }
         }
 
+        class FixedSizeList
+        {
+
+        }
     }
 }
