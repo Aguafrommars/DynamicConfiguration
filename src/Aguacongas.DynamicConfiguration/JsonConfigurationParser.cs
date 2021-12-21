@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿// This file is a copy of https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.Json/src/JsonConfigurationFileParser.cs
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +10,7 @@ using System.Text.Json;
 
 namespace Aguacongas.DynamicConfiguration
 {
+    
     /// <summary>
     /// Parses JSON configuration
     /// </summary>

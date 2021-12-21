@@ -8,7 +8,8 @@ var configuration = builder.Configuration;
 configuration.AddRedis(options => configuration.GetSection("Redis").Bind(options));
 
 // Add services to the container.
-builder.Services.AddConfigurationServices(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider))
+builder.Services.AddConfigurationServices(configuration,
+    options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider))
     .AddReverseProxy()
     .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 

@@ -19,11 +19,6 @@ namespace Aguacongas.DynamicConfiguration.Redis
         private readonly IDatabase _database;
         private readonly ISubscriber _subscriber;
 
-        public override bool TryGet(string key, out string value)
-        {
-            var result = base.TryGet(key, out value);
-            return result;
-        }
         /// <summary>
         /// Initialize a new instance of <see cref="RedisConfigurationProvider"/>
         /// </summary>
@@ -35,7 +30,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
             var connection = source.Connection;
             _database = connection.GetDatabase(_source.Database ?? -1);
             _subscriber = connection.GetSubscriber();
-            _subscriber.Subscribe(_source.Channel).OnMessage(message =>
+            _subscriber.Subscribe(_source.Channel, (channel, value) => 
             {
                 Load();
                 OnReload();

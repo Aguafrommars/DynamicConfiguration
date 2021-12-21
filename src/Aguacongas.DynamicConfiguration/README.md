@@ -7,7 +7,7 @@ Interface and services to dynamically configure .NET programs.
 ### Setup
 
 ```cs
-services.AddConfigurationServices(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
+services.AddConfigurationServices(builder.Configuration, options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
 ```
 
 > You need a configuration provider able to persist the configuration like [Aguacongas.DynamicConfiguration.Redis](../Aguacongas.DynamicConfiguration.Redis/README.md) in your configuration pipeline to persist configuration changes.   

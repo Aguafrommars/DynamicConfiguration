@@ -1,8 +1,6 @@
-﻿using Aguacongas.DynamicConfiguration.WebApi.Controllers;
-using Aguacongas.DynamicConfiguration.Formatters;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Aguacongas.DynamicConfiguration.Formatters;
 using Aguacongas.DynamicConfiguration.Options;
+using Aguacongas.DynamicConfiguration.WebApi.Controllers;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -14,12 +12,15 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Adds configuration web API services and controlles in DI
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="configure">An action to cconfigure the options</param>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configurationRoot">The root configuration.</param>
+        /// <param name="configure">An action to cconfigure the options.</param>
         /// <returns></returns>
-        public static IMvcBuilder AddConfigurationWebAPI(this IMvcBuilder builder, Action<DynamicConfigurationOptions> configure)
+        public static IMvcBuilder AddConfigurationWebAPI(this IMvcBuilder builder,
+            IConfigurationRoot configurationRoot,
+            Action<DynamicConfigurationOptions> configure)
         {
-            builder.Services.AddConfigurationServices(configure);
+            builder.Services.AddConfigurationServices(configurationRoot, configure);
             return builder.AddApplicationPart(typeof(ConfigurationController).Assembly)
                 .AddMvcOptions(options =>
                 {

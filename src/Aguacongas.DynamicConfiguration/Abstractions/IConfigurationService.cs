@@ -21,6 +21,6 @@ namespace Aguacongas.DynamicConfiguration.Abstractions
         /// <param name="typeName">The assembly-qualified type name</param>
         /// <param name="key">The configuration key</param>
         /// <returns>The configuration</returns>
-        Task<object> GetAsync(string typeName, string key);
+        Task<object> GetAsync(string typeName, string key = null);
     }
 }

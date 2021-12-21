@@ -33,7 +33,7 @@ namespace Aguacongas.DynamicConfiguration.Services
         /// <param name="typeName">The assembly-qualified type name</param>
         /// <param name="key">The configuration key</param>
         /// <returns>The configuration</returns>
-        public Task<object> GetAsync(string typeName, string key)
+        public Task<object> GetAsync(string typeName, string key = null)
         {
             if (string.IsNullOrWhiteSpace(typeName))
             {

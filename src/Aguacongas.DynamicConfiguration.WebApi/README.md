@@ -34,9 +34,8 @@ services.Configure<ReverseProxyOptions>(configuration.GetSection(nameof(ReverseP
 
 services.AddAuthentication(); // this sample doesn't have authentication system but shoudl add yours.
 
-services.AddTransient(p => builder.Configuration as IConfigurationRoot)
-    .AddControllersWithViews()
-    .AddConfigurationWebAPI(options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
+services.AddControllersWithViews()
+    .AddConfigurationWebAPI(builder.Configuration, options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
     
 services.AddRazorPages();
 
