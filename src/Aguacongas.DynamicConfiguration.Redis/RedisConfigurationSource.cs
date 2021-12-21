@@ -12,24 +12,23 @@ namespace Aguacongas.DynamicConfiguration.Redis
     public class RedisConfigurationSource : IConfigurationSource, IRedisConfigurationSource, IDisposable
     {
         private bool disposedValue;
-        private ConfigurationOptions _configurationOptions;
-        private string ConnectionString => RedisConfigurationOptions.ConnectionString;
+        private string ConnectionString => RedisConfigurationOptions?.ConnectionString;
 
         /// <summary>
         /// Gets the database.
         /// </summary>
-        public int? Database => RedisConfigurationOptions.Database;
+        public int? Database => RedisConfigurationOptions?.Database;
 
         /// <summary>
         /// Gets the publication channel.
         /// </summary>
-        public string Channel => RedisConfigurationOptions.Channel;
+        public string Channel => RedisConfigurationOptions?.Channel;
 
         /// <summary>
         /// Gets the hash key.
         /// </summary>
 
-        public string HashKey => RedisConfigurationOptions.HashKey;
+        public string HashKey => RedisConfigurationOptions?.HashKey;
 
         /// <summary>
         /// Get the connection.
@@ -59,7 +58,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
                 throw new InvalidOperationException($"'ConnectionString' must be set.");
             }
 
-            if (string.IsNullOrEmpty(ConnectionString))
+            if (string.IsNullOrEmpty(Channel))
             {
                 throw new InvalidOperationException($"'Channel' must be set.");
             }
@@ -69,9 +68,10 @@ namespace Aguacongas.DynamicConfiguration.Redis
                 throw new InvalidOperationException($"'HashKey' must be set.");
             }
 
-            _configurationOptions = ConfigurationOptions.Parse(ConnectionString);
-            Connection = ConnectionMultiplexer.Connect(_configurationOptions);
+            Connection = ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(ConnectionString));
         }
+
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -85,6 +85,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
