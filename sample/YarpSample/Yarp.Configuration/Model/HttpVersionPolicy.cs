@@ -1,4 +1,7 @@
-﻿namespace Yarp.Configuration.Model
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+namespace Yarp.Configuration.Model
 {
     /// <summary>
     /// Specifies behaviors for selecting and negotiating the HTTP version for a request.

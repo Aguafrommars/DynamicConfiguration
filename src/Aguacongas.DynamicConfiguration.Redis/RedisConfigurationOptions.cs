@@ -1,4 +1,7 @@
-﻿namespace Aguacongas.DynamicConfiguration.Redis
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+namespace Aguacongas.DynamicConfiguration.Redis
 {
     /// <summary>
     /// Redis configuration options.

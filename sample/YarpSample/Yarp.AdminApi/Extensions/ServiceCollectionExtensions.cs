@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Abstractions;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Abstractions;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
@@ -12,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var info = configuration.GetSection(nameof(OpenApiInfo)).Get<OpenApiInfo>();
                 c.SwaggerDoc(info.Version, info);
-                
+
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
                 var xmlPath = Path.Combine(basePath, $"{typeof(IConfigurationService).Assembly.GetName().Name}.xml");
 

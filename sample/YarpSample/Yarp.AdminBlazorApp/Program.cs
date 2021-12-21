@@ -1,3 +1,6 @@
+// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
 using Aguacongas.DynamicConfiguration.Razor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -13,7 +16,7 @@ var configuration = builder.Configuration;
 
 // The Settings components requires authentication.
 // Update this code with the remote authorization service of your choice
-services.AddOidcAuthentication(options => 
+services.AddOidcAuthentication(options =>
 {
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
 });

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.Collections;
 using System.Reflection;
 
@@ -40,7 +43,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// <remarks>Either ValueType or Property must be set.</remarks>
         [Parameter]
         public Type? ValueType { get; set; }
-        
+
         private string? Key { get; set; }
 
         private Type PropertyType => ValueType ?? Property?.PropertyType ?? throw new InvalidOperationException("Either PropertyType or ValueType must be set.");
@@ -49,13 +52,13 @@ namespace Aguacongas.DynamicConfiguration.Razor
 
         private IEnumerable<PropertyInfo>? Properties => UnderlyingType.GetProperties()?.Where(p => p.CanWrite && p.Name != "Item");
 
-        private string GetPath(PropertyInfo property) => !string.IsNullOrEmpty(Path) 
-            ? $"{Path}{property.Name}" 
+        private string GetPath(PropertyInfo property) => !string.IsNullOrEmpty(Path)
+            ? $"{Path}{property.Name}"
             : throw new InvalidOperationException($"{nameof(Path)} cannot be null");
 
         private bool IsDictionary => UnderlyingType.IsAssignableTo(typeof(IDictionary)) ||
             UnderlyingType.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
-            UnderlyingType.GetGenericTypeDefinition().GetInterfaces().Any( i => i == typeof(IDictionary<,>));
+            UnderlyingType.GetGenericTypeDefinition().GetInterfaces().Any(i => i == typeof(IDictionary<,>));
 
         private IDictionary? ValueAsDictionary => Value as IDictionary;
 
@@ -72,7 +75,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
         }
 
         private void RemoveItem(object key)
-        =>  ValueAsDictionary?.Remove(key);
+        => ValueAsDictionary?.Remove(key);
 
         private void RemoveItemAt(int index)
         => ValueAsEnumerable?.RemoveAt(index);
@@ -139,7 +142,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
                     list.Add(item);
                 }
             }
-            
+
             Property?.SetValue(Model, list);
             Value = list;
             return list;

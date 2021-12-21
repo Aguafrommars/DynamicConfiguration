@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Options;
 using Aguacongas.DynamicConfiguration.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
@@ -25,7 +28,7 @@ namespace Aguacongas.DynamicConfiguration.Test.Services
         public async Task GetAsync_should_verify_arguments()
         {
             var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
-            
+
             var sut = new ConfigurationService(configuration, Microsoft.Extensions.Options.Options.Create(new DynamicConfigurationOptions
             {
                 Provider = configuration.Providers.First()
@@ -49,7 +52,7 @@ namespace Aguacongas.DynamicConfiguration.Test.Services
                 Provider = configuration.Providers.First()
             }));
 
-            var value = (int) await sut.GetAsync(typeof(int).AssemblyQualifiedName, "key").ConfigureAwait(false);
+            var value = (int)await sut.GetAsync(typeof(int).AssemblyQualifiedName, "key").ConfigureAwait(false);
 
             Assert.Equal(0, value);
         }

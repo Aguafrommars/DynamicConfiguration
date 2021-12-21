@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.Collections;
 
 namespace Aguacongas.DynamicConfiguration.Razor

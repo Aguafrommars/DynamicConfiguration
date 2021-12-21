@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
@@ -25,7 +28,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// </summary>
         [Parameter]
         public Type? PropertyType { get; set; }
-       
+
         private Type UnderlyingType => PropertyType is not null
             ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
             : throw new InvalidOperationException("PropertyType cannot be null");

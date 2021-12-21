@@ -1,9 +1,10 @@
-// Project: Aguafrommars/TheIdServer
+// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
+
 using Aguacongas.DynamicConfiguration.Redis;
-using Yarp.Configuration.Model;
-using Swashbuckle.AspNetCore.SwaggerUI;
 using Aguacongas.DynamicConfiguration.WebApi.Controllers;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Yarp.Configuration.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,9 @@ services.Configure<ReverseProxyOptions>(configuration.GetSection(nameof(ReverseP
         // The web api requires 2 policies, DYNAMIC_CONFIGURATION_READER_POLICY and DYNAMIC_CONFIGURATION_WRITTER_POLICY
         // In this sample those policies requires nothing, all users have access to the api.
         // You should update this code to meet your requirement.
-        options.AddPolicy(ConfigurationController.DYNAMIC_CONFIGURATION_READER_POLICY, 
+        options.AddPolicy(ConfigurationController.DYNAMIC_CONFIGURATION_READER_POLICY,
             builder => builder.RequireAssertion(context => true));
-        options.AddPolicy(ConfigurationController.DYNAMIC_CONFIGURATION_WRITTER_POLICY, 
+        options.AddPolicy(ConfigurationController.DYNAMIC_CONFIGURATION_WRITTER_POLICY,
             builder => builder.RequireAssertion(context => true));
     });
 
@@ -31,7 +32,7 @@ services
     .AddControllersWithViews()
     .AddConfigurationWebAPI(builder.Configuration,
         options => options.Provider = ((IConfigurationRoot)configuration).Providers.First(p => p is RedisConfigurationProvider));
-    
+
 services.AddRazorPages();
 
 services.AddSwaggerGenFromConfiguration(configuration);

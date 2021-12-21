@@ -1,5 +1,6 @@
-﻿// Project: Aguafrommars/TheIdServer
+﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
+
 using Aguacongas.DynamicConfiguration.Redis;
 using System;
 
@@ -24,7 +25,7 @@ namespace Microsoft.Extensions.Configuration
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return builder.Add<RedisConfigurationSource>(source => source.RedisConfigurationOptions = options);            
+            return builder.Add<RedisConfigurationSource>(source => source.RedisConfigurationOptions = options);
         }
 
         /// <summary>

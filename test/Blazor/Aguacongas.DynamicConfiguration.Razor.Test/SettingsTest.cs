@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Razor.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Razor.Options;
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Bunit;
 using Bunit.TestDoubles;
@@ -32,7 +35,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Services.AddSingleton(p => httpClientFactoryMock.Object);
 
             var options = Microsoft.Extensions.Options.Options.Create(new SettingsOptions
-            { 
+            {
                 TypeName = typeof(SettingsTest).AssemblyQualifiedName
             });
 
@@ -128,7 +131,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Services.AddTransient(p => options);
             var cut = RenderComponent<Settings>(parameters => parameters
                 .Add(p => p.RootPath, "/")
-                .Add(p => p.Path, "Child:Dictionary:test")) ;
+                .Add(p => p.Path, "Child:Dictionary:test"));
 
             cut.WaitForState(() => !cut.Markup.Contains("Loading..."));
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -26,10 +28,10 @@ namespace Aguacongas.DynamicConfiguration.Razor
             => (Property?.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute)?.Description ?? Property?.Name;
 
         /// <inheritdoc/>
-        public override Type? PropertyType 
-        { 
-            get => Property?.PropertyType ?? throw new InvalidOperationException($"{nameof(Property)} cannot be null"); 
-            set => base.PropertyType = value; 
+        public override Type? PropertyType
+        {
+            get => Property?.PropertyType ?? throw new InvalidOperationException($"{nameof(Property)} cannot be null");
+            set => base.PropertyType = value;
         }
 
         /// <inheritdoc/>

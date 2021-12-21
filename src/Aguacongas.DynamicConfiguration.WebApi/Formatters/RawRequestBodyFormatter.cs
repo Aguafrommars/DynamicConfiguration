@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
 
 namespace Aguacongas.DynamicConfiguration.Formatters

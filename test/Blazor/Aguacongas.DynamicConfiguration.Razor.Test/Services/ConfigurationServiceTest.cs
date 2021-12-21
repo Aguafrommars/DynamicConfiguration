@@ -1,13 +1,14 @@
-﻿using Aguacongas.DynamicConfiguration.Razor.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Razor.Options;
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using RichardSzalay.MockHttp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -24,10 +25,10 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
         {
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Throws<ArgumentException>(() => new ConfigurationService(null, null));
-            var mock = new Mock<IHttpClientFactory>(); 
-            Assert.Throws<ArgumentException>(() => new ConfigurationService(mock.Object, null));            
+            var mock = new Mock<IHttpClientFactory>();
+            Assert.Throws<ArgumentException>(() => new ConfigurationService(mock.Object, null));
             mock.Setup(m => m.CreateClient(It.IsAny<string>())).Returns(new HttpClient());
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService( mock.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(mock.Object, null));
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
@@ -169,6 +170,6 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test.Services
             var congiguration = await sut.GetAsync("0", default);
             Assert.Equal("test", congiguration);
 
-        }        
+        }
     }
 }

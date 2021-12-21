@@ -1,4 +1,7 @@
-﻿namespace Aguacongas.DynamicConfiguration.Abstractions
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+namespace Aguacongas.DynamicConfiguration.Abstractions
 {
     /// <summary>
     /// Classes implementing this interface auto reload configuration
