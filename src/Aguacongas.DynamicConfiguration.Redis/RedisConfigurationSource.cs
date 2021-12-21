@@ -12,7 +12,6 @@ namespace Aguacongas.DynamicConfiguration.Redis
     public class RedisConfigurationSource : IConfigurationSource, IRedisConfigurationSource, IDisposable
     {
         private bool disposedValue;
-        private ConfigurationOptions _configurationOptions;
         private string ConnectionString => RedisConfigurationOptions?.ConnectionString;
 
         /// <summary>
@@ -69,8 +68,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
                 throw new InvalidOperationException($"'HashKey' must be set.");
             }
 
-            _configurationOptions = ConfigurationOptions.Parse(ConnectionString);
-            Connection = ConnectionMultiplexer.Connect(_configurationOptions);
+            Connection = ConnectionMultiplexer.Connect(ConfigurationOptions.Parse(ConnectionString));
         }
 
         /// <inheritdoc/>
