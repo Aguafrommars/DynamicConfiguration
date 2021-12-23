@@ -1,6 +1,6 @@
 ﻿# Aguacongas.DynamicConfiguration
 
-Interface and services to dynamically configure .NET programs.
+Interfaces and services to dynamically configure .NET programs.
 
 ## Usage
 
