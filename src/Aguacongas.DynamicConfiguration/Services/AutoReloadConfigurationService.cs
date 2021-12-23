@@ -32,15 +32,12 @@ namespace Aguacongas.DynamicConfiguration.Services
         }
 
         /// <inheritdoc/>
-        public void SubscribeToChanges()
-        {
-            _subscription = _provider.GetReloadToken().RegisterChangeCallback(state =>
-            {
-                _rootConfiguration.Reload();
-                _subscription?.Dispose();
-                SubscribeToChanges();
-            }, null);
-        }
+        public void SubscribeToChanges() => _subscription = _provider.GetReloadToken().RegisterChangeCallback(state =>
+                                          {
+                                              _rootConfiguration.Reload();
+                                              _subscription?.Dispose();
+                                              SubscribeToChanges();
+                                          }, null);
 
         /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)

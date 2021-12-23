@@ -30,7 +30,7 @@ public class ServerConfig
 
 This class must be shared by the blazor application and the web API.
 
-The Blazor app *appsettings.json* should contains a **SettingsOptions**:
+The Blazor app *appsettings.json* should contains a [**SettingsOptions**](Options/SettingsOptions.cs):
 
 ```json
 {
@@ -79,3 +79,36 @@ await builder.Build().RunAsync();
 ```
 
 Review the [Yarp.AdminBlazorApp](https://github.com/Aguafrommars/DynamicConfiguration/tree/main/sample/YarpSample) sample.
+
+## Localization
+
+The library contains localized string resources used by components :
+
+|key|value|
+|:-----:|:-----:|
+|Create|Créer|
+|delete|supprimer|
+|Edit|Editer|
+|key|clé|
+|Save|Sauver|
+
+Only emglish and french resources are provided at the moments, 
+but you can provide your resources in yours languages by implementing [`ISettingsLocalizer`](Services/IsettingsLocalizer.cs) 
+and providing the implementation in the DI:
+
+```cs
+public class SettingsLocalizer : ISettingsLocalizer
+{
+    private readonly IStringLocalizer<Settings> _stringLocalizer;
+
+    public SettingsLocalizer(IStringLocalizer<Settings> stringLocalizer)
+    {
+        _stringLocalizer = stringLocalizer ?? throw new ArgumentNullException(nameof(stringLocalizer));
+    }
+
+    public LocalizedString this[string name] => _stringLocalizer[name];
+}
+```
+```cs
+ services.AddScoped<ISettingsLocalizer, SettingsLocalizer>();
+```

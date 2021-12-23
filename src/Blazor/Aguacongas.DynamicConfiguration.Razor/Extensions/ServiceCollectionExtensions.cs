@@ -4,6 +4,7 @@
 using Aguacongas.DynamicConfiguration.Razor.Options;
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -22,8 +23,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <exception cref="InvalidOperationException"></exception>
         public static IHttpClientBuilder AddConfigurationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<SettingsOptions>(options => configuration.Bind(options))
-                .AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddLocalization()
+                .Configure<SettingsOptions>(options => configuration.Bind(options));
+            services.TryAddScoped<IConfigurationService, ConfigurationService>();
+            services.TryAddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             return services.AddHttpClient(nameof(ConfigurationService))
                 .ConfigureHttpClient((provider, httpClient) =>
                 {

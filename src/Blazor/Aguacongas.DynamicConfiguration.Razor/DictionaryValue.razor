@@ -2,7 +2,7 @@
 
 @if (IsString)
 {
-    <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
+    <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Localize(Placeholder)" />
 }
 else if (IsEnum)
 {
@@ -29,7 +29,8 @@ else if (IsEnumerable)
 else
 {
     <a class="btn btn-primary" href="@($"{Path}")">
-        <span class="oi oi-pencil" title="edit" aria-hidden="true"></span>
+        <span class="oi oi-pencil" title="@Localize("Edit")?.ToLowerInvariant()" aria-hidden="true"></span>
+        @Localize("Edit")
     </a>
 }
-<div class="text-danger">@Error</div>
+<div class="text-danger">@Localize(Error)</div>

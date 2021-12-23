@@ -1,6 +1,7 @@
 ﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
 
+using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections;
 using System.Reflection;
@@ -43,6 +44,12 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// <remarks>Either ValueType or Property must be set.</remarks>
         [Parameter]
         public virtual Type? ValueType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the component localizer
+        /// </summary>
+        [Inject]
+        protected virtual ISettingsLocalizer? Localizer { get; set; }
 
         /// <summary>
         /// Binds the dictionary key.
@@ -209,6 +216,26 @@ namespace Aguacongas.DynamicConfiguration.Razor
 
             Property?.SetValue(Model, dictionary);
             Value = dictionary;
+        }
+
+        /// <summary>
+        /// Localize a value.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>The value localized.</returns>
+        protected virtual string? Localize(string? value)
+        {
+            if (value is null)
+            {
+                return null;
+            }
+
+            if (Localizer is null)
+            {
+                return value;
+            }
+
+            return Localizer[value];
         }
 
         /// <summary>

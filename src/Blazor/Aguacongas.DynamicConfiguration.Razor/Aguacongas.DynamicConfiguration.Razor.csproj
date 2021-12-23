@@ -18,6 +18,14 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Settings.fr.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>TelerikMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

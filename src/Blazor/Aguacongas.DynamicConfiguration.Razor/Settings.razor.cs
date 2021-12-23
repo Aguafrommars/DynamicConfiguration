@@ -3,6 +3,7 @@
 
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System.Collections;
 using System.Reflection;
 
@@ -13,6 +14,8 @@ namespace Aguacongas.DynamicConfiguration.Razor
     /// </summary>
     public partial class Settings
     {
+        private string? _rootPath;
+
         /// <summary>
         /// Defines the dynamic configuration writter authorization policy.
         /// </summary>
@@ -45,16 +48,32 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
+        /// <summary>
+        /// Gets or sets the configuration service.
+        /// </summary>
         [Inject]
-        private IConfigurationService? Service { get; set; }
+        protected virtual IConfigurationService? Service { get; set; }
 
-        private object? _model;
+        /// <summary>
+        /// Gets or sets the component localizer
+        /// </summary>
+        [Inject]
+        protected virtual ISettingsLocalizer? Localizer { get; set; }
 
-        private string? _rootPath;
+        /// <summary>
+        /// Gets or sets the model
+        /// </summary>
+        protected virtual object? Model { get; set; }
 
-        private IEnumerable<PropertyInfo>? Properties => _model?.GetType()?.GetProperties()?.Where(p => p.CanWrite);
+        /// <summary>
+        /// Gets the model's writable property list
+        /// </summary>
+        protected virtual IEnumerable<PropertyInfo>? Properties => Model?.GetType()?.GetProperties()?.Where(p => p.CanWrite);
 
-        private IEnumerable<string>? Segments => Path?.Split(':');
+        /// <summary>
+        /// Gets the path's segments splited by ':'.
+        /// </summary>
+        protected virtual IEnumerable<string>? Segments => Path?.Split(':');
 
         /// <summary>
         /// Method invoked when the component has received parameters from its parent in
@@ -71,18 +90,33 @@ namespace Aguacongas.DynamicConfiguration.Razor
                 throw new InvalidOperationException($"{nameof(Service)} cannot be null");
             }
 
-            _model = await Service.GetAsync(Path).ConfigureAwait(false);
+            Model = await Service.GetAsync(Path).ConfigureAwait(false);
         }
 
-        private string GetPath(PropertyInfo property) => string.IsNullOrEmpty(Path) ? $"{RootPath}{property.Name}" : $"{RootPath}{Path}:{property.Name}";
+        /// <summary>
+        /// Gets the property's path
+        /// </summary>
+        /// <param name="property">The propety</param>
+        /// <returns>The property path</returns>
+        protected virtual string GetPath(PropertyInfo property) => string.IsNullOrEmpty(Path) ? $"{RootPath}{property.Name}" : $"{RootPath}{Path}:{property.Name}";
 
-
-        private string? GetParentPath(int index)
+        /// <summary>
+        /// Gets the parent path at index
+        /// </summary>
+        /// <param name="index">The index</param>
+        /// <returns>The parent path</returns>
+        protected virtual string? GetParentPath(int index)
         => Segments is not null && DisplayPathHasLink(index)
             ? string.Join(":", Segments.Take(index + 1))
             : null;
 
-        private bool DisplayPathHasLink(int index)
+        /// <summary>
+        /// Returns true if the path should be display as linkk
+        /// </summary>
+        /// <param name="index">The path index</param>
+        /// <returns>True if the path should be display as linkk</returns>
+        /// <exception cref="InvalidOperationException">If Segments is null</exception>
+        protected virtual bool DisplayPathHasLink(int index)
         {
             if (Service?.Configuration is null)
             {
@@ -133,18 +167,44 @@ namespace Aguacongas.DynamicConfiguration.Razor
             return false;
         }
 
-        private Task OnValidSubmit()
+        /// <summary>
+        /// Handles valid submit
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">If Service is null</exception>
+        protected virtual Task OnValidSubmit()
         => Service is not null
             ? Service.SaveAsync(Path, default)
             : throw new InvalidOperationException($"{nameof(Service)} cannot be null");
 
-
-        private static bool IsDictionary(Type type)
+        /// <summary>
+        /// Localize a value.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>The value localized.</returns>
+        protected virtual string? Localize(string? value)
         {
-            return type.IsAssignableTo(typeof(IDictionary)) ||
+            if (value is null)
+            {
+                return null;
+            }
+
+            if (Localizer is null)
+            {
+                return value;
+            }
+
+            return Localizer[value];
+        }
+
+        /// <summary>
+        /// Returns true is the type is a dictionary
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>True is the type is a dictionary</returns>
+        protected static bool IsDictionary(Type type) => type.IsAssignableTo(typeof(IDictionary)) ||
                 (type.IsGenericType &&
                 (type.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
                  type.GetGenericTypeDefinition().GetInterfaces().Any(i => i == typeof(IDictionary<,>))));
-        }
     }
 }

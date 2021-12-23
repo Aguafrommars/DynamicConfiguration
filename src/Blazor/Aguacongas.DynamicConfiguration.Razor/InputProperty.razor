@@ -5,7 +5,7 @@
     <div>
         @if (IsString)
         {
-            <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Placeholder" />
+            <InputText class="form-control" @bind-Value="@ValueAsString" placeholder="@Localize(Placeholder)" />
         }
         else if (IsEnum)
         {
@@ -34,7 +34,8 @@
             @if (Value is null)
             {
                 <button type="button" class="btn btn-sm btn-secondary" @onclick="CreateValue">
-                    <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+                    <span class="oi oi-plus" title="@Localize("Create")?.ToLowerInvariant()" aria-hidden="true"></span>
+                    @Localize("Create")
                 </button>
             }
             else
@@ -43,12 +44,13 @@
                     <div class="hstack">
                         <div>
                             <a class="btn btn-primary" href="@Path">
-                                <span class="oi oi-pencil" title="edit" aria-hidden="true"></span>
+                                <span class="oi oi-pencil" title="@Localize("Edit")?.ToLowerInvariant()" aria-hidden="true"></span>
+                                @Localize("Edit")
                             </a>
                         </div>
                         <div class="ms-auto">
                             <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="DeleteValue">
-                                <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                                <span class="oi oi-trash" title="@Localize("delete")" aria-hidden="true"></span>
                             </button>
                         </div>
                     </div>

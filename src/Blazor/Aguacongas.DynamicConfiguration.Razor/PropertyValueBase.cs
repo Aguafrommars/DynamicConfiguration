@@ -1,7 +1,9 @@
 ﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
 
+using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System.Collections;
 
 namespace Aguacongas.DynamicConfiguration.Razor
@@ -28,6 +30,12 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// Gets or sets the property type.
         /// </summary>
         public virtual Type? PropertyType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the component localizer
+        /// </summary>
+        [Inject]
+        protected virtual ISettingsLocalizer? Localizer { get; set; }
 
         /// <summary>
         /// Gets or sets the error messaegs.
@@ -243,5 +251,24 @@ namespace Aguacongas.DynamicConfiguration.Razor
             }
         }
 
+        /// <summary>
+        /// Localize a value.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <returns>The value localized.</returns>
+        protected virtual string? Localize(string? value)
+        {
+            if (value is null)
+            {
+                return null;
+            }
+
+            if (Localizer is null)
+            {
+                return value;
+            }
+            
+            return Localizer[value];
+        }
     }
 }
