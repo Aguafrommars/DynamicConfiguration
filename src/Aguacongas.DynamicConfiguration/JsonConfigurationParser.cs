@@ -43,7 +43,7 @@ namespace Aguacongas.DynamicConfiguration
             {
                 if (doc.RootElement.ValueKind != JsonValueKind.Object)
                 {
-                    throw new FormatException($"Top-level JSON element must be an object. Instead, '{doc.RootElement.ValueKind}' was found.");
+                    return _data;
                 }
                 VisitElement(doc.RootElement);
             }

@@ -21,7 +21,7 @@
                             </div>
                             <div class="ms-auto">
                                 <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItem(key)">
-                                    <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                                    <span class="oi oi-trash" title="@Localize("delete")" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
@@ -30,9 +30,10 @@
             }
         }
         <div class="hstack">
-            <input type="text" placeholder="key" @bind="@Key" @bind:event="oninput" />
+            <input type="text" placeholder="@Localize("key")" @bind="@Key" @bind:event="oninput" />
             <button type="button" class="btn btn-sm btn-secondary" @onclick="() => AddDictionaryItem()" disabled="@string.IsNullOrWhiteSpace(Key)">
-                <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+                <span class="oi oi-plus" title="@Localize("Create")?.ToLowerInvariant()" aria-hidden="true"></span>
+                @Localize("Create")
             </button>
         </div>
     }
@@ -52,7 +53,7 @@
                             </div>
                             <div class="ms-auto">
                                 <button type="button" class="btn btn-sm btn-secondary ms-3" @onclick="() => RemoveItemAt(index)">
-                                    <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
+                                    <span class="oi oi-trash" title="@Localize("delete")" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
@@ -62,7 +63,8 @@
         }
         <div>
             <button type="button" class="btn btn-sm btn-secondary" @onclick="AddListItem">
-                <span class="oi oi-plus" title="new" aria-hidden="true"></span>
+                <span class="oi oi-plus" title="@Localize("Create")?.ToLowerInvariant()" aria-hidden="true"></span>
+                @Localize("Create")
             </button>
         </div>
     }

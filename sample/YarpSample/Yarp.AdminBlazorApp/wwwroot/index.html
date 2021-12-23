@@ -20,6 +20,12 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script>
+        window.blazorCulture = {
+            get: () => window.localStorage['BlazorCulture'],
+            set: (value) => window.localStorage['BlazorCulture'] = value
+        };
+    </script>
     <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>

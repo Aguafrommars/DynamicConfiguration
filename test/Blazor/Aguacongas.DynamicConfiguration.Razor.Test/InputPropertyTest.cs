@@ -1,8 +1,10 @@
 ﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
 
+using Aguacongas.DynamicConfiguration.Razor.Services;
 using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,6 +23,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 String = Guid.NewGuid().ToString()
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.String)
@@ -43,6 +47,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDecimal)
                 .Add(p => p.Model, model)
@@ -63,6 +69,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsDecimal_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Decimal)
@@ -85,6 +93,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableFloat)
                 .Add(p => p.Model, model)
@@ -105,6 +115,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsFloat_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Float)
@@ -127,6 +139,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDouble)
                 .Add(p => p.Model, model)
@@ -147,6 +161,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsDouble_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Double)
@@ -169,6 +185,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableLong)
                 .Add(p => p.Model, model)
@@ -189,6 +207,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsLong_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Long)
@@ -211,6 +231,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableInt)
                 .Add(p => p.Model, model)
@@ -231,6 +253,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsInt_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Int)
@@ -253,6 +277,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableShort)
                 .Add(p => p.Model, model)
@@ -273,6 +299,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsShort_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Short)
@@ -295,6 +323,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableByte)
                 .Add(p => p.Model, model)
@@ -315,6 +345,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsByte_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Byte)
@@ -337,6 +369,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableULong)
                 .Add(p => p.Model, model)
@@ -357,6 +391,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsULong_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.ULong)
@@ -379,6 +415,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableUInt)
                 .Add(p => p.Model, model)
@@ -399,6 +437,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsUInt_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.UInt)
@@ -421,6 +461,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableUShort)
                 .Add(p => p.Model, model)
@@ -441,6 +483,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsUShort_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.UShort)
@@ -463,6 +507,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableSByte)
                 .Add(p => p.Model, model)
@@ -483,6 +529,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsSByte_should_display_input_number()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.SByte)
@@ -505,6 +553,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NulllableTimeSpan)
                 .Add(p => p.Model, model)
@@ -526,6 +576,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.TimeSpan)
                 .Add(p => p.Model, model)
@@ -546,6 +598,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsTimespan_should_display_error_on_parse_exception_and_reset_it_on_no_exception()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.TimeSpan)
@@ -574,6 +628,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -597,6 +653,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsDateTime_should_display_input_date()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -622,6 +680,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -645,6 +705,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsDateTimeOffset_should_display_input_date()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -670,6 +732,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableBool)
                 .Add(p => p.Model, model)
@@ -691,6 +755,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Bool)
                 .Add(p => p.Model, model)
@@ -711,6 +777,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsNullableEnum_should_display_InputEnum()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableEnum)
@@ -734,6 +802,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Enum)
                 .Add(p => p.Model, model)
@@ -756,6 +826,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Enumerable)
                 .Add(p => p.Model, model)
@@ -776,6 +848,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsDictionary_should_display_InputEnumErable()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Dictionary)
@@ -802,6 +877,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.Child)
                 .Add(p => p.Model, model)
@@ -821,6 +898,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsObjectWihtoutEmptyConstructor_should_throw_exception()
         {
             var model = new Model();
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.CannotCreateChild)
