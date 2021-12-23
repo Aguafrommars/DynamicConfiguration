@@ -1,9 +1,11 @@
 ﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
 
+using Aguacongas.DynamicConfiguration.Razor.Services;
 using Bunit;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +23,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 IDictionary = new Dictionary<string, object>()
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Dictionary)
@@ -58,6 +63,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 DictionaryInt = new TestDisctionary()
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.DictionaryInt)
@@ -90,6 +98,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                     [key] = key
                 }
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.IDictionary)
@@ -109,6 +120,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 Enumerable = Array.Empty<object>(),
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
@@ -133,6 +146,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 EnumerableString = Array.Empty<string>(),
             };
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.EnumerableString)
@@ -154,6 +169,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 EnumerableInt = Array.Empty<int>(),
             };
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.EnumerableInt)
@@ -174,6 +191,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 DictionaryString = new Dictionary<string, string>(),
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
@@ -207,6 +226,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 },
             };
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Enumerable)
@@ -230,6 +251,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 },
             };
 
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
+
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Enumerable)
@@ -252,6 +275,8 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                     new object()
                 },
             };
+
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
             var cut = RenderComponent<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)

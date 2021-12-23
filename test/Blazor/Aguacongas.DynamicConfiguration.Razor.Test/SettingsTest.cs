@@ -39,7 +39,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 TypeName = typeof(SettingsTest).AssemblyQualifiedName
             });
 
-            Services.AddTransient<IConfigurationService, ConfigurationService>();
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
             var cut = RenderComponent<Settings>();
 
@@ -73,7 +73,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 TypeName = typeof(SettingsTest).AssemblyQualifiedName
             });
 
-            Services.AddTransient<IConfigurationService, ConfigurationService>();
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
             var cut = RenderComponent<Settings>();
 
@@ -127,7 +127,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 TypeName = model.GetType().AssemblyQualifiedName
             });
 
-            Services.AddTransient<IConfigurationService, ConfigurationService>();
+            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
             var cut = RenderComponent<Settings>(parameters => parameters
                 .Add(p => p.RootPath, "/")
