@@ -6,6 +6,30 @@ Manage your .NET application configuration dynamically.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ufot0jcsr2bw6dg4/branch/main?svg=true)](https://ci.appveyor.com/project/aguacongas/dynamicconfiguration/branch/main)
 
+Nuget packages
+--------------
+|Services|Redis Configuration Provider|Web API|Razor components|
+|:------:|:------:|:------:|:------:|
+|[![][Services-badge]][Services-nuget]|[![][Redis-badge]][Redis-nuget]|[![][WepAPI-badge]][WepAPI-nuget]|[![][Razor-badge]][Razor-nuget]|
+|[![][Services-downloadbadge]][Services-nuget]|[![][Redis-downloadbadge]][Redis-nuget]|[![][WepAPI-downloadbadge]][WepAPI-nuget]|[![][Razor-downloadbadge]][Razor-nuget]|
+
+[Services-badge]: https://img.shields.io/nuget/v/Aguacongas.DynamicConfiguration.svg
+[Services-downloadbadge]: https://img.shields.io/nuget/dt/Aguacongas.DynamicConfiguration.svg
+[Services-nuget]: https://www.nuget.org/packages/Aguacongas.DynamicConfiguration/
+
+[Redis-badge]: https://img.shields.io/nuget/v/Aguacongas.DynamicConfiguration.Redis.svg
+[Redis-downloadbadge]: https://img.shields.io/nuget/dt/Aguacongas.DynamicConfiguration.Redis.svg
+[Redis-nuget]: https://www.nuget.org/packages/Aguacongas.DynamicConfiguration.Redis/
+
+[WepAPI-badge]: https://img.shields.io/nuget/v/Aguacongas.DynamicConfiguration.WebApi.svg
+[WepAPI-downloadbadge]: https://img.shields.io/nuget/dt/Aguacongas.DynamicConfiguration.WebApi.svg
+[WepAPI-nuget]: https://www.nuget.org/packages/Aguacongas.DynamicConfiguration.WebApi/
+
+[Razor-badge]: https://img.shields.io/nuget/v/Aguacongas.DynamicConfiguration.Razor.svg
+[Razor-downloadbadge]: https://img.shields.io/nuget/dt/Aguacongas.DynamicConfiguration.Razor.svg
+[Razor-nuget]: https://www.nuget.org/packages/Aguacongas.DynamicConfiguration.Razor/
+
+
 ## Description
 
 This repository contains the source code of .NET library to dynamicaly configure your .NET applications.
