@@ -12,7 +12,7 @@
 }
 else
 {
-    <InputSelect class="form-control form-select" Value="@Name" ValueExpression="() => Name" ValueChanged="@((string value) => OnSelectChanged(value))">
+    <InputSelect class="form-control form-select" Value="@Name" ValueExpression="() => Name" ValueChanged="@((string value) => OnSelectChangedAsyn(value))">
         @if(IsNullable)
         {
             <option></option>

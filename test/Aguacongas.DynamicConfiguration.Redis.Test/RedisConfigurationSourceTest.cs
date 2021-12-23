@@ -1,9 +1,8 @@
-﻿using StackExchange.Redis;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Redis.Test
@@ -35,7 +34,7 @@ namespace Aguacongas.DynamicConfiguration.Redis.Test
             {
                 redisConfigurationSource.Build(null);
             }
-            catch(RedisConnectionException)
+            catch (RedisConnectionException)
             {
                 // 
             }

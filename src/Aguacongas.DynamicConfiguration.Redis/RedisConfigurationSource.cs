@@ -1,5 +1,6 @@
-﻿// Project: Aguafrommars/TheIdServer
+﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
+
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 using System;

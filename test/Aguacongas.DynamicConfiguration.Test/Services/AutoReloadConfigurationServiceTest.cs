@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Options;
 using Aguacongas.DynamicConfiguration.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;

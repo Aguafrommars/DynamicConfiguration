@@ -1,4 +1,7 @@
-﻿using Bunit;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
@@ -53,7 +56,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             var expected = 1;
             input.Change($"{expected}");
 
-            Assert.Equal(expected, model.NullableDecimal);        
+            Assert.Equal(expected, model.NullableDecimal);
         }
 
         [Fact]
@@ -236,7 +239,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Int)))
                 .AddCascadingValue(new EditContext(model)));
 
-            var input = cut.Find($"input[type=number]"); 
+            var input = cut.Find($"input[type=number]");
             Assert.NotNull(input);
 
             var expected = 1;
@@ -530,7 +533,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.TimeSpan)))
                 .AddCascadingValue(new EditContext(model)));
 
-            var input = cut.Find($"input[placeholder=\"00:00:00\"]"); 
+            var input = cut.Find($"input[placeholder=\"00:00:00\"]");
             Assert.NotNull(input);
 
             var expected = TimeSpan.FromMinutes(1);
@@ -621,7 +624,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            
+
             var cut = RenderComponent<InputProperty>(parameters => parameters
                 .Add(p => p.Value, model.NullableDateTimeOffset)
                 .Add(p => p.Model, model)
@@ -810,7 +813,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             var button = cut.Find("button");
             button.Click();
-            
+
             Assert.NotNull(model.Child);
         }
 

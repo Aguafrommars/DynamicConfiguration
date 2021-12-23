@@ -1,5 +1,6 @@
-﻿// Project: Aguafrommars/TheIdServer
+﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
+
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 using System;
@@ -30,7 +31,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
             var connection = source.Connection;
             _database = connection.GetDatabase(_source.Database ?? -1);
             _subscriber = connection.GetSubscriber();
-            _subscriber.Subscribe(_source.Channel, (channel, value) => 
+            _subscriber.Subscribe(_source.Channel, (channel, value) =>
             {
                 Load();
                 OnReload();
@@ -66,8 +67,8 @@ namespace Aguacongas.DynamicConfiguration.Redis
             Data = new Dictionary<string, string>();
             base.Load();
             var entryList = _database.HashGetAll(_source.HashKey).OrderBy(k => k.Name);
-            
-            foreach(var entry in entryList)
+
+            foreach (var entry in entryList)
             {
                 Load(entry);
             }
@@ -84,7 +85,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
                     Data[$"{entry.Name}{ConfigurationPath.KeyDelimiter}{kv.Key}"] = kv.Value;
                 }
             }
-            catch(JsonException)
+            catch (JsonException)
             {
                 // value is not a JSON object
             }

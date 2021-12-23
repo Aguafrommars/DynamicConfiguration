@@ -1,3 +1,5 @@
+// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
 
 using Aguacongas.DynamicConfiguration.Redis;
 

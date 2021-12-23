@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Razor.Services;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections;
 using System.Reflection;
@@ -25,11 +28,11 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// Gets or sets the root page path.
         /// </summary>
         [Parameter]
-        public string? RootPath 
-        { 
+        public string? RootPath
+        {
             get { return _rootPath; }
-            set 
-            { 
+            set
+            {
                 if (value?.StartsWith('/') == false)
                 {
                     throw new InvalidOperationException($"{nameof(RootPath)} must start with '/");
@@ -99,7 +102,7 @@ namespace Aguacongas.DynamicConfiguration.Razor
             var type = Service?.Configuration.GetType();
 
             var currentIndex = 0;
-            foreach(var segment in segments)
+            foreach (var segment in segments)
             {
                 if (type is null)
                 {
@@ -131,10 +134,10 @@ namespace Aguacongas.DynamicConfiguration.Razor
         }
 
         private Task OnValidSubmit()
-        => Service is not null 
+        => Service is not null
             ? Service.SaveAsync(Path, default)
             : throw new InvalidOperationException($"{nameof(Service)} cannot be null");
-        
+
 
         private static bool IsDictionary(Type type)
         {

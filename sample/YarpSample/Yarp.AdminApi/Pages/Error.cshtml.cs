@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 namespace Aguacongas.DynamicConfiguration.AdminApi.Pages;
 

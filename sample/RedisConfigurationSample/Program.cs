@@ -1,4 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
 using Aguacongas.DynamicConfiguration.Redis;
 using Microsoft.Extensions.Configuration;
 
@@ -7,10 +9,10 @@ var key = args.Length > 0 ? args[0] : "Exemple";
 var builder = new ConfigurationBuilder();
 builder.AddRedis(options =>
 {
-	options.ConnectionString = "localhost"; // connection string to your Redis server.
-	options.Channel = "RedisConfigurationSample.Channdel"; // Publication channel to notify configuration change.
-	options.HashKey = "RedisConfigurationSample.Configuration"; // Key of the Redis hash to store configuration.
-	options.Database = 1; // (optional) Redis database to use. When null, the default database is used.
+    options.ConnectionString = "localhost"; // connection string to your Redis server.
+    options.Channel = "RedisConfigurationSample.Channdel"; // Publication channel to notify configuration change.
+    options.HashKey = "RedisConfigurationSample.Configuration"; // Key of the Redis hash to store configuration.
+    options.Database = 1; // (optional) Redis database to use. When null, the default database is used.
 });
 
 var configuration = builder.Build();

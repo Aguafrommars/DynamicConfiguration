@@ -1,6 +1,5 @@
-﻿// Project: Aguafrommars/TheIdServer
+﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
-using System;
 
 namespace Yarp.Configuration.Model
 {

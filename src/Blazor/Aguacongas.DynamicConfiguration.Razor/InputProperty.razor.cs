@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -14,22 +16,25 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// Gets or sets the property info.
         /// </summary>
         [Parameter]
-        public PropertyInfo? Property { get; set; }
+        public virtual PropertyInfo? Property { get; set; }
 
         /// <summary>
         /// Gets or sets the configuration path.
         /// </summary>
         [Parameter]
-        public string? Path { get; set; }
+        public virtual string? Path { get; set; }
 
-        private string? PropertyName
-            => (Property?.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute)?.Description ?? Property?.Name;
+        /// <summary>
+        /// Gets the property name
+        /// </summary>
+        protected virtual string? PropertyName
+        => (Property?.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute)?.Description ?? Property?.Name;
 
         /// <inheritdoc/>
-        public override Type? PropertyType 
-        { 
-            get => Property?.PropertyType ?? throw new InvalidOperationException($"{nameof(Property)} cannot be null"); 
-            set => base.PropertyType = value; 
+        public override Type? PropertyType
+        {
+            get => Property?.PropertyType ?? throw new InvalidOperationException($"{nameof(Property)} cannot be null");
+            set => base.PropertyType = value;
         }
 
         /// <inheritdoc/>
@@ -39,7 +44,11 @@ namespace Aguacongas.DynamicConfiguration.Razor
             Value = value;
         }
 
-        private void CreateValue()
+        /// <summary>
+        /// Creates a new value.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected virtual void CreateValue()
         {
             var constructor = UnderlyingType.GetConstructor(Array.Empty<Type>());
             if (constructor is null)
@@ -50,9 +59,9 @@ namespace Aguacongas.DynamicConfiguration.Razor
             SetValue(constructor.Invoke(null));
         }
 
-        private void DeleteValue()
-        {
-            SetValue(null);
-        }
+        /// <summary>
+        /// Deletes the value.
+        /// </summary>
+        protected virtual void DeleteValue() => SetValue(null);
     }
 }

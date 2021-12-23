@@ -1,4 +1,7 @@
-﻿namespace Aguacongas.DynamicConfiguration.Razor.Services
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+namespace Aguacongas.DynamicConfiguration.Razor.Services
 {
     /// <summary>
     /// Classes implementing this interface manage configuration.

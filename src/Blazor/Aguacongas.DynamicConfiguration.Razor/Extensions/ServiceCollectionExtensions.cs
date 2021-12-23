@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Razor.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Razor.Options;
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;

@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Razor.Options;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Razor.Options;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using System.Text;
@@ -63,7 +66,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             object? value = Configuration;
 
             var segmentList = key.Split(':');
-            foreach(var segment in segmentList)
+            foreach (var segment in segmentList)
             {
                 if (value is null)
                 {
@@ -94,7 +97,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             }
             return value;
         }
-        
+
         /// <summary>
         /// Saves the configuration at key.
         /// </summary>
@@ -131,7 +134,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             return JsonSerializer.Deserialize(content, type, _jsonSerializerOptions);
         }
 
-        
+
         private Type GetConfigurationType()
         {
             var setting = _options.Value;

@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using System.Threading.Tasks;
 
 namespace Aguacongas.DynamicConfiguration.Abstractions
 {

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
 
 namespace Aguacongas.DynamicConfiguration.Razor.Options
 {

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.AspNetCore.Components;
 using System.Reflection;
 
 namespace Aguacongas.DynamicConfiguration.Razor
@@ -12,39 +15,72 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// Gets or sets the value.
         /// </summary>
         [Parameter]
-        public Enum? Value { get; set; }
+        public virtual Enum? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the value changed event callback.
         /// </summary>
         [Parameter]
-        public EventCallback<Enum?> ValueChanged { get; set; } = new EventCallback<Enum?>();
+        public virtual EventCallback<Enum?> ValueChanged { get; set; } = new EventCallback<Enum?>();
 
         /// <summary>
         /// Gets or sets the property type.
         /// </summary>
         [Parameter]
-        public Type? PropertyType { get; set; }
-       
-        private Type UnderlyingType => PropertyType is not null
+        public virtual Type? PropertyType { get; set; }
+
+        /// <summary>
+        /// Gets the underlying property type. 
+        /// </summary>
+        /// <remarks>
+        /// The nullable underlying property type if property type is nullable oherwise the property type.
+        /// </remarks>
+        protected virtual Type UnderlyingType => PropertyType is not null
             ? Nullable.GetUnderlyingType(PropertyType) ?? PropertyType
             : throw new InvalidOperationException("PropertyType cannot be null");
 
-        private bool IsFlag => UnderlyingType.GetCustomAttribute(typeof(FlagsAttribute), true) != null;
+        /// <summary>
+        /// True if the enum has <see cref="FlagsAttribute"/>.
+        /// </summary>
+        protected virtual bool IsFlag => UnderlyingType.GetCustomAttribute(typeof(FlagsAttribute), true) != null;
 
-        private bool IsNullable => PropertyType is not null
+        /// <summary>
+        /// True if the property type is nullable.
+        /// </summary>
+        protected virtual bool IsNullable => PropertyType is not null
             ? Nullable.GetUnderlyingType(PropertyType) is not null
             : throw new InvalidOperationException("PropertyType cannot be null");
 
-        private IEnumerable<string> Names => Enum.GetNames(UnderlyingType);
+        /// <summary>
+        /// Gets the enum names.
+        /// </summary>
+        protected virtual IEnumerable<string> Names => Enum.GetNames(UnderlyingType);
 
-        private string? Name => Value != null ? Enum.GetName(UnderlyingType, Value) : null;
+        /// <summary>
+        /// Gets the value's name.
+        /// </summary>
+        protected virtual string? Name => Value != null ? Enum.GetName(UnderlyingType, Value) : null;
 
-        private Enum GetValue(string name) => (Enum)Enum.Parse(UnderlyingType, name);
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="name">The enum name</param>
+        /// <returns>The value</returns>
+        protected virtual Enum GetValue(string name) => (Enum)Enum.Parse(UnderlyingType, name);
 
-        private bool IsChecked(string name) => Value?.HasFlag(GetValue(name)) ?? false;
+        /// <summary>
+        /// Returns true if the value has the flag.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>True if the value has the flag.</returns>
+        protected virtual bool IsChecked(string name) => Value?.HasFlag(GetValue(name)) ?? false;
 
-        private void OnValueChanged(bool value, string name)
+        /// <summary>
+        /// Process checkboxes changes.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        /// <param name="name">The enum name.</param>
+        protected virtual void OnValueChanged(bool value, string name)
         {
             if (value)
             {
@@ -70,7 +106,12 @@ namespace Aguacongas.DynamicConfiguration.Razor
             ValueChanged.InvokeAsync(Value);
         }
 
-        private Task OnSelectChanged(string name)
+        /// <summary>
+        /// Process input select changes
+        /// </summary>
+        /// <param name="name">The enum name.</param>
+        /// <returns></returns>
+        protected virtual Task OnSelectChangedAsyn(string name)
         {
             if (string.IsNullOrEmpty(name) && IsNullable)
             {

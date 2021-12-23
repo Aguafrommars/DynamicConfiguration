@@ -1,4 +1,7 @@
-﻿using Bunit;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using Xunit;
@@ -71,7 +74,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 Flag = FlagEnum.Value1
             };
-            
+
             var cut = RenderComponent<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Flag)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Flag))?.PropertyType)

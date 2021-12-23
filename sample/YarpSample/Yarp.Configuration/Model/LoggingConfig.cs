@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace Yarp.Configuration.Model

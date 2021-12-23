@@ -1,14 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Redis.Test
 {
-    public  class ConfigurationBuilderExtensionsTest
+    public class ConfigurationBuilderExtensionsTest
     {
         [Fact]
         public void AddRedis_should_add_RedisConfigurationSource()

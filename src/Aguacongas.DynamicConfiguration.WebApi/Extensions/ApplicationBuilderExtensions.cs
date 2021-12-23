@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Abstractions;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Abstractions;
 
 namespace Microsoft.AspNetCore.Builder
 {

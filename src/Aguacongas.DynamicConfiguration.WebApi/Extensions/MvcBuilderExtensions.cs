@@ -1,4 +1,7 @@
-﻿using Aguacongas.DynamicConfiguration.Formatters;
+﻿// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
+using Aguacongas.DynamicConfiguration.Formatters;
 using Aguacongas.DynamicConfiguration.Options;
 using Aguacongas.DynamicConfiguration.WebApi.Controllers;
 

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{768E716E-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8AF0E870-0D17-4E4D-BCB0-21575BBF5F2E}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		appveyor.yml = appveyor.yml
 		build.ps1 = build.ps1
 		coverletArgs.runsettings = coverletArgs.runsettings
@@ -44,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{AAB4EA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aguacongas.DynamicConfiguration.Razor.Test", "test\Blazor\Aguacongas.DynamicConfiguration.Razor.Test\Aguacongas.DynamicConfiguration.Razor.Test.csproj", "{1DA1F71B-1EB0-4698-9B66-87BB39EA749E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aguacongas.DynamicConfiguration.Redis.Test", "test\Aguacongas.DynamicConfiguration.Redis.Test\Aguacongas.DynamicConfiguration.Redis.Test.csproj", "{9D0CC09C-A843-4516-919C-3C2C6240D1B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aguacongas.DynamicConfiguration.Redis.Test", "test\Aguacongas.DynamicConfiguration.Redis.Test\Aguacongas.DynamicConfiguration.Redis.Test.csproj", "{9D0CC09C-A843-4516-919C-3C2C6240D1B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aguacongas.DynamicConfiguration.Test", "test\Aguacongas.DynamicConfiguration.Test\Aguacongas.DynamicConfiguration.Test.csproj", "{69257912-0D34-492C-BA3F-17B15C9EC7C7}"
 EndProject

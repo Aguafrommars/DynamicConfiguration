@@ -1,5 +1,6 @@
-﻿// Project: Aguafrommars/TheIdServer
+﻿// Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
+
 using Aguacongas.DynamicConfiguration.Abstractions;
 using Aguacongas.DynamicConfiguration.Formatters;
 using Microsoft.AspNetCore.Authorization;

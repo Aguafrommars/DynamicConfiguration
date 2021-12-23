@@ -1,3 +1,6 @@
+// Project: Aguafrommars/DynamicConfiguration
+// Copyright (c) 2021 @Olivier Lefebvre
+
 using Moq;
 using StackExchange.Redis;
 using System;
