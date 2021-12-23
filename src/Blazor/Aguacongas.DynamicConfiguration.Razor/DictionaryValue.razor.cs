@@ -18,13 +18,13 @@ namespace Aguacongas.DynamicConfiguration.Razor
         /// Gets or sets the configuration path.
         /// </summary>
         [Parameter]
-        public string? Path { get; set; }
+        public virtual string? Path { get; set; }
 
         /// <summary>
         /// Gets or sets the item key.
         /// </summary>
         [Parameter]
-        public object? Key { get; set; }
+        public virtual object? Key { get; set; }
 
         /// <inheritdoc/>
         protected override void SetValue(object? value)
