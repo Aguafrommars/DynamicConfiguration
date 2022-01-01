@@ -53,7 +53,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
+        public virtual async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
         {
             var type = GetConfigurationType();
             Configuration ??= await GetConfigurationAsync(type, cancellationToken).ConfigureAwait(false);
@@ -104,7 +104,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         /// <param name="key">The configuration key</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns></returns>
-        public async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
+        public virtual async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
         {
             if (key is null)
             {
