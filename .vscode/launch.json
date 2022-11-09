@@ -10,7 +10,7 @@
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/src/Aguacongas.DynamicConfiguration.AdminApi/bin/Debug/net6.0/Aguacongas.DynamicConfiguration.AdminApi.dll",
+      "program": "${workspaceFolder}/src/Aguacongas.DynamicConfiguration.AdminApi/bin/Debug/net7.0/Aguacongas.DynamicConfiguration.AdminApi.dll",
       "args": [],
       "cwd": "${workspaceFolder}/src/Aguacongas.DynamicConfiguration.AdminApi",
       "stopAtEntry": false,
