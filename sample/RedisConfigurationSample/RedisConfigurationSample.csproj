@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Aguacongas.DynamicConfiguration.Redis\Aguacongas.DynamicConfiguration.Redis.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Aguacongas.DynamicConfiguration.Redis\Aguacongas.DynamicConfiguration.Redis.csproj" />
+	</ItemGroup>
 
 </Project>
