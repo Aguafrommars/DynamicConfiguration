@@ -29,17 +29,24 @@ namespace Aguacongas.DynamicConfiguration
         /// <param name="input">the JSON input string</param>
         /// <returns>A key value pair or string/string</returns>
         public static IDictionary<string, string> Parse(string input)
-            => new JsonConfigurationParser().ParseStream(input);
+        => new JsonConfigurationParser().ParseStream(input);
 
         private IDictionary<string, string> ParseStream(string input)
         {
+            if (!input.StartsWith("{") &&
+                !input.StartsWith("[") &&
+                !input.StartsWith("\""))
+            {
+                return _data;
+            }
+
             var jsonDocumentOptions = new JsonDocumentOptions
             {
                 CommentHandling = JsonCommentHandling.Skip,
                 AllowTrailingCommas = true,
             };
 
-            using (var doc = JsonDocument.Parse(input, jsonDocumentOptions))
+            using (var doc = JsonDocument.Parse(json: input, jsonDocumentOptions))
             {
                 if (doc.RootElement.ValueKind != JsonValueKind.Object)
                 {
@@ -114,5 +121,8 @@ namespace Aguacongas.DynamicConfiguration
                 context);
 
         private void ExitContext() => _paths.Pop();
+
+        private static string Sanitized(string value)
+        => !value.StartsWith("{") && !value.StartsWith("\"") ? $"\"{value}\"" : value;
     }
 }
