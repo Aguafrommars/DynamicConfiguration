@@ -1,10 +1,14 @@
 // Project: Aguafrommars/DynamicConfiguration
 // Copyright (c) 2021 @Olivier Lefebvre
 
+using Aguacongas.DynamicConfiguration.Options;
+using Aguacongas.DynamicConfiguration.Services;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using StackExchange.Redis;
 using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Redis.Test
