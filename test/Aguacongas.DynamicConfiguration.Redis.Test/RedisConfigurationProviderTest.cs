@@ -78,38 +78,5 @@ namespace Aguacongas.DynamicConfiguration.Redis.Test
             databaseMock.Setup(m => m.HashGet(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Returns(RedisValue.Null);
             sut.Set("json", JsonSerializer.Serialize(new RedisConfigurationOptions()));
         }
-
-        [Fact]
-        public async Task Set_should_store_json_TimeSpan()
-        {
-            var subscriberMock = new Mock<ISubscriber>();
-            subscriberMock.Setup(m => m.Publish(It.IsAny<RedisChannel>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Verifiable();
-
-            var databaseMock = new Mock<IDatabase>();
-            databaseMock.Setup(m => m.HashGet(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Returns(JsonSerializer.Serialize(new RedisConfigurationOptions()));
-            databaseMock.Setup(m => m.HashDelete(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Verifiable();
-
-            var connectionMock = new Mock<IConnectionMultiplexer>();
-            connectionMock.Setup(m => m.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(databaseMock.Object);
-            connectionMock.Setup(m => m.GetSubscriber(It.IsAny<object>())).Returns(subscriberMock.Object);
-
-            var sourceMock = new Mock<IRedisConfigurationSource>();
-            sourceMock.SetupGet(m => m.Connection).Returns(connectionMock.Object);
-            sourceMock.SetupGet(m => m.Channel).Returns("test");
-
-            var mockConfigurationSource = new Mock<IConfigurationSource>();
-            var sut = new RedisConfigurationProvider(sourceMock.Object);
-            mockConfigurationSource.Setup(m => m.Build(It.IsAny<IConfigurationBuilder>())).Returns(sut);
-
-            var configuration = new ConfigurationBuilder().Add(mockConfigurationSource.Object).Build();
-            var service = new ConfigurationService(configuration, Microsoft.Extensions.Options.Options.Create(new DynamicConfigurationOptions
-            {
-                Provider = sut
-            }));
-
-            await service.SetAsync("test", JsonSerializer.Serialize(TimeSpan.FromMinutes(5)));
-            var result = await service.GetAsync(typeof(TimeSpan).FullName, "test");
-            Assert.Equal(TimeSpan.FromMinutes(5), result);
-        }
     }
 }

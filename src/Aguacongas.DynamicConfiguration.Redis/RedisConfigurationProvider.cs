@@ -45,7 +45,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
         /// <param name="value">The value.</param>
         public override void Set(string key, string value)
         {
-            base.Set(key, Sanitized(value));
+            base.Set(key, value);
             var oldJson = _database.HashGet(_source.HashKey, key);
             if (oldJson != default)
             {
@@ -76,7 +76,7 @@ namespace Aguacongas.DynamicConfiguration.Redis
 
         private void Load(HashEntry entry)
         {
-            Data[entry.Name] = Sanitized(entry.Value);
+            Data[entry.Name] = entry.Value;
             try
             {
                 var data = JsonConfigurationParser.Parse(entry.Value);
@@ -90,8 +90,5 @@ namespace Aguacongas.DynamicConfiguration.Redis
                 // value is not a JSON object
             }
         }
-
-        private static string Sanitized(string value)
-        => value.StartsWith("\"") ? value.Substring(1, value.Length - 2) : value;
     }
 }
