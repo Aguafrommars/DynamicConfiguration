@@ -66,8 +66,12 @@ namespace Aguacongas.DynamicConfiguration.Services
         /// <returns></returns>
         public Task SetAsync(string key, string json)
         {
-            _provider.Set(key, json);
+            _provider.Set(key, Sanitized(json));
             return Task.CompletedTask;
         }
+
+        private static string Sanitized(string value)
+        => value.StartsWith("\"") ? value.Substring(1, value.Length - 2) : value;
+
     }
 }
