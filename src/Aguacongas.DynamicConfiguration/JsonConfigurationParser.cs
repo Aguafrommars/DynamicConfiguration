@@ -29,7 +29,7 @@ namespace Aguacongas.DynamicConfiguration
         /// <param name="input">the JSON input string</param>
         /// <returns>A key value pair or string/string</returns>
         public static IDictionary<string, string> Parse(string input)
-            => new JsonConfigurationParser().ParseStream(input);
+        => new JsonConfigurationParser().ParseStream(input);
 
         private IDictionary<string, string> ParseStream(string input)
         {
@@ -39,13 +39,20 @@ namespace Aguacongas.DynamicConfiguration
                 AllowTrailingCommas = true,
             };
 
-            using (var doc = JsonDocument.Parse(input, jsonDocumentOptions))
+            try
             {
-                if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                using (var doc = JsonDocument.Parse(json: input, jsonDocumentOptions))
                 {
-                    return _data;
+                    if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                    {
+                        return _data;
+                    }
+                    VisitElement(doc.RootElement);
                 }
-                VisitElement(doc.RootElement);
+            }
+            catch (JsonException)
+            {
+                // silent catch
             }
 
             return _data;

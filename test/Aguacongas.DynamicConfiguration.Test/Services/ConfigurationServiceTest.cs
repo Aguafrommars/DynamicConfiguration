@@ -148,5 +148,22 @@ namespace Aguacongas.DynamicConfiguration.Test.Services
             var result = await sut.GetAsync(typeof(TimeSpan).FullName, "test");
             Assert.Equal(TimeSpan.FromMinutes(5), result);
         }
+
+        [Fact]
+        public async Task SetAsync_should_store_json_string()
+        {
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+
+            var provider = configuration.Providers.First(p => p is MemoryConfigurationProvider);
+            var sut = new ConfigurationService(configuration, Microsoft.Extensions.Options.Options.Create(new DynamicConfigurationOptions
+            {
+                Provider = provider
+            }));
+
+            var expected = Guid.NewGuid().ToString();
+            await sut.SetAsync("test", JsonSerializer.Serialize(expected));
+            var result = await sut.GetAsync(typeof(string).FullName, "test");
+            Assert.Equal(expected, result);
+        }
     }
 }
