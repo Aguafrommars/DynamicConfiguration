@@ -121,8 +121,5 @@ namespace Aguacongas.DynamicConfiguration
                 context);
 
         private void ExitContext() => _paths.Pop();
-
-        private static string Sanitized(string value)
-        => !value.StartsWith("{") && !value.StartsWith("\"") ? $"\"{value}\"" : value;
     }
 }
