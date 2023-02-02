@@ -33,26 +33,26 @@ namespace Aguacongas.DynamicConfiguration
 
         private IDictionary<string, string> ParseStream(string input)
         {
-            if (!input.StartsWith("{") &&
-                !input.StartsWith("[") &&
-                !input.StartsWith("\""))
-            {
-                return _data;
-            }
-
             var jsonDocumentOptions = new JsonDocumentOptions
             {
                 CommentHandling = JsonCommentHandling.Skip,
                 AllowTrailingCommas = true,
             };
 
-            using (var doc = JsonDocument.Parse(json: input, jsonDocumentOptions))
+            try
             {
-                if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                using (var doc = JsonDocument.Parse(json: input, jsonDocumentOptions))
                 {
-                    return _data;
+                    if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                    {
+                        return _data;
+                    }
+                    VisitElement(doc.RootElement);
                 }
-                VisitElement(doc.RootElement);
+            }
+            catch (JsonException)
+            {
+                // silent catch
             }
 
             return _data;
