@@ -53,7 +53,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
+        public virtual async Task<object?> GetAsync(string? key, CancellationToken cancellationToken = default)
         {
             var type = GetConfigurationType();
             Configuration ??= await GetConfigurationAsync(type, cancellationToken).ConfigureAwait(false);
@@ -88,11 +88,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
                     continue;
                 }
 
-                var property = type.GetProperty(segment);
-                if (property is null)
-                {
-                    throw new InvalidOperationException($"Property {segment} doesn't exist in type {type}");
-                }
+                var property = type.GetProperty(segment) ?? throw new InvalidOperationException($"Property {segment} doesn't exist in type {type}");
                 value = property.GetValue(value, null);
             }
             return value;
@@ -104,7 +100,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
         /// <param name="key">The configuration key</param>
         /// <param name="cancellationToken">A cancellation token.</param>
         /// <returns></returns>
-        public async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
+        public virtual async Task SaveAsync(string? key, CancellationToken cancellationToken = default)
         {
             if (key is null)
             {
@@ -140,14 +136,9 @@ namespace Aguacongas.DynamicConfiguration.Razor.Services
             var setting = _options.Value;
             if (setting?.TypeName is null)
             {
-                throw new InvalidOperationException("Settins options must have a not null type name.");
+                throw new InvalidOperationException("Settings options must have a not null type name.");
             }
-            var type = Type.GetType(setting.TypeName);
-            if (type is null)
-            {
-                throw new InvalidOperationException($"Cannot get type '{setting.TypeName}'");
-            }
-
+            var type = Type.GetType(setting.TypeName) ?? throw new InvalidOperationException($"Cannot get type '{setting.TypeName}'");
             return type;
         }
     }
