@@ -78,5 +78,31 @@ namespace Aguacongas.DynamicConfiguration.Redis.Test
             databaseMock.Setup(m => m.HashGet(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Returns(RedisValue.Null);
             sut.Set("json", JsonSerializer.Serialize(new RedisConfigurationOptions()));
         }
+
+        [Fact]
+        public void Set_should_store_strings()
+        {
+            var subscriberMock = new Mock<ISubscriber>();
+            subscriberMock.Setup(m => m.Publish(It.IsAny<RedisChannel>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Verifiable();
+
+            var expected = Guid.NewGuid().ToString();
+            var databaseMock = new Mock<IDatabase>();
+            databaseMock.Setup(m => m.HashGet(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<CommandFlags>())).Returns(expected).Verifiable();
+
+            var connectionMock = new Mock<IConnectionMultiplexer>();
+            connectionMock.Setup(m => m.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(databaseMock.Object);
+            connectionMock.Setup(m => m.GetSubscriber(It.IsAny<object>())).Returns(subscriberMock.Object);
+
+            var sourceMock = new Mock<IRedisConfigurationSource>();
+            sourceMock.SetupGet(m => m.Connection).Returns(connectionMock.Object);
+            sourceMock.SetupGet(m => m.Channel).Returns("test");
+
+            var sut = new RedisConfigurationProvider(sourceMock.Object);
+
+            sut.Set("json", expected);
+
+            databaseMock.Verify();
+            subscriberMock.Verify();
+        }
     }
 }
