@@ -77,7 +77,7 @@ function UpdatePackages {
 }
 
 # get branches names
-$dest = "master"
+$dest = "main"
 if (Test-Path env:DEST_BRANCH) {
     $dest = $env:DEST_BRANCH
 }
