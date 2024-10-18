@@ -40,7 +40,7 @@ Get-ChildItem -rec `
 	$merge = "$path;$merge"
 }
 Write-Host $merge
-ReportGenerator\tools\net5.0\ReportGenerator.exe "-reports:$merge" "-targetdir:coverage" "-reporttypes:SonarQube"
+ReportGenerator\tools\net7.0\ReportGenerator.exe "-reports:$merge" "-targetdir:coverage" "-reporttypes:SonarQube"
 	
 if ($env:CI -And ((-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) -Or ($env:APPVEYOR_PULL_REQUEST_HEAD_REPO_NAME -eq $env:APPVEYOR_REPO_NAME))) {
 	dotnet sonarscanner end -d:sonar.login=$env:sonarqube
