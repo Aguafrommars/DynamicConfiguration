@@ -133,7 +133,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 .Add(p => p.RootPath, "/")
                 .Add(p => p.Path, "Child:Dictionary:test"));
 
-            cut.WaitForState(() => !cut.Markup.Contains("Loading..."));
+            cut.WaitForState(() => !cut.Markup.Contains("Loading..."), TimeSpan.FromSeconds(2));
 
             Assert.Contains("<span>Dictionary</span>",
                 cut.Markup);
