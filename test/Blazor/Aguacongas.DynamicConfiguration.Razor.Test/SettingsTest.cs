@@ -21,7 +21,7 @@ using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Razor.Test
 {
-    public class SettingsTest : TestContext
+    public class SettingsTest : BunitContext
     {
         [Fact]
         public async Task OnParametersSetAsync_should_throw_when_Service_is_null()
@@ -41,7 +41,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
-            var cut = RenderComponent<Settings>();
+            var cut = Render<Settings>();
 
             var instance = cut.Instance;
             if (instance is null)
@@ -75,7 +75,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
-            var cut = RenderComponent<Settings>();
+            var cut = Render<Settings>();
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => cut.Instance.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
             {
@@ -90,7 +90,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         [Fact]
         public void Should_not_display_link_on_dictionary_property_but_key()
         {
-            var authContext = this.AddTestAuthorization();
+            var authContext = this.AddAuthorization();
             authContext.SetAuthorized("test");
 
             var model = new Model
@@ -129,7 +129,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>().AddTransient<IConfigurationService, ConfigurationService>();
             Services.AddTransient(p => options);
-            var cut = RenderComponent<Settings>(parameters => parameters
+            var cut = Render<Settings>(parameters => parameters
                 .Add(p => p.RootPath, "/")
                 .Add(p => p.Path, "Child:Dictionary:test"));
 

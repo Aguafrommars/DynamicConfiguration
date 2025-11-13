@@ -17,7 +17,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             {
                 Flag = FlagEnum.Value1
             };
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Flag)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Flag))?.PropertyType));
 
@@ -30,7 +30,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsFlagNullable_should_not_renders_cheked_checkbox()
         {
             var model = new Model();
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.FlagNullable)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.FlagNullable))?.PropertyType));
 
@@ -43,7 +43,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsBasic_should_renders_all_options()
         {
             var model = new Model();
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Basic)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Basic))?.PropertyType)
                 .AddCascadingValue(new EditContext(model)));
@@ -57,7 +57,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenValueIsBasicNullable_should_renders_all_options()
         {
             var model = new Model();
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.BasicNullable)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.BasicNullable))?.PropertyType)
                 .AddCascadingValue(new EditContext(model)));
@@ -75,7 +75,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 Flag = FlagEnum.Value1
             };
 
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Flag)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Flag))?.PropertyType)
                 .Add(p => p.ValueChanged, value =>
@@ -110,7 +110,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model();
 
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.FlagNullable)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.FlagNullable))?.PropertyType)
                 .Add(p => p.ValueChanged, value =>
@@ -154,7 +154,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenSelected_should_update_model()
         {
             var model = new Model();
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.Basic)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.Basic))?.PropertyType)
                 .AddCascadingValue(new EditContext(model))
@@ -176,7 +176,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         public void WhenSelected_should_update_nullable_model()
         {
             var model = new Model();
-            var cut = RenderComponent<InputEnum>(parameters => parameters
+            var cut = Render<InputEnum>(parameters => parameters
                 .Add(p => p.Value, model.BasicNullable)
                 .Add(p => p.PropertyType, model.GetType().GetProperty(nameof(Model.BasicNullable))?.PropertyType)
                 .AddCascadingValue(new EditContext(model))
