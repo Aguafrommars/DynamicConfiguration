@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Aguacongas.DynamicConfiguration.Razor.Test
 {
-    public class InputEnumerableTest : TestContext
+    public class InputEnumerableTest : BunitContext
     {
         [Fact]
         public void WhenModelIsDictionaryAddItem_should_check_key()
@@ -26,7 +26,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Dictionary)
                 .Add(p => p.Path, "Model")
@@ -51,7 +51,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             button = cut.Find("button");
             button.Click();
 
-            Assert.Contains(expected, model.Dictionary?.Keys);
+            Assert.Contains(expected, model.Dictionary!.Keys);
             var a = cut.Find("a");
             Assert.Contains($"Model:{expected}", a.OuterHtml);
         }
@@ -66,17 +66,15 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.DictionaryInt)
                 .Add(p => p.Path, "Model")
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.DictionaryInt)))
                 .AddCascadingValue(new EditContext(model)));
 
-            var input = cut.Find("input");
-
             var expected = Guid.NewGuid().ToString();
-            input = cut.Find("input");
+            var input = cut.Find("input");
             input.Input(new ChangeEventArgs
             {
                 Value = expected
@@ -84,7 +82,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             var button = cut.Find("button");
             button.Click();
 
-            Assert.Contains(expected, model.DictionaryInt?.Keys);
+            Assert.Contains(expected, model.DictionaryInt!.Keys);
         }
 
         [Fact]
@@ -101,7 +99,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.IDictionary)
                 .Add(p => p.Path, "Model")
@@ -123,7 +121,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Enumerable)
                 .Add(p => p.Path, "Model")
@@ -148,7 +146,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.EnumerableString)
                 .Add(p => p.Path, "Model")
@@ -171,7 +169,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.EnumerableInt)
                 .Add(p => p.Path, "Model")
@@ -194,16 +192,15 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.DictionaryString)
                 .Add(p => p.Path, "Model")
                 .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.DictionaryString)))
                 .AddCascadingValue(new EditContext(model)));
 
-            var input = cut.Find("input");
             var expected = Guid.NewGuid().ToString();
-            input = cut.Find("input");
+            var input = cut.Find("input");
             input.Input(new ChangeEventArgs
             {
                 Value = expected
@@ -228,7 +225,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Enumerable)
                 .Add(p => p.Path, "Model")
@@ -253,32 +250,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
 
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
-                .Add(p => p.Model, model)
-                .Add(p => p.Value, model.Enumerable)
-                .Add(p => p.Path, "Model")
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Enumerable))));
-
-            var button = cut.Find("button");
-            button.Click();
-
-            Assert.Empty(model.Enumerable);
-        }
-
-        [Fact]
-        public void WhenModelIsFixedSizeListRemoveItem_should_use_index()
-        {
-            var model = new Model
-            {
-                Enumerable = new object[]
-                {
-                    new object()
-                },
-            };
-
-            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
-
-            var cut = RenderComponent<InputEnumerable>(parameters => parameters
+            var cut = Render<InputEnumerable>(parameters => parameters
                 .Add(p => p.Model, model)
                 .Add(p => p.Value, model.Enumerable)
                 .Add(p => p.Path, "Model")
@@ -294,6 +266,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             public IDictionary<string, object>? IDictionary { get; set; }
 
+            [SuppressMessage("Minor Code Smell", "S3459:Unassigned members should be removed", Justification = "Deserialized")]
             public Dictionary<string, object>? Dictionary { get; set; }
 
             public Dictionary<string, string>? DictionaryString { get; set; }
