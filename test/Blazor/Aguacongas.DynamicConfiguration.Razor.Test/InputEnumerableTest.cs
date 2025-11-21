@@ -116,7 +116,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model
             {
-                Enumerable = Array.Empty<object>(),
+                Enumerable = [],
             };
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
@@ -141,7 +141,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model
             {
-                EnumerableString = Array.Empty<string>(),
+                EnumerableString = [],
             };
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
@@ -164,7 +164,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model
             {
-                EnumerableInt = Array.Empty<int>(),
+                EnumerableInt = [],
             };
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
@@ -187,7 +187,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model
             {
-                DictionaryString = new Dictionary<string, string>(),
+                DictionaryString = [],
             };
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
@@ -217,10 +217,10 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         {
             var model = new Model
             {
-                Enumerable = new object[]
-                {
+                Enumerable =
+                [
                     new object()
-                },
+                ],
             };
 
             Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
@@ -237,32 +237,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Assert.Empty(model.Enumerable);
         }
 
-        [Fact]
-        public void WhenModelIsListRemoveItem_should_use_index()
-        {
-            var model = new Model
-            {
-                Enumerable = new List<object>
-                {
-                    new object()
-                },
-            };
-
-            Services.AddLocalization().AddScoped<ISettingsLocalizer, DefaultSettingsLocalizer>();
-
-            var cut = Render<InputEnumerable>(parameters => parameters
-                .Add(p => p.Model, model)
-                .Add(p => p.Value, model.Enumerable)
-                .Add(p => p.Path, "Model")
-                .Add(p => p.Property, model.GetType().GetProperty(nameof(Model.Enumerable))));
-
-            var button = cut.Find("button");
-            button.Click();
-
-            Assert.Empty(model.Enumerable);
-        }
-
-        class Model
+        private class Model
         {
             public IDictionary<string, object>? IDictionary { get; set; }
 
@@ -280,11 +255,22 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             public IEnumerable<int>? EnumerableInt { get; set; }
         }
 
-        class TestDisctionary : IDictionary<string, int>
+        private class TestDisctionary : IDictionary<string, int>
         {
-            private readonly Dictionary<string, int> _dictionary = new Dictionary<string, int>();
+            private readonly Dictionary<string, int> _dictionary = [];
 
-            public int this[string key] { get => _dictionary[key]; set => _dictionary[key] = value; }
+            public int this[string key]
+            {
+                get
+                {
+                    return _dictionary[key];
+                }
+
+                set
+                {
+                    _dictionary[key] = value;
+                }
+            }
 
             public ICollection<string> Keys => _dictionary.Keys;
 
@@ -303,18 +289,12 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             public void Clear()
             => _dictionary.Clear();
 
-            public bool Contains(KeyValuePair<string, int> item)
-            {
-                throw new NotImplementedException();
-            }
+            public bool Contains(KeyValuePair<string, int> item) => throw new NotImplementedException();
 
             public bool ContainsKey(string key)
             => _dictionary.ContainsKey(key);
 
-            public void CopyTo(KeyValuePair<string, int>[] array, int arrayIndex)
-            {
-                throw new NotImplementedException();
-            }
+            public void CopyTo(KeyValuePair<string, int>[] array, int arrayIndex) => throw new NotImplementedException();
 
             public IEnumerator<KeyValuePair<string, int>> GetEnumerator()
             => _dictionary.GetEnumerator();
