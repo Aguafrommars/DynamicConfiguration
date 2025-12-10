@@ -4,7 +4,6 @@
 using Aguacongas.DynamicConfiguration.Razor.Options;
 using Aguacongas.DynamicConfiguration.Razor.Services;
 using Bunit;
-using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -43,12 +42,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
             Services.AddTransient(p => options);
             var cut = Render<Settings>();
 
-            var instance = cut.Instance;
-            if (instance is null)
-            {
-                throw new InvalidOperationException("Instance cannot be null.");
-            }
-
+            var instance = cut.Instance ?? throw new InvalidOperationException("Instance cannot be null.");
             instance.GetType().GetProperty("Service", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(cut.Instance, null);
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => instance.SetParametersAsync(ParameterView.FromDictionary(new Dictionary<string, object?>
@@ -90,7 +84,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
         [Fact]
         public void Should_not_display_link_on_dictionary_property_but_key()
         {
-            var authContext = this.AddAuthorization();
+            var authContext = AddAuthorization();
             authContext.SetAuthorized("test");
 
             var model = new Model
@@ -139,7 +133,7 @@ namespace Aguacongas.DynamicConfiguration.Razor.Test
                 cut.Markup);
         }
 
-        class Model
+        private class Model
         {
             public IDictionary<string, string>? Dictionary { get; set; }
 
