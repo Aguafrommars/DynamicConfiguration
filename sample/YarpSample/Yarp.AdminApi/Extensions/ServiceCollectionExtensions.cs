@@ -3,7 +3,7 @@
 
 using Aguacongas.DynamicConfiguration.Abstractions;
 using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.AddSwaggerGen(c =>
             {
-                var info = configuration.GetSection(nameof(OpenApiInfo)).Get<OpenApiInfo>();
+                var info = configuration.GetSection(nameof(OpenApiInfo)).Get<OpenApiInfo>()!;
                 c.SwaggerDoc(info.Version, info);
 
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
